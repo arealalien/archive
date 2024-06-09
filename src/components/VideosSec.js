@@ -1,6 +1,6 @@
 import React from "react";
 
-const VideosSec  = () => {
+const VideosSec  = ({ startcolums }) => {
     const videoData = [
         {
             src: "https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -218,9 +218,12 @@ const VideosSec  = () => {
 
     ];
 
+
+    const columnsClass = startcolums === "3" ? "videos-inner-3" : "videos-inner-4";
+
     return (
         <section className="videos">
-            <div className="videos-inner view-width">
+            <div className={`${columnsClass} videos-inner view-width`}>
                 {videoData.map((video, index) => (
                     <div className="videos-inner-item" key={index}>
                         <div className="videos-inner-item-info">

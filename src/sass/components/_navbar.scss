@@ -7,6 +7,7 @@
 
   &-inner {
     height: 100%;
+    gap: 2em;
     @include flex-space-bet();
 
     &-left {
@@ -60,7 +61,7 @@
           top: 1em;
           width: 100%; height: 100%;
           position: absolute;
-          background-color: hslac($black, .75);
+          background-color: hslac($black, .55);
           transform: scale(.9, .9);
           filter: blur(2rem);
           z-index: 10003;

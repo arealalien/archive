@@ -3,19 +3,21 @@ import './css/main.css';
 
 // Components
 import Navbar from "./components/Navbar";
+import ProfileSec from "./components/ProfileSec";
 import VideosSec from "./components/VideosSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 
-function Home() {
+function Profile() {
     return (
         <>
             <Navbar searchbar="yes"/>
-            <VideosSec/>
-            <PageShadow startcolums="4"/>
+            <ProfileSec/>
+            <VideosSec startcolums="3"/>
+            <PageShadow/>
             <Footer/>
         </>
     );
 }
 
-export default Home;
+export default Profile;

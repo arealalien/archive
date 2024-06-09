@@ -22,13 +22,15 @@ body {
 }
 
 .blackbutton {
-  padding: 1em 2em;
+  padding: 1.25em 2em;
   position: relative;
   font-family: $font-main;
+  font-size: $paragraph;
   color: hslac($white, 1);
   background-color: hslac($black, .5);
   border: 1px solid hslac($white, .5);
   border-radius: 5em;
+  text-decoration: none;
   backdrop-filter: blur(1.5rem);
   cursor: pointer;
   z-index: 6;
@@ -48,6 +50,7 @@ body {
   padding: 1em 2em;
   position: relative;
   font-family: $font-main;
+  font-size: $paragraph;
   color: hslac($white, 1);
   background-color: hslac($primary, 1);
   border: none;

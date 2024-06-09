@@ -1,0 +1,23 @@
+.profile {
+  width: 100%;
+  @include flex-center();
+
+  &-inner {
+    &-header {
+      top: 2.3em;
+      width: 100%;
+      position: relative;
+      aspect-ratio: 2.75 / 1;
+      border-radius: 4em;
+      overflow: hidden;
+      @include flex-center();
+
+      &-background {
+        top: -10em;
+        width: 100%;
+        position: absolute;
+        object-fit: cover;
+      }
+    }
+  }
+}
