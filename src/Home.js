@@ -4,13 +4,14 @@ import './css/main.css';
 // Components
 import Navbar from "./components/Navbar";
 import VideosSec from "./components/VideosSec";
+import PageShadow from "./components/PageShadow";
 
 function Home() {
     return (
         <>
-            <Navbar/>
+            <Navbar searchbar="yes"/>
             <VideosSec/>
-            <div className="pageshadow"></div>
+            <PageShadow/>
         </>
     );
 }
