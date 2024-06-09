@@ -44,6 +44,16 @@ body {
     z-index: -1;
   }
 }
+.mainbutton {
+  padding: 1em 2em;
+  position: relative;
+  font-family: $font-main;
+  color: hslac($white, 1);
+  background-color: hslac($primary, 1);
+  border: none;
+  border-radius: 5em;
+  cursor: pointer;
+}
 
 ::selection {
   color: hslac($white, 1);
