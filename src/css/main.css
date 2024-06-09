@@ -1,0 +1,157 @@
+/* Main */
+/* Colors */
+/* Flexbox */
+/* Columns */
+/* Spacings */
+/* Sizes */
+/* misc */
+/* Fonts */
+/* Breakpoints */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+body {
+  width: 100vw;
+  height: 100vh;
+  color: hsl(0, 0%, 100%);
+  font-family: "Montserrat", sans-serif;
+  background: hsl(0, 4%, 5%);
+  overflow-x: hidden;
+}
+
+.view-width {
+  width: calc(100% - 4rem) !important;
+  max-width: 1400px;
+}
+
+::selection {
+  color: hsl(0, 0%, 100%);
+  background: hsl(345, 100%, 53%);
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+figure,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+code,
+em,
+img,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+b,
+u,
+i,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+main,
+canvas,
+embed,
+footer,
+header,
+nav,
+section,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: none;
+     -moz-text-size-adjust: none;
+          text-size-adjust: none;
+}
+
+footer,
+header,
+nav,
+section,
+main {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+html {
+  font-size: 62.5%;
+  line-height: 1.25;
+}
+html body {
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+p, span {
+  font-size: 1.4rem;
+}
+
+a {
+  font-weight: 600;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Nhc3MvYWJzdHJhY3RzL19jb2xvcnMuc2NzcyIsIi4uL3Nhc3MvYWJzdHJhY3RzL19taXhpbnMuc2NzcyIsIi4uL3Nhc3MvYWJzdHJhY3RzL191dGlsaXRpZXMuc2NzcyIsIi4uL3Nhc3MvYmFzZS9fdHlwb2dyYXBoeS5zY3NzIiwiLi4vc2Fzcy9iYXNlL19nbG9iYWwuc2NzcyIsIm1haW4uY3NzIiwiLi4vc2Fzcy9iYXNlL19yZXNldC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLFNBQUE7QUFHQSxXQUFBO0FDSEEsWUFBQTtBQTBCQSxZQUFBO0FBMkNBLGFBQUE7QUNyRUEsVUFBQTtBQUtBLFNBQUE7QUFLQSxVQUFBO0FBRUEsZ0JBQUE7QUNaUSxrTUFBQTtBQUNBLCtHQUFBO0FDRFI7RUFDRSxZQUFBO0VBQWMsYUFBQTtFQUNkLHVCQUFBO0VBQ0EscUNGUVU7RUVQViwwQkFBQTtFQUNBLGtCQUFBO0FDYUY7O0FEWEE7RUFDRSxtQ0FBQTtFQUNBLGlCQUFBO0FDY0Y7O0FEWEE7RUFDRSx1QkFBQTtFQUNBLCtCQUFBO0FDY0Y7O0FDNUJBOzs7RUFHRSxzQkFBQTtBRCtCRjs7QUM1QkE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztFQW1ERSxTQUFBO0VBQ0EsVUFBQTtFQUNBLFNBQUE7RUFDQSxlQUFBO0VBQ0EsYUFBQTtFQUNBLHdCQUFBO0VBQ0Esa0NBQUE7RUFDQSxtQ0FBQTtFQUNBLDhCQUFBO0tBQUEsMkJBQUE7VUFBQSxzQkFBQTtBRCtCRjs7QUM1QkE7Ozs7O0VBS0UsY0FBQTtBRCtCRjs7QUM1QkE7RUFDRSxjQUFBO0FEK0JGOztBQzVCQTs7RUFFRSxnQkFBQTtBRCtCRjs7QUM1QkE7O0VBRUUsWUFBQTtBRCtCRjs7QUM1QkE7Ozs7RUFJRSxXQUFBO0VBQ0EsYUFBQTtBRCtCRjs7QUM1QkE7RUFDRSx5QkFBQTtFQUNBLGlCQUFBO0FEK0JGOztBQzVCQTtFQUNFLHdCQUFBO0VBQ0EsZ0JBQUE7QUQrQkY7O0FGcklBO0VBQ0UsZ0JBQUE7RUFDQSxpQkFBQTtBRXdJRjtBRnZJRTtFQUNFLHNKQUFBO0FFeUlKOztBRnBJQTtFQUNFLGlCQUFBO0FFdUlGOztBRnJJQTtFQUNFLGdCQUFBO0FFd0lGIiwiZmlsZSI6Im1haW4uY3NzIn0= */

@@ -8,10 +8,16 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "css:watch": "sass --watch src/sass/main.scss:src/css/main.css",
+    "css:compile": "sass src/sass/main.scss:src/css/main.css",
+    "css:prefix": "postcss --use autoprefixer -b \"last 4 versions\" src/css/main.css -o src/css/main.css",
+    "css:compress": "css-minify -f src/css/main.css -o src/css",
+    "css:build": "npm-run-all css:compile css:prefix css:compress",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -34,5 +40,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "concat": "^1.0.3",
+    "css-minify": "^2.0.0",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^11.0.0",
+    "sass": "^1.77.4"
   }
 }

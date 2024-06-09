@@ -1,0 +1,16 @@
+body {
+  width: 100vw; height: 100vh;
+  color: hslac($white, 1);
+  font-family: $font-main;
+  background: hslac($background, 1);
+  overflow-x: hidden;
+}
+.view-width {
+  width: calc(100% - $view-width-padding) !important;
+  max-width: 1400px;
+}
+
+::selection {
+  color: hslac($white, 1);
+  background: hslac($primary, 1);
+}

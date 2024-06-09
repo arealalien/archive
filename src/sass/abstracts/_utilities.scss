@@ -1,0 +1,18 @@
+/* Sizes */
+$heading-large: clamp(2.8rem, 2.2399999999999998rem + 2.8vw, 5.6rem);
+$heading-medium: clamp(2rem, 1.68rem + 1.6vw, 3.6rem);
+$heading-small: clamp(1.8rem, 1.68rem + 0.59vw, 2.4rem);
+$paragraph: clamp(1rem, 0.978rem + 0.11vw, 1.11rem);
+/* misc */
+$transition-main: .175, .685, .32;
+$transition-smooth: .175, .285, .32;
+$transition-menu: .75, .185, .144032;
+$view-width-padding: 4rem;
+/* Fonts */
+$font-main: 'Montserrat', sans-serif;
+/* Breakpoints */
+$layout-breakpoint-large: 1920px;
+$layout-breakpoint-medium: 1440px;
+$layout-breakpoint-xmedium: 1220px;
+$layout-breakpoint-small: 960px;
+$layout-breakpoint-xsmall: 480px;
