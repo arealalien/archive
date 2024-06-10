@@ -10,8 +10,9 @@ const Navbar  = ({ searchbar }) => {
 
     const profileMenuStyle = {
         opacity: menuVisible ? 1 : 0,
+        clipPath: menuVisible ? "circle(100%)" : "circle(0)",
         pointerEvents: menuVisible ? "auto" : "none",
-        transition: 'opacity .3s cubic-bezier(.175, .685, .32, 1)'
+        transition: 'all .35s cubic-bezier(.175, .685, .32, 1)'
     };
 
     if (searchbar === "no") {
