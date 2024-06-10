@@ -1,6 +1,6 @@
 import React from "react";
 
-const PicturesNav  = () => {
+const PicturesNav  = ({ picturelikes, picturecomments, picturesaves }) => {
     return (
         <div className="pictures-inner-right-item-inner-bottom-nav">
             <div className="pictures-inner-right-item-inner-bottom-nav-item">
@@ -22,7 +22,7 @@ const PicturesNav  = () => {
                         </g>
                     </g>
                 </svg>
-                <p className="pictures-inner-right-item-inner-bottom-nav-item-text">21k</p>
+                <p className="pictures-inner-right-item-inner-bottom-nav-item-text">{picturelikes}</p>
             </div>
             <div className="pictures-inner-right-item-inner-bottom-nav-item">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ const PicturesNav  = () => {
                         </g>
                     </g>
                 </svg>
-                <p className="pictures-inner-right-item-inner-bottom-nav-item-text">21k</p>
+                <p className="pictures-inner-right-item-inner-bottom-nav-item-text">{picturecomments}</p>
             </div>
             <div className="pictures-inner-right-item-inner-bottom-nav-item">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ const PicturesNav  = () => {
                         </g>
                     </g>
                 </svg>
-                <p className="pictures-inner-right-item-inner-bottom-nav-item-text">21k</p>
+                <p className="pictures-inner-right-item-inner-bottom-nav-item-text">{picturesaves}</p>
             </div>
             <div className="pictures-inner-right-item-inner-bottom-nav-shadow"></div>
         </div>

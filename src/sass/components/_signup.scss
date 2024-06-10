@@ -1,8 +1,12 @@
 .signup {
   width: 100%; height: 100vh;
   @include flex-center();
+  @media (max-width: $layout-breakpoint-small) {
+    height: auto;
+  }
 
   &-inner {
+    margin: 10em 0;
     height: 80%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -10,6 +14,11 @@
     border: 1px solid hslac($white, .5);
     border-radius: 4em;
     gap: 2em;
+    @media (max-width: $layout-breakpoint-small) {
+      height: auto;
+      grid-template-columns: repeat(1, 1fr);
+      place-items: center;
+    }
 
     &-left {
       padding: 2.5em;
@@ -17,6 +26,13 @@
       position: relative;
       overflow: hidden;
       @include flex-center();
+      @media (max-width: $layout-breakpoint-small) {
+        padding: 2em;
+        height: 25em;
+      }
+      @media (max-width: $layout-breakpoint-xsmall) {
+        padding: 1.5em;
+      }
 
       &-container {
         width: 100%; height: 100%;
@@ -33,6 +49,9 @@
           gap: 2em;
           z-index: 5;
           @include flex-left();
+          @media (max-width: $layout-breakpoint-small) {
+            padding: 1.5em 3em;
+          }
         }
         &-overlay {
           width: 100%; height: 100%;
@@ -52,6 +71,10 @@
       padding: 0 0 0 2.5em;
       width: calc(100% - 5em); height: 100%;
       @include flex-center();
+      @media (max-width: $layout-breakpoint-small) {
+        padding: 0 2.5em;
+      }
+
       &-form {
         width: 100%;
         gap: 3em;
@@ -69,6 +92,9 @@
         }
         &-center-2 {
           @include flex-space-bet();
+          @media (max-width: $layout-breakpoint-xsmall) {
+            @include flex-col();
+          }
         }
         &-center, &-center-2 {
           width: 100%;

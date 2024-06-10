@@ -3,14 +3,15 @@ import {NavLink} from "react-router-dom";
 
 // Components
 import PicturesNav from "./PicturesNav";
+import PicturePage from "./PicturePage";
 
 const PicturesSec  = () => {
     return (
         <section className="pictures">
             <div className="pictures-inner view-width">
                 <div className="pictures-inner-left">
-                    <li className="profile-inner-content-left-list">
-                        <ul className="profile-inner-content-left-list-item">
+                    <ul className="profile-inner-content-left-list">
+                        <li className="profile-inner-content-left-list-item">
                             <NavLink to="" className="profile-inner-content-left-list-item-link">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -30,8 +31,8 @@ const PicturesSec  = () => {
                                 </svg>
                                 <span>Follwing</span>
                             </NavLink>
-                        </ul>
-                        <ul className="profile-inner-content-left-list-item">
+                        </li>
+                        <li className="profile-inner-content-left-list-item">
                             <NavLink to="pictures/trending" className="profile-inner-content-left-list-item-link">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -54,8 +55,8 @@ const PicturesSec  = () => {
                                 </svg>
                                 <span>Trending</span>
                             </NavLink>
-                        </ul>
-                        <ul className="profile-inner-content-left-list-item">
+                        </li>
+                        <li className="profile-inner-content-left-list-item">
                             <NavLink to="pictures/new" className="profile-inner-content-left-list-item-link">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -72,155 +73,16 @@ const PicturesSec  = () => {
                                 </svg>
                                 <span>New</span>
                             </NavLink>
-                        </ul>
-                    </li>
+                        </li>
+                    </ul>
                 </div>
                 <div className="pictures-inner-right">
-                    <div className="pictures-inner-right-item">
-                        <div className="pictures-inner-right-item-inner">
-                            <div className="pictures-inner-right-item-inner-top">
-                                <div className="pictures-inner-right-item-inner-top-container">
-                                    <img className="pictures-inner-right-item-inner-top-container-image"
-                                         src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                         alt=""/>
-                                </div>
-                                <div className="pictures-inner-right-item-inner-top-text">
-                                    <h3 className="pictures-inner-right-item-inner-top-text-username">Channel Name</h3>
-                                    <p className="pictures-inner-right-item-inner-top-text-date">21 June 2024</p>
-                                </div>
-                            </div>
-                            <div className="pictures-inner-right-item-inner-bottom">
-                                <div className="pictures-inner-right-item-inner-bottom-dots">
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot active"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                </div>
-                                <PicturesNav/>
-                            </div>
-                        </div>
-                        <div className="pictures-inner-right-item-overlay"></div>
-                        <img className="pictures-inner-right-item-background"
-                             src="https://images.unsplash.com/photo-1611274721547-4d72550e7e19?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt=""/>
-                    </div>
-                    <div className="pictures-inner-right-item">
-                        <div className="pictures-inner-right-item-inner">
-                            <div className="pictures-inner-right-item-inner-top">
-                                <div className="pictures-inner-right-item-inner-top-container">
-                                    <img className="pictures-inner-right-item-inner-top-container-image"
-                                         src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                         alt=""/>
-                                </div>
-                                <div className="pictures-inner-right-item-inner-top-text">
-                                    <h3 className="pictures-inner-right-item-inner-top-text-username">Channel Name</h3>
-                                    <p className="pictures-inner-right-item-inner-top-text-date">21 June 2024</p>
-                                </div>
-                            </div>
-                            <div className="pictures-inner-right-item-inner-bottom">
-                                <div className="pictures-inner-right-item-inner-bottom-dots">
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot active"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                </div>
-                                <PicturesNav/>
-                            </div>
-                        </div>
-                        <div className="pictures-inner-right-item-overlay"></div>
-                        <img className="pictures-inner-right-item-background"
-                             src="https://images.unsplash.com/photo-1612052587197-0b1947a11b08?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt=""/>
-                    </div>
-                    <div className="pictures-inner-right-item">
-                        <div className="pictures-inner-right-item-inner">
-                            <div className="pictures-inner-right-item-inner-top">
-                                <div className="pictures-inner-right-item-inner-top-container">
-                                    <img className="pictures-inner-right-item-inner-top-container-image"
-                                         src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                         alt=""/>
-                                </div>
-                                <div className="pictures-inner-right-item-inner-top-text">
-                                    <h3 className="pictures-inner-right-item-inner-top-text-username">Channel Name</h3>
-                                    <p className="pictures-inner-right-item-inner-top-text-date">21 June 2024</p>
-                                </div>
-                            </div>
-                            <div className="pictures-inner-right-item-inner-bottom">
-                                <div className="pictures-inner-right-item-inner-bottom-dots">
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot active"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                </div>
-                                <PicturesNav/>
-                            </div>
-                        </div>
-                        <div className="pictures-inner-right-item-overlay"></div>
-                        <img className="pictures-inner-right-item-background"
-                             src="https://images.unsplash.com/photo-1610340274015-f0e6f372017d?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt=""/>
-                    </div>
-                    <div className="pictures-inner-right-item">
-                        <div className="pictures-inner-right-item-inner">
-                            <div className="pictures-inner-right-item-inner-top">
-                                <div className="pictures-inner-right-item-inner-top-container">
-                                    <img className="pictures-inner-right-item-inner-top-container-image"
-                                         src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                         alt=""/>
-                                </div>
-                                <div className="pictures-inner-right-item-inner-top-text">
-                                    <h3 className="pictures-inner-right-item-inner-top-text-username">Channel Name</h3>
-                                    <p className="pictures-inner-right-item-inner-top-text-date">21 June 2024</p>
-                                </div>
-                            </div>
-                            <div className="pictures-inner-right-item-inner-bottom">
-                                <div className="pictures-inner-right-item-inner-bottom-dots">
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot active"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                </div>
-                                <PicturesNav/>
-                            </div>
-                        </div>
-                        <div className="pictures-inner-right-item-overlay"></div>
-                        <img className="pictures-inner-right-item-background"
-                             src="https://images.unsplash.com/photo-1616208848643-1c6164cfe246?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt=""/>
-                    </div>
-                    <div className="pictures-inner-right-item">
-                        <div className="pictures-inner-right-item-inner">
-                            <div className="pictures-inner-right-item-inner-top">
-                                <div className="pictures-inner-right-item-inner-top-container">
-                                    <img className="pictures-inner-right-item-inner-top-container-image"
-                                         src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                         alt=""/>
-                                </div>
-                                <div className="pictures-inner-right-item-inner-top-text">
-                                    <h3 className="pictures-inner-right-item-inner-top-text-username">Channel Name</h3>
-                                    <p className="pictures-inner-right-item-inner-top-text-date">21 June 2024</p>
-                                </div>
-                            </div>
-                            <div className="pictures-inner-right-item-inner-bottom">
-                                <div className="pictures-inner-right-item-inner-bottom-dots">
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot active"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                    <div className="pictures-inner-right-item-inner-bottom-dots-dot"></div>
-                                </div>
-                                <PicturesNav/>
-                            </div>
-                        </div>
-                        <div className="pictures-inner-right-item-overlay"></div>
-                        <img className="pictures-inner-right-item-background"
-                             src="https://images.unsplash.com/photo-1582377863498-5e6bd295ede0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt=""/>
-                    </div>
+                    <PicturePage pictureimage="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturecreator="Missy" picturecreatorimage="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturedate="24 Jun 2024" picturelikes="21k" picturecomments="15k" picturesaves="1.2k" />
+                    <PicturePage pictureimage="https://images.unsplash.com/photo-1611274721547-4d72550e7e19?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturecreator="Lily" picturecreatorimage="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturedate="24 Jun 2024" picturelikes="21k" picturecomments="15k" picturesaves="1.2k" />
+                    <PicturePage pictureimage="https://images.unsplash.com/photo-1612052587197-0b1947a11b08?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturecreator="Olive" picturecreatorimage="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturedate="24 Jun 2024" picturelikes="21k" picturecomments="15k" picturesaves="1.2k" />
+                    <PicturePage pictureimage="https://images.unsplash.com/photo-1610340274015-f0e6f372017d?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturecreator="Emily" picturecreatorimage="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturedate="24 Jun 2024" picturelikes="21k" picturecomments="15k" picturesaves="1.2k" />
+                    <PicturePage pictureimage="https://images.unsplash.com/photo-1616208848643-1c6164cfe246?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturecreator="Julia" picturecreatorimage="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturedate="24 Jun 2024" picturelikes="21k" picturecomments="15k" picturesaves="1.2k" />
+                    <PicturePage pictureimage="https://images.unsplash.com/photo-1582377863498-5e6bd295ede0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturecreator="Diamond" picturecreatorimage="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" picturedate="24 Jun 2024" picturelikes="21k" picturecomments="15k" picturesaves="1.2k" />
                 </div>
             </div>
         </section>

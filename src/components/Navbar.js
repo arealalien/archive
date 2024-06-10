@@ -1,16 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 const Navbar  = ({ searchbar }) => {
     const [menuVisible, setMenuVisible] = useState(false);
+    const menuRef = useRef(null);
 
     const handleProfileClick = () => {
         setMenuVisible(!menuVisible);
     };
 
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setMenuVisible(false);
+        }
+    };
+
+    useEffect(() => {
+        if (menuVisible) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [menuVisible]);
+
     const profileMenuStyle = {
-        opacity: menuVisible ? 1 : .5,
-        clipPath: menuVisible ? "circle(150% at calc(100% - 4em) 4em)" : "circle(0 at calc(100% - 4em) 4em)",
+        opacity: menuVisible ? 1 : 0.5,
+        clipPath: menuVisible ? "circle(150% at calc(100% - 5em) 5em)" : "circle(0 at calc(100% - 5em) 5em)",
         pointerEvents: menuVisible ? "auto" : "none",
         transition: 'all .65s cubic-bezier(.32, .685, .175, 1)'
     };
@@ -34,11 +52,50 @@ const Navbar  = ({ searchbar }) => {
                     </div>
                     <div className="navbar-inner-right">
                         <div className="navbar-inner-right-profile">
-                            <NavLink to="/profile" className="navbar-inner-right-profile-container">
+                            <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
                                 <img className="navbar-inner-right-profile-container-image"
                                      src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                      alt=""/>
-                            </NavLink>
+                            </div>
+                            <div className="navbar-inner-right-profile-menu" ref={menuRef} style={profileMenuStyle}>
+                                <div className="navbar-inner-right-profile-menu-top">
+                                    <div className="navbar-inner-right-profile-menu-top-text">
+                                        <NavLink to="/profile"
+                                                 className="navbar-inner-right-profile-menu-top-text-username">Channel
+                                            Name</NavLink>
+                                        <p className="navbar-inner-right-profile-menu-top-text-link">Edit profile</p>
+                                    </div>
+                                    <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
+                                        <img className="navbar-inner-right-profile-container-image"
+                                             src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                             alt=""/>
+                                    </div>
+                                </div>
+                                <div className="navbar-inner-right-profile-menu-center">
+                                    <ul className="navbar-inner-right-profile-menu-center-list">
+                                        <li className="navbar-inner-right-profile-menu-center-list-item"></li>
+                                        <li className="navbar-inner-right-profile-menu-center-list-item"></li>
+                                        <li className="navbar-inner-right-profile-menu-center-list-item"></li>
+                                    </ul>
+                                </div>
+                                <div className="navbar-inner-right-profile-menu-bottom">
+                                    <ul className="navbar-inner-right-profile-menu-bottom-list">
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Your Studio</span>
+                                        </li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Filter Content</span>
+                                        </li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Settings</span>
+                                        </li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Sign Out</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className="navbar-inner-right-profile-menu-shadow"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,7 +144,7 @@ const Navbar  = ({ searchbar }) => {
                                      src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                      alt=""/>
                             </div>
-                            <div className="navbar-inner-right-profile-menu" style={profileMenuStyle}>
+                            <div className="navbar-inner-right-profile-menu" ref={menuRef} style={profileMenuStyle}>
                                 <div className="navbar-inner-right-profile-menu-top">
                                     <div className="navbar-inner-right-profile-menu-top-text">
                                         <NavLink to="/profile" className="navbar-inner-right-profile-menu-top-text-username">Channel Name</NavLink>
@@ -108,10 +165,18 @@ const Navbar  = ({ searchbar }) => {
                                 </div>
                                 <div className="navbar-inner-right-profile-menu-bottom">
                                     <ul className="navbar-inner-right-profile-menu-bottom-list">
-                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Your Studio</li>
-                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Filter Content</li>
-                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Settings</li>
-                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Sign Out</li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Your Studio</span>
+                                        </li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Filter Content</span>
+                                        </li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Settings</span>
+                                        </li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">
+                                            <span>Sign Out</span>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div className="navbar-inner-right-profile-menu-shadow"></div>

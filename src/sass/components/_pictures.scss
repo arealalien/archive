@@ -47,6 +47,12 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 5em;
+      @media (max-width: $layout-breakpoint-xmedium) {
+        gap: 3em;
+      }
+      @media (max-width: $layout-breakpoint-small) {
+        grid-template-columns: 1fr;
+      }
       &-item {
         width: 100%;
         aspect-ratio: 1 / 1;
@@ -56,11 +62,18 @@
         @include flex-center();
 
         &-inner {
-          padding: 3em;
+          padding: 2.5em;
           width: 100%; height: 100%;
           position: absolute;
-          @include flex-space-bet-start-col();
           z-index: 5;
+          @include flex-space-bet-start-col();
+          @media (max-width: $layout-breakpoint-xmedium) {
+            padding: 2em;
+          }
+          @media (max-width: $layout-breakpoint-small) {
+            padding: 3em;
+          }
+
           &-top {
             width: 100%;
             display: grid;

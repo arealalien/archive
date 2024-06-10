@@ -134,10 +134,13 @@
         gap: 2em;
         grid-template-columns: repeat(3, 1fr);
         @media (max-width: $layout-breakpoint-xmedium) {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
+        }
+        @media (max-width: $layout-breakpoint-msmall) {
+          grid-template-columns: repeat(2, 1fr);
         }
         @media (max-width: $layout-breakpoint-small) {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(1, 1fr);
         }
         @media (max-width: $layout-breakpoint-xsmall) {
           grid-template-columns: repeat(1, 1fr);
