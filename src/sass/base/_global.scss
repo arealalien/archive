@@ -27,11 +27,11 @@ body {
   font-family: $font-main;
   font-size: $paragraph;
   color: hslac($white, 1);
-  background-color: hslac($black, .5);
+  background-color: hslac($black, 0);
   border: 1px solid hslac($white, .5);
   border-radius: 5em;
   text-decoration: none;
-  backdrop-filter: blur(1.5rem);
+  backdrop-filter: blur(1.5rem) brightness(90%);
   cursor: pointer;
   z-index: 6;
   @include flex-center();
@@ -50,7 +50,7 @@ body {
   padding: 1em 2em;
   position: relative;
   font-family: $font-main;
-  font-size: $paragraph;
+  font-size: $paragraph-large;
   color: hslac($white, 1);
   background-color: hslac($primary, 1);
   border: none;

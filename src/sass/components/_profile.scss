@@ -97,10 +97,14 @@
 
           &-item {
 
+            .active {
+              opacity: 1;
+            }
             &-link {
               color: hslac($white, 1);
               text-decoration: none;
               gap: 1em;
+              opacity: .5;
               @include flex-left();
 
               span {

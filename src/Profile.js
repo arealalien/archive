@@ -3,7 +3,7 @@ import './css/main.css';
 
 // Components
 import Navbar from "./components/Navbar";
-import ProfileSec from "./components/ProfileSec";
+import ProfileSec from "./components/profile/ProfileSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 

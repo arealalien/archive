@@ -3,7 +3,7 @@ import './css/main.css';
 
 // Components
 import Navbar from "./components/Navbar";
-import VideosSec from "./components/VideosSec";
+import VideosSec from "./components/videos/VideosSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 

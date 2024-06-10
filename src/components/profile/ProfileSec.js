@@ -1,6 +1,8 @@
 import React from "react";
-import VideosSec from "./VideosSec";
 import {NavLink} from "react-router-dom";
+
+// Components
+import VideosSec from "../videos/VideosSec";
 
 const ProfileSec  = () => {
     return (
@@ -27,8 +29,8 @@ const ProfileSec  = () => {
                 </header>
                 <div className="profile-inner-content">
                     <div className="profile-inner-content-left">
-                        <li className="profile-inner-content-left-list">
-                            <ul className="profile-inner-content-left-list-item">
+                        <ul className="profile-inner-content-left-list">
+                            <li className="profile-inner-content-left-list-item">
                                 <NavLink to="" className="profile-inner-content-left-list-item-link">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -45,9 +47,9 @@ const ProfileSec  = () => {
                                     </svg>
                                     <span>Feed</span>
                                 </NavLink>
-                            </ul>
-                            <ul className="profile-inner-content-left-list-item">
-                                <NavLink to="" className="profile-inner-content-left-list-item-link">
+                            </li>
+                            <li className="profile-inner-content-left-list-item">
+                                <NavLink to="/profile/videos" className="profile-inner-content-left-list-item-link">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <title>Video</title>
@@ -66,9 +68,9 @@ const ProfileSec  = () => {
                                     </svg>
                                     <span>Videos</span>
                                 </NavLink>
-                            </ul>
-                            <ul className="profile-inner-content-left-list-item">
-                                <NavLink to="" className="profile-inner-content-left-list-item-link">
+                            </li>
+                            <li className="profile-inner-content-left-list-item">
+                                <NavLink to="/profile/pictures" className="profile-inner-content-left-list-item-link">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <title>Image 2</title>
@@ -90,9 +92,9 @@ const ProfileSec  = () => {
                                     </svg>
                                     <span>Pictures</span>
                                 </NavLink>
-                            </ul>
-                            <ul className="profile-inner-content-left-list-item">
-                                <NavLink to="" className="profile-inner-content-left-list-item-link">
+                            </li>
+                            <li className="profile-inner-content-left-list-item">
+                                <NavLink to="/profile/playlists" className="profile-inner-content-left-list-item-link">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <title>Folder</title>
@@ -110,8 +112,8 @@ const ProfileSec  = () => {
                                     </svg>
                                     <span>Playlists</span>
                                 </NavLink>
-                            </ul>
-                        </li>
+                            </li>
+                        </ul>
                     </div>
                     <div className="profile-inner-content-right videos-inner videos-inner-3">
                         <VideosSec/>

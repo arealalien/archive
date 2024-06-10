@@ -17,10 +17,14 @@
 
         &-item {
 
+          .active {
+            opacity: 1;
+          }
           &-link {
             color: hslac($white, 1);
             text-decoration: none;
             gap: 1em;
+            opacity: .5;
             @include flex-left();
 
             span {
@@ -52,7 +56,7 @@
         @include flex-center();
 
         &-inner {
-          padding: 2em;
+          padding: 3em;
           width: 100%; height: 100%;
           position: absolute;
           @include flex-space-bet-start-col();
@@ -67,7 +71,7 @@
             z-index: 5;
 
             &-container {
-              width: 5em; height: 5em;
+              width: 6em; height: 6em;
               position: relative;
               border-radius: 50%;
               overflow: hidden;
@@ -87,6 +91,7 @@
 
               &-username {
                 font-size: $paragraph-xlarge;
+                font-weight: 700;
               }
               &-date {
                 color: hslac($white, .5);
@@ -103,8 +108,8 @@
 
             &-dots {
               padding: .6em .8em;
-              background-color: hslac($black, .15);
-              backdrop-filter: blur(1.5rem);
+              background-color: hslac($black, 0);
+              backdrop-filter: blur(1.5rem) brightness(90%);
               border-radius: 5em;
               gap: .5em;
               @include flex-center();
@@ -121,15 +126,16 @@
             &-nav {
               padding: 1.25em 2em;
               position: relative;
-              background-color: hslac($black, .5);
+              background-color: hslac($black, 0);
               border: 1px solid hslac($white, .5);
               border-radius: 5em;
-              backdrop-filter: blur(1.5rem);
+              backdrop-filter: blur(1.5rem) brightness(90%);
               gap: 2em;
               z-index: 6;
               @include flex-center();
 
               &-item {
+                cursor: pointer;
                 @include flex-center();
 
                 svg {
