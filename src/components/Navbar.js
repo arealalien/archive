@@ -9,10 +9,10 @@ const Navbar  = ({ searchbar }) => {
     };
 
     const profileMenuStyle = {
-        opacity: menuVisible ? 1 : 0,
-        clipPath: menuVisible ? "circle(100%)" : "circle(0)",
+        opacity: menuVisible ? 1 : .5,
+        clipPath: menuVisible ? "circle(150% at calc(100% - 4em) 4em)" : "circle(0 at calc(100% - 4em) 4em)",
         pointerEvents: menuVisible ? "auto" : "none",
-        transition: 'all .35s cubic-bezier(.175, .685, .32, 1)'
+        transition: 'all .65s cubic-bezier(.32, .685, .175, 1)'
     };
 
     if (searchbar === "no") {
