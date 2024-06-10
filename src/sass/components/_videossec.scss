@@ -1,5 +1,5 @@
 .videos {
-  margin: 20em 0 0 0;
+  margin: 15em 0 0 0;
   width: 100%;
   @include flex-center();
 
@@ -36,6 +36,7 @@
       width: 100%;
       aspect-ratio: 16 / 9;
       position: relative;
+      background-color: hslac($black, 1);
       border-radius: 2em;
       overflow: hidden;
       cursor: pointer;

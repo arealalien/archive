@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Navbar  = ({ searchbar }) => {
+    const [menuVisible, setMenuVisible] = useState(false);
+
+    const handleProfileClick = () => {
+        setMenuVisible(!menuVisible);
+    };
+
+    const profileMenuStyle = {
+        opacity: menuVisible ? 1 : 0,
+        pointerEvents: menuVisible ? "auto" : "none",
+        transition: 'opacity .3s cubic-bezier(.175, .685, .32, 1)'
+    };
 
     if (searchbar === "no") {
         return (
@@ -70,11 +81,40 @@ const Navbar  = ({ searchbar }) => {
                     </div>
                     <div className="navbar-inner-right">
                         <div className="navbar-inner-right-profile">
-                            <NavLink to="/profile" className="navbar-inner-right-profile-container">
+                            <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
                                 <img className="navbar-inner-right-profile-container-image"
                                      src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                      alt=""/>
-                            </NavLink>
+                            </div>
+                            <div className="navbar-inner-right-profile-menu" style={profileMenuStyle}>
+                                <div className="navbar-inner-right-profile-menu-top">
+                                    <div className="navbar-inner-right-profile-menu-top-text">
+                                        <NavLink to="/profile" className="navbar-inner-right-profile-menu-top-text-username">Channel Name</NavLink>
+                                        <p className="navbar-inner-right-profile-menu-top-text-link">Edit profile</p>
+                                    </div>
+                                    <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
+                                        <img className="navbar-inner-right-profile-container-image"
+                                                 src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                                 alt=""/>
+                                    </div>
+                                </div>
+                                <div className="navbar-inner-right-profile-menu-center">
+                                    <ul className="navbar-inner-right-profile-menu-center-list">
+                                        <li className="navbar-inner-right-profile-menu-center-list-item"></li>
+                                        <li className="navbar-inner-right-profile-menu-center-list-item"></li>
+                                        <li className="navbar-inner-right-profile-menu-center-list-item"></li>
+                                    </ul>
+                                </div>
+                                <div className="navbar-inner-right-profile-menu-bottom">
+                                    <ul className="navbar-inner-right-profile-menu-bottom-list">
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Your Studio</li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Filter Content</li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Settings</li>
+                                        <li className="navbar-inner-right-profile-menu-bottom-list-item">Sign Out</li>
+                                    </ul>
+                                </div>
+                                <div className="navbar-inner-right-profile-menu-shadow"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
