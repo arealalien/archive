@@ -11,7 +11,11 @@ function Home() {
     return (
         <>
             <Navbar searchbar="yes"/>
-            <VideosSec/>
+            <section className="videos">
+                <div className="videos-inner videos-inner-4 view-width">
+                    <VideosSec/>
+                </div>
+            </section>
             <PageShadow startcolums="4"/>
             <Footer/>
         </>

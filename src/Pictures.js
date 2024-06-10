@@ -3,19 +3,19 @@ import './css/main.css';
 
 // Components
 import Navbar from "./components/Navbar";
-import ProfileSec from "./components/ProfileSec";
+import PicturesSec from "./components/PicturesSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 
-function Profile() {
+function Pictures() {
     return (
         <>
             <Navbar searchbar="yes"/>
-            <ProfileSec/>
+            <PicturesSec/>
             <PageShadow/>
             <Footer/>
         </>
     );
 }
 
-export default Profile;
+export default Pictures;

@@ -1,0 +1,174 @@
+.pictures {
+  margin: 15em 0 0 0;
+  width: 100%;
+  @include flex-center();
+
+  &-inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8em;
+
+    &-left {
+      &-list {
+        padding: 0;
+        list-style-type: none;
+        gap: 1.5em;
+        @include flex-col-left();
+
+        &-item {
+
+          &-link {
+            color: hslac($white, 1);
+            text-decoration: none;
+            gap: 1em;
+            @include flex-left();
+
+            span {
+              color: hslac($white, 1);
+              font-size: $paragraph-xlarge;
+            }
+            svg {
+              width: 3em;
+              g {
+                g {
+                  stroke: hslac($white, 1);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &-right {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5em;
+      &-item {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        border-radius: 4em;
+        overflow: hidden;
+        @include flex-center();
+
+        &-inner {
+          padding: 2em;
+          width: 100%; height: 100%;
+          position: absolute;
+          @include flex-space-bet-start-col();
+          z-index: 5;
+          &-top {
+            width: 100%;
+            display: grid;
+            position: relative;
+            grid-template-columns: auto 1fr;
+            place-items: center;
+            gap: 1em;
+            z-index: 5;
+
+            &-container {
+              width: 5em; height: 5em;
+              position: relative;
+              border-radius: 50%;
+              overflow: hidden;
+              @include flex-center();
+
+              &-image {
+                min-width: 100%; min-height: 100%;
+                max-width: 105%;
+                position: absolute;
+                object-fit: cover;
+              }
+            }
+            &-text {
+              width: 100%;
+              gap: .25em;
+              @include flex-col-left();
+
+              &-username {
+                font-size: $paragraph-xlarge;
+              }
+              &-date {
+                color: hslac($white, .5);
+                font-size: $paragraph;
+              }
+            }
+          }
+          &-bottom {
+            width: 100%;
+            position: relative;
+            gap: 1em;
+            z-index: 5;
+            @include flex-col();
+
+            &-dots {
+              padding: .6em .8em;
+              background-color: hslac($black, .15);
+              backdrop-filter: blur(1.5rem);
+              border-radius: 5em;
+              gap: .5em;
+              @include flex-center();
+
+              &-dot {
+                width: .4em; height: .4em;
+                background-color: hslac($white, .3);
+                border-radius: 50%;
+              }
+              .active {
+                background-color: hslac($white, 1);
+              }
+            }
+            &-nav {
+              padding: 1.25em 2em;
+              position: relative;
+              background-color: hslac($black, .5);
+              border: 1px solid hslac($white, .5);
+              border-radius: 5em;
+              backdrop-filter: blur(1.5rem);
+              gap: 2em;
+              z-index: 6;
+              @include flex-center();
+
+              &-item {
+                @include flex-center();
+
+                svg {
+                  width: 4em;
+                  g {
+                    g {
+                      stroke: hslac($white, 1);
+                    }
+                  }
+                }
+                &-text {
+                  font-weight: 700;
+                }
+              }
+              &-shadow {
+                top: 1em;
+                width: 100%; height: 100%;
+                position: absolute;
+                background-color: hslac($black, .5);
+                transform: scale(.9, .9);
+                filter: blur(1.5rem);
+                z-index: -1;
+              }
+            }
+          }
+        }
+        &-overlay {
+          width: 100%; height: 100%;
+          position: absolute;
+          background: linear-gradient(173deg, hslac($black, .65) 0, hslac($black, 0) 100%);
+          z-index: 3;
+        }
+        &-background {
+          min-width: 100%; min-height: 100%;
+          max-width: 105%;
+          position: absolute;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@
   @include flex-center();
 
   .videos-inner-4 {
+    gap: 2em;
     grid-template-columns: repeat(4, 1fr);
     @media (max-width: $layout-breakpoint-xmedium) {
       grid-template-columns: repeat(3, 1fr);
@@ -16,6 +17,7 @@
     }
   }
   .videos-inner-3 {
+    gap: 2em;
     grid-template-columns: repeat(3, 1fr);
     @media (max-width: $layout-breakpoint-xmedium) {
       grid-template-columns: repeat(3, 1fr);
@@ -29,8 +31,6 @@
   }
   &-inner {
     display: grid;
-    gap: 2em;
-
 
     &-item {
       width: 100%;

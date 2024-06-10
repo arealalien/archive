@@ -14,6 +14,11 @@
   justify-content: flex-start;
   align-items: flex-start;
 }
+@mixin flex-left-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
 @mixin flex-right {
   display: flex;
   justify-content: flex-end;
@@ -72,6 +77,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+@mixin flex-space-bet-end {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 @mixin flex-space-bet-start-col {
   display: flex;

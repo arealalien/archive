@@ -3,20 +3,134 @@
   @include flex-center();
 
   &-inner {
+    gap: 10em;
+    @include flex-col();
+
     &-header {
-      top: 2.3em;
+      margin: 2.3em 0 0 0;
       width: 100%;
       position: relative;
       aspect-ratio: 2.75 / 1;
       border-radius: 4em;
       overflow: hidden;
       @include flex-center();
+      @media (max-width: $layout-breakpoint-xmedium) {
+        margin: 15em 0 0 0;
+      }
 
+      &-info {
+        bottom: 0;
+        padding: 2em;
+        width: 80%; height: 100%;
+        position: absolute;
+        z-index: 5;
+        @include flex-space-bet-end();
+        @media (max-width: $layout-breakpoint-small) {
+          width: 100%;
+        }
+
+        &-left {
+          height: 100%;
+          position: relative;
+          @include flex-left-end();
+
+          &-container {
+            height: 40%;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            @include flex-center();
+            @media (max-width: $layout-breakpoint-xmedium) {
+              height: 50%;
+            }
+            @media (max-width: $layout-breakpoint-small) {
+              height: 60%;
+            }
+
+            &-image {
+              min-width: 100%; min-height: 100%;
+              max-width: 105%;
+              position: absolute;
+              object-fit: cover;
+            }
+          }
+          &-text {
+            padding: 2em;
+            gap: .5em;
+            @include flex-col-left();
+
+            &-username {
+              color: hslac($white, 1);
+              font-size: $heading-medium;
+              font-weight: 800;
+            }
+            &-subs {
+              color: hslac($white, .7);
+              font-weight: 300;
+            }
+          }
+        }
+        &-right {
+          height: 40%;
+          @include flex-center();
+        }
+      }
       &-background {
-        top: -10em;
         width: 100%;
         position: absolute;
         object-fit: cover;
+      }
+    }
+    &-content {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8em;
+
+      &-left {
+        &-list {
+          padding: 0;
+          list-style-type: none;
+          gap: 1.5em;
+          @include flex-col-left();
+
+          &-item {
+
+            &-link {
+              color: hslac($white, 1);
+              text-decoration: none;
+              gap: 1em;
+              @include flex-left();
+
+              span {
+                color: hslac($white, 1);
+                font-size: $paragraph-xlarge;
+              }
+              svg {
+                width: 3em;
+                g {
+                  g {
+                    stroke: hslac($white, 1);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      &-right {
+        gap: 2em;
+        grid-template-columns: repeat(3, 1fr);
+        @media (max-width: $layout-breakpoint-xmedium) {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        @media (max-width: $layout-breakpoint-small) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        @media (max-width: $layout-breakpoint-xsmall) {
+          grid-template-columns: repeat(1, 1fr);
+        }
       }
     }
   }

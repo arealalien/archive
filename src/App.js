@@ -4,7 +4,8 @@ import './css/main.css';
 import Home from "./Home";
 import SignUp from "./SignUp";
 import Login from "./Login";
-import Profile from "./Profile";
+import Profile from "./Profile"
+import Pictures from "./Pictures";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/signup" element={<SignUp/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/pictures" element={<Pictures/>}/>
       </Routes>
   );
 }
