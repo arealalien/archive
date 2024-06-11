@@ -112,8 +112,12 @@
               text-decoration: none;
               gap: 1em;
               opacity: .5;
+              transition: all .25s cubic-bezier($transition-main, 1);
               @include flex-left();
 
+              &:hover {
+                opacity: 1;
+              }
               span {
                 color: hslac($white, 1);
                 font-size: $paragraph-xlarge;
