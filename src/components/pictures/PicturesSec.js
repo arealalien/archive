@@ -2,7 +2,6 @@ import React from "react";
 import {NavLink} from "react-router-dom";
 
 // Components
-import PicturesNav from "./PicturesNav";
 import PicturePage from "./PicturePage";
 
 const PicturesSec  = () => {

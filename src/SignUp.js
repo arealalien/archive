@@ -4,10 +4,12 @@ import './css/main.css';
 
 // Components
 import Navbar from "./components/Navbar";
+import DocumentTitle from "./components/DocumentTitle";
 
 function SignUp() {
     return (
         <>
+            <DocumentTitle title="Archive - Sign up"/>
             <Navbar searchbar="no" />
             <section className="signup">
                 <div className="signup-inner view-width">

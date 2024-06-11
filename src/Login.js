@@ -3,11 +3,13 @@ import { NavLink } from "react-router-dom";
 import './css/main.css';
 
 // Components
+import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
 
 function Login() {
     return (
         <>
+            <DocumentTitle title="Archive - Login"/>
             <Navbar searchbar="no" />
             <section className="signup">
                 <div className="signup-inner view-width">
