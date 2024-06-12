@@ -18,7 +18,7 @@ function Home() {
                     <VideosSec/>
                 </div>
             </section>
-            <PageShadow startcolums="4"/>
+            <PageShadow/>
             <Footer/>
         </>
     );

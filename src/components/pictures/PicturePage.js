@@ -24,11 +24,11 @@ const PicturesSec  = ({ pictureimage, picturecreator, picturecreatorimage, pictu
     };
 
     const [sliderRef, instanceRef] = useKeenSlider({
-        loop: true,
-        mode: "snap",
+        loop: false,
+        mode: "free",
         initial: 0,
         dragSpeed: ".6",
-        centered: false,
+        centered: true,
         easing: "cubic-bezier(.175, .685, .32, 1)",
         slides: {
             perView: "auto",

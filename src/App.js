@@ -6,6 +6,7 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import Profile from "./Profile"
 import Pictures from "./Pictures";
+import Video from "./Video";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/pictures" element={<Pictures/>}/>
+          <Route path="/video" element={<Video/>}/>
       </Routes>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 const VideosSec  = () => {
     const videoData = [
@@ -231,7 +232,7 @@ const VideosSec  = () => {
                             <p className="videos-inner-item-info-right-username">{video.username}</p>
                         </div>
                     </div>
-                    <div className="videos-inner-item-overlay"></div>
+                    <NavLink to="/video" className="videos-inner-item-overlay"></NavLink>
                     <img className="videos-inner-item-background" src={video.background} alt="" />
                 </div>
             ))}
