@@ -5,7 +5,7 @@
 
   &-inner {
     display: grid;
-    grid-template-columns: 75% 1fr;
+    grid-template-columns: 1fr auto;
     place-items: flex-start;
     gap: 4em;
     &-left {
@@ -16,7 +16,17 @@
       &-box {
         width: 100%;
         aspect-ratio: 16 / 9;
+        position: relative;
         background-color: hslac($white, 1);
+        border-radius: 5em;
+        overflow: hidden;
+        @include flex-center();
+
+        img {
+          width: 100%;
+          position: absolute;
+          object-fit: cover;
+        }
       }
       .videos {
         margin: 0;
@@ -37,7 +47,7 @@
         border: 1px solid hslac($white, .5);
         border-radius: 2.5rem;
         backdrop-filter: blur(1.5rem) brightness(90%);
-        gap: 2em;
+        gap: 3em;
         @include flex-col();
 
         &-top {
@@ -95,11 +105,27 @@
 
             .mainbutton {
               width: 100%;
+              font-size: $paragraph-medium !important;
             }
           }
         }
         &-bottom {
           width: 100%;
+          @include flex-space-bet();
+
+          &-item {
+            gap: .5em;
+            opacity: .5;
+            @include flex-center();
+            svg {
+              width: 3em; height: 3em;
+              g {
+                g {
+                  stroke: hslac($white, 1);
+                }
+              }
+            }
+          }
         }
         &-shadow {
           top: 1em;

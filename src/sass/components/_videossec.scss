@@ -50,6 +50,16 @@
           opacity: .4;
         }
       }
+      &-time {
+        right: 1em; bottom: 1em;
+        padding: .8em 1.2em;
+        position: absolute;
+        background-color: hslac($black, 0);
+        backdrop-filter: blur(1.5rem) brightness(70%);
+        border-radius: 5em;
+        transition: all .25s cubic-bezier($transition-smooth, 1);
+        z-index: 100;
+      }
       &-info {
         bottom: 0;
         padding: 1em;
