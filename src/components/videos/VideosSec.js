@@ -259,20 +259,25 @@ const VideosSec  = () => {
         <>
             {videoData.map((video, index) => (
                 <div className="videos-inner-item" key={index}>
-                    <div className="videos-inner-item-time">
-                        <p>{video.time}</p>
-                    </div>
-                    <div className="videos-inner-item-info">
-                        <NavLink to="/profile" className="videos-inner-item-info-picture">
-                            <img className="videos-inner-item-info-picture-image" src={video.src} alt="" />
+                    <div className="videos-inner-item-top-info">
+                        <NavLink to="/profile" className="videos-inner-item-top-info-user">
+                            <div className="videos-inner-item-top-info-user-picture">
+                                <img className="videos-inner-item-top-info-user-picture-image" src={video.src} alt=""/>
+                            </div>
+                            <p className="videos-inner-item-top-info-user-username">{video.username}</p>
+                            <div className="videos-inner-item-top-info-user-shadow"></div>
                         </NavLink>
-                        <div className="videos-inner-item-info-right">
-                            <h3 className="videos-inner-item-info-right-title">{video.title}</h3>
-                            <p className="videos-inner-item-info-right-username">{video.username}</p>
+                        <div className="videos-inner-item-top-info-time">
+                            <p>{video.time}</p>
+                            <div className="videos-inner-item-top-info-time-shadow"></div>
                         </div>
                     </div>
+                    <div className="videos-inner-item-bottom-info">
+                        <h3 className="videos-inner-item-bottom-info-title">{video.title}</h3>
+                        <p className="videos-inner-item-bottom-info-info">1.2M Views &middot; 2 days ago</p>
+                    </div>
                     <NavLink to="/video" className="videos-inner-item-overlay"></NavLink>
-                    <img className="videos-inner-item-background" src={video.background} alt="" />
+                    <img className="videos-inner-item-background" src={video.background} alt=""/>
                 </div>
             ))}
         </>

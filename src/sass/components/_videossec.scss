@@ -2,6 +2,9 @@
   margin: 15em 0 0 0;
   width: 100%;
   @include flex-center();
+  @media (max-width: $layout-breakpoint-medium) {
+    margin: 11em 0 0 0;
+  }
 
   .videos-inner-4 {
     gap: 2em;
@@ -13,7 +16,11 @@
       grid-template-columns: repeat(2, 1fr);
     }
     @media (max-width: $layout-breakpoint-msmall) {
+      gap: 1em;
+    }
+    @media (max-width: $layout-breakpoint-xsmall) {
       grid-template-columns: repeat(1, 1fr);
+      gap: 2em;
     }
   }
   .videos-inner-3 {
@@ -43,72 +50,135 @@
       @include flex-center();
 
       &:hover {
-        .videos-inner-item-info-right {
+        .videos-inner-item-top-info-user {
           opacity: 0;
         }
         .videos-inner-item-overlay {
           opacity: .4;
         }
+        .videos-inner-item-bottom-info {
+          opacity: 0;
+        }
       }
-      &-time {
-        right: 1em; bottom: 1em;
-        padding: .8em 1.2em;
-        position: absolute;
-        background-color: hslac($black, 0);
-        backdrop-filter: blur(1.5rem) brightness(70%);
-        border-radius: 5em;
-        transition: all .25s cubic-bezier($transition-smooth, 1);
-        z-index: 100;
-      }
-      &-info {
-        bottom: 0;
+      &-top-info {
+        left: 0; top: 0;
         padding: 1em;
         width: 100%;
         position: absolute;
-        display: grid;
-        grid-template-columns: 4em auto;
-        place-items: center;
-        gap: 1em;
-        z-index: 5;
+        z-index: 100;
+        @include flex-space-bet();
 
-        &-picture {
-          width: 4em; height: 4em;
+        &-user {
+          padding: .4em;
           position: relative;
-          border-radius: 50%;
-          overflow: hidden;
+          background-color: hslac($black, 0);
+          backdrop-filter: blur(1.5rem) brightness(70%);
+          border-radius: 5em;
+          text-decoration: none;
+          gap: .75em;
+          transition: all .25s cubic-bezier($transition-smooth, 1);
           @include flex-center();
 
-          &-image {
-            min-width: 100%; min-height: 100%;
-            max-width: 105%;
-            position: absolute;
-            object-fit: cover;
-          }
-        }
-        &-right {
-          width: 100%;
-          transition: all .25s cubic-bezier($transition-smooth, 1);
-          @include flex-col-left();
+          &-picture {
+            width: 3em; height: 3em;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            @include flex-center();
 
-          &-title {
+            &-image {
+              min-width: 100%; min-height: 100%;
+              max-width: 105%;
+              position: absolute;
+              object-fit: cover;
+            }
+          }
+          &-username {
+            margin: 0 .75em 0 0;
             max-width: 100%;
             max-height: calc($paragraph-large + .5rem);
-            line-height: calc($paragraph-large + .5rem);
-            font-size: $paragraph-large;
-            font-weight: 600;
+            line-height: $paragraph-large;
+            color: hslac($white, .7);
+            font-size: $paragraph;
+            font-weight: 500;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             white-space: normal;
             text-overflow: ellipsis;
             overflow: hidden;
           }
-          &-username {
-            max-width: 100%;
-            font-size: $paragraph;
-            font-weight: 300;
-            color: hslac($white, .7);
+          &-shadow {
+            top: .5em;
+            width: 100%; height: 100%;
+            position: absolute;
+            background-color: hslac($black, .15);
+            transform: scale(.8, .8);
+            filter: blur(1rem);
+            z-index: -1;
           }
+        }
+        &-time {
+          padding: 1em 1.4em;
+          position: relative;
+          background-color: hslac($black, 0);
+          backdrop-filter: blur(1.5rem) brightness(70%);
+          border-radius: 5em;
+          opacity: 1;
+          transition: all .25s cubic-bezier($transition-smooth, 1);
+          @include flex-center();
+
+          p {
+            font-size: $paragraph;
+          }
+          &-shadow {
+            top: .5em;
+            width: 100%; height: 100%;
+            position: absolute;
+            background-color: hslac($black, .15);
+            transform: scale(.8, .8);
+            filter: blur(1rem);
+            z-index: -1;
+          }
+        }
+      }
+      &-bottom-info {
+        bottom: 0;
+        padding: 1em 1.75em;
+        width: 100%;
+        position: absolute;
+        background-color: hslac($black, 0);
+        gap: .5em;
+        transition: all .25s cubic-bezier($transition-smooth, 1);
+        z-index: 5;
+        @include flex-col-left();
+
+        &-title {
+          max-width: 100%;
+          max-height: calc($paragraph-large + .5rem);
+          line-height: $paragraph-large;
+          font-size: $paragraph-large;
+          font-weight: 600;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          white-space: normal;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        &-info {
+          max-width: 100%;
+          max-height: calc($paragraph-large + .5rem);
+          line-height: $paragraph-large;
+          color: hslac($white, .7);
+          font-size: $paragraph;
+          font-weight: 300;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          white-space: normal;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
       }
       &-overlay {

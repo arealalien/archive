@@ -14,8 +14,8 @@
       border-radius: 4em;
       overflow: hidden;
       @include flex-center();
-      @media (max-width: $layout-breakpoint-xmedium) {
-        margin: 15em 0 0 0;
+      @media (max-width: $layout-breakpoint-medium) {
+        margin: 11em 0 0 0;
       }
 
       &-info {
@@ -94,6 +94,12 @@
       display: grid;
       grid-template-columns: auto 1fr;
       gap: 8em;
+      @media (max-width: $layout-breakpoint-small) {
+        gap: 6em;
+      }
+      @media (max-width: $layout-breakpoint-xsmall) {
+        grid-template-columns: 1fr;
+      }
 
       &-left {
         &-list {
@@ -101,9 +107,11 @@
           list-style-type: none;
           gap: 1.5em;
           @include flex-col-left();
+          @media (max-width: $layout-breakpoint-xsmall) {
+            @include flex-left();
+          }
 
           &-item {
-
             .active {
               opacity: 1;
             }

@@ -4,6 +4,9 @@
   position: fixed;
   z-index: 10000;
   @include flex-center();
+  @media (max-width: $layout-breakpoint-medium) {
+    top: 3em;
+  }
 
   &-inner {
     height: 100%;

@@ -6,6 +6,8 @@ $paragraph-xlarge: clamp(1.69rem, 1.578rem + 1.51vw, 1.75rem);
 $paragraph-large: clamp(1.4rem, 1.278rem + 1.21vw, 1.55rem);
 $paragraph-medium: clamp(1.2rem, 1.178rem + 1.11vw, 1.35rem);
 $paragraph: clamp(1rem, 0.978rem + 0.11vw, 1.11rem);
+$paragraph-small: clamp(0.8rem, 0.778rem + 0.088vw, 0.88rem);
+$paragraph-xsmall: clamp(0.6rem, 0.578rem + 0.066vw, 0.66rem);
 $navbar-height: 5em;
 /* misc */
 $transition-main: .175, .685, .32;
