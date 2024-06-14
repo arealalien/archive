@@ -77,12 +77,12 @@
       &-menu {
         top: calc($navbar-height + 1em);
         left: 2em;
-        padding: 2em 2em 2.5em 2em;
+        padding: 2em;
         position: absolute;
         background-color: hslac($black, 0);
         border: 1px solid hslac($white, .5);
         border-radius: 3rem;
-        backdrop-filter: blur(1.5rem) brightness(90%);
+        backdrop-filter: blur(1.5rem) brightness(70%);
         clip-path: circle(0 at 0 0);
         gap: 2em;
         opacity: 1;
@@ -93,9 +93,13 @@
         &-inner {
           width: 100%;
           &-list {
+            gap: 1em;
+            @include flex-col-left();
             &-item {
               &-link {
                 color: hslac($white, 1);
+                font-size: $paragraph-large;
+                text-decoration: none;
               }
             }
           }
@@ -177,7 +181,7 @@
           background-color: hslac($black, 0);
           border: 1px solid hslac($white, .5);
           border-radius: 3rem;
-          backdrop-filter: blur(1.5rem) brightness(90%);
+          backdrop-filter: blur(1.5rem) brightness(70%);
           clip-path: circle(0 at 100% 0);
           gap: 2em;
           opacity: 1;
