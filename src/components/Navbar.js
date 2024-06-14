@@ -46,35 +46,20 @@ const Navbar = ({ searchbar }) => {
         transition: 'all .65s cubic-bezier(.32, .685, .32, 1)'
     };
 
+    const menuIcon = {
+        transform: menuVisible ? "rotate(45deg)" : "rotate(0)",
+        transition: 'all .35s cubic-bezier(.175, .685, .32, 1)'
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-inner view-width">
                 <div className="navbar-inner-padding">
                     <div className="navbar-inner-padding-shadow"></div>
                     <div className="navbar-inner-left">
-                        <div className="navbar-inner-left-burger">
-                            <svg className='navbar-inner-left-burger-button' xmlns="http://www.w3.org/2000/svg"
-                                 viewBox="0 0 10 10" onClick={toggleMenu}>
-                                <path d="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7">
-                                    <animate dur=".5s" attributeName="d"
-                                             values="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7;M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7"
-                                             fill="freeze" begin="start.begin" calcMode="spline"
-                                             keySplines=".175, .685, .32 1"/>
-                                    <animate dur=".5s" attributeName="d"
-                                             values="M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7;M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7"
-                                             fill="freeze" begin="reverse.begin" calcMode="spline"
-                                             keySplines=".175, .685, .32 1"/>
-                                </path>
-                                <rect width="10" height="10" stroke="none">
-                                    <animate dur="2s" id="reverse" attributeName="width" begin="click"/>
-                                </rect>
-                                <rect width="10" height="10" stroke="none">
-                                    <animate dur="0.001s" id="start" attributeName="width" values="10;0" fill="freeze"
-                                             begin="click"/>
-                                    <animate dur="0.001s" attributeName="width" values="0;10" fill="freeze"
-                                             begin="reverse.begin"/>
-                                </rect>
-                            </svg>
+                        <div className="navbar-inner-left-burger" onClick={toggleMenu} style={menuIcon}>
+                            <div className="navbar-inner-left-burger-line"></div>
+                            <div className="navbar-inner-left-burger-line-2"></div>
                         </div>
                         <NavLink to="/" className="navbar-inner-left-logo">
                             <svg xmlns="http://www.w3.org/2000/svg" id="navbar-logo" data-name="navbar logo"
@@ -121,6 +106,17 @@ const Navbar = ({ searchbar }) => {
                 </div>
                 <div className="navbar-inner-left-menu" ref={menuRef} style={menuStyle}>
                     <div className="navbar-inner-left-menu-inner">
+                        <ul className="navbar-inner-left-menu-inner-list">
+                            <li className="navbar-inner-left-menu-inner-list-item">
+                                <NavLink to="/" className="navbar-inner-left-menu-inner-list-item-link">Videos</NavLink>
+                            </li>
+                            <li className="navbar-inner-left-menu-inner-list-item">
+                                <NavLink to="/" className="navbar-inner-left-menu-inner-list-item-link">Pictures</NavLink>
+                            </li>
+                            <li className="navbar-inner-left-menu-inner-list-item">
+                                <NavLink to="/" className="navbar-inner-left-menu-inner-list-item-link">Livestreams</NavLink>
+                            </li>
+                        </ul>
                     </div>
                     <div className="navbar-inner-left-menu-shadow"></div>
                 </div>
