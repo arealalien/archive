@@ -5,6 +5,7 @@ const Navbar = ({ searchbar }) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [profileMenuVisible, setProfileMenuVisible] = useState(false);
     const profileMenuRef = useRef(null);
+    const menuRef = useRef(null);
 
     const toggleMenu = () => {
         setMenuVisible(prevState => !prevState);
@@ -33,8 +34,15 @@ const Navbar = ({ searchbar }) => {
 
     const profileMenuStyle = {
         opacity: profileMenuVisible ? 1 : 1,
-        clipPath: profileMenuVisible ? "circle(150% at 100% 0)" : "circle(0 at 100% 0)",
+        clipPath: profileMenuVisible ? "circle(160% at 100% 0)" : "circle(0 at 100% 0)",
         pointerEvents: profileMenuVisible ? "auto" : "none",
+        transition: 'all .65s cubic-bezier(.32, .685, .32, 1)'
+    };
+
+    const menuStyle = {
+        opacity: menuVisible ? 1 : 1,
+        clipPath: menuVisible ? "circle(160% at 0 0)" : "circle(0 at 0 0)",
+        pointerEvents: menuVisible ? "auto" : "none",
         transition: 'all .65s cubic-bezier(.32, .685, .32, 1)'
     };
 
@@ -110,6 +118,11 @@ const Navbar = ({ searchbar }) => {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="navbar-inner-left-menu" ref={menuRef} style={menuStyle}>
+                    <div className="navbar-inner-left-menu-inner">
+                    </div>
+                    <div className="navbar-inner-left-menu-shadow"></div>
                 </div>
                 <div className="navbar-inner-right-profile-menu" ref={profileMenuRef} style={profileMenuStyle}>
                     <div className="navbar-inner-right-profile-menu-top">

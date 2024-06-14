@@ -7,7 +7,7 @@
     @include flex-col();
 
     &-header {
-      margin: 2.3em 0 0 0;
+      margin: calc($navbar-height / 2) 0 0 0;
       width: 100%;
       position: relative;
       aspect-ratio: 2.75 / 1;
@@ -61,7 +61,7 @@
             @include flex-col-left();
 
             &-username {
-              gap: .25em;
+              gap: .75em;
               @include flex-center();
 
               span {
