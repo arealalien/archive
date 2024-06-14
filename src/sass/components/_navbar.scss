@@ -40,7 +40,7 @@
       z-index: 10005;
       @include flex-center();
       &-burger {
-        margin: 0 1em 0 1em;
+        margin: 0 1em 0 .75em;
         position: relative;
         svg {
           width: calc($navbar-height - 2.5em);
@@ -75,7 +75,7 @@
         @include flex-center();
 
         &-icon {
-          right: 3.25em;
+          right: 2.75em;
           height: 2em;
           position: absolute;
           z-index: 10007;
@@ -157,14 +157,25 @@
               @include flex-col-left();
 
               &-username {
-                color: hslac($white, 1);
-                font-size: $paragraph-xlarge;
-                font-weight: 700;
                 text-decoration: none;
+                gap: .25em;
                 opacity: 1;
                 transition: all .25s cubic-bezier($transition-main, 1);
+                @include flex-left();
+
                 &:hover {
                   opacity: .5;
+                }
+                span {
+                  width: 100%;
+                  color: hslac($white, 1);
+                  font-size: $paragraph-xlarge;
+                  white-space: normal;
+                  font-weight: 700;
+                  text-decoration: none;
+                }
+                svg {
+                  width: $paragraph-xlarge;
                 }
               }
               &-link {

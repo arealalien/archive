@@ -95,18 +95,26 @@
           }
           &-username {
             margin: 0 .75em 0 0;
-            max-width: 100%;
-            max-height: calc($paragraph-large + .5rem);
-            line-height: $paragraph-large;
-            color: hslac($white, .7);
-            font-size: $paragraph;
-            font-weight: 500;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
-            white-space: normal;
-            text-overflow: ellipsis;
-            overflow: hidden;
+            gap: .25em;
+            @include flex-center();
+
+            span {
+              max-width: 100%;
+              max-height: calc($paragraph-large + .5rem);
+              line-height: $paragraph-large;
+              color: hslac($white, .7);
+              font-size: $paragraph;
+              font-weight: 500;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 1;
+              white-space: normal;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+            svg {
+              width: $paragraph-large;
+            }
           }
           &-shadow {
             top: .5em;

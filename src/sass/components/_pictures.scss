@@ -263,6 +263,16 @@
               &-username {
                 font-size: $paragraph-xlarge;
                 font-weight: 700;
+                gap: .25em;
+                @include flex-center();
+
+                span {
+                  font-size: $paragraph-xlarge;
+                  font-weight: 700;
+                }
+                svg {
+                  width: $paragraph-xlarge;
+                }
               }
               &-date {
                 color: hslac($white, .5);

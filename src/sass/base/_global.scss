@@ -58,6 +58,38 @@ body {
   cursor: pointer;
 }
 
+.verified-icon {
+  #a stop:first-child {
+    stop-color: $verified-yellow;
+  }
+  #a stop:nth-child(2) {
+    stop-color: $verified-orange;
+  }
+  #a stop:nth-child(3) {
+    stop-color: $verified-brown;
+  }
+  #a stop:nth-child(4),
+  #a stop:last-child {
+    stop-color: $verified-border;
+  }
+  #b stop:first-child {
+    stop-color: $verified-light;
+  }
+  #b stop:nth-child(2),
+  #b stop:last-child {
+    stop-color: $verified-dark;
+  }
+  path:nth-child(1) {
+    fill: url(#a);
+  }
+  path:nth-child(2) {
+    fill: url(#b);
+  }
+  path:nth-child(3) {
+    fill: $verified-brown2;
+  }
+}
+
 ::selection {
   color: hslac($white, 1);
   background: hslac($primary, 1);

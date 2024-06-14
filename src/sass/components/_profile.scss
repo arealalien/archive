@@ -61,9 +61,17 @@
             @include flex-col-left();
 
             &-username {
-              color: hslac($white, 1);
-              font-size: $heading-medium;
-              font-weight: 800;
+              gap: .25em;
+              @include flex-center();
+
+              span {
+                color: hslac($white, 1);
+                font-size: $heading-medium;
+                font-weight: 800;
+              }
+              svg {
+                width: $heading-medium;
+              }
             }
             &-subs {
               color: hslac($white, .7);
