@@ -12,7 +12,7 @@ const ProfileSec  = () => {
                     <div className="profile-inner-header-info">
                         <div className="profile-inner-header-info-left">
                             <div className="profile-inner-header-info-left-container">
-                                <img className="profile-inner-header-info-left-container-image" src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt=""/>
+                                <img className="profile-inner-header-info-left-container-image" src="https://images.unsplash.com/photo-1610555248279-adea4c523fb3?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt=""/>
                             </div>
                             <div className="profile-inner-header-info-left-text">
                                 <h1 className="profile-inner-header-info-left-text-username">Channel Name</h1>
