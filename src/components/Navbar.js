@@ -49,24 +49,46 @@ const Navbar = ({ searchbar }) => {
                 <div className="navbar-inner-center">
                     {searchbar !== "no" && (
                         <div className="navbar-inner-center-searchbar">
-                            <svg className="navbar-inner-center-searchbar-icon" xmlns="http://www.w3.org/2000/svg"
-                                 height="24px" viewBox="0 0 24 24" version="1.1">
-                                <title>Search</title>
-                                <g id="search" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
-                                   stroke-linecap="round" stroke-linejoin="round">
-                                    <g id="search-inner" transform="translate(2.000000, 2.000000)" stroke="#000000"
-                                       stroke-width="1.5">
-                                        <path
-                                            d="M9.27542857,0.714285714 C14.0030476,0.714285714 17.836381,4.54666667 17.836381,9.2752381 C17.836381,14.0038095 14.0030476,17.8361905 9.27542857,17.8361905 C4.54685714,17.8361905 0.71447619,14.0038095 0.71447619,9.2752381 C0.71447619,4.54666667 4.54685714,0.714285714 9.27542857,0.714285714 Z"
-                                            id="Stroke-1"/>
-                                        <path
-                                            d="M17.8989524,16.487619 C18.678,16.487619 19.3094286,17.12 19.3094286,17.8980952 C19.3094286,18.6780952 18.678,19.3095238 17.8989524,19.3095238 C17.1199048,19.3095238 16.4875238,18.6780952 16.4875238,17.8980952 C16.4875238,17.12 17.1199048,16.487619 17.8989524,16.487619 Z"
-                                            id="Stroke-3"/>
+                            <div className="navbar-inner-center-searchbar-button">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <title>Video</title>
+                                    <g id="video" stroke="none" stroke-width="1" fill="none"
+                                       fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                        <g id="video-inner" transform="translate(2.514381, 5.114095)"
+                                           stroke-width="1.5">
+                                            <path
+                                                d="M13.6370476,4.55866688 C15.4751429,3.10152403 17.9418095,1.69200022 18.4084762,2.19676212 C19.1799048,3.02533355 19.1132381,10.9110478 18.4084762,11.6634288 C17.9799048,12.1300955 15.4941905,10.7205716 13.6370476,9.2729526"
+                                                id="Stroke-1"/>
+                                            <path
+                                                d="M-6.21724894e-15,6.92285714 C-6.21724894e-15,1.73047619 1.7247619,-2.66453526e-15 6.90095238,-2.66453526e-15 C12.0761905,-2.66453526e-15 13.8009524,1.73047619 13.8009524,6.92285714 C13.8009524,12.1142857 12.0761905,13.8457143 6.90095238,13.8457143 C1.7247619,13.8457143 -6.21724894e-15,12.1142857 -6.21724894e-15,6.92285714 Z"
+                                                id="Stroke-3"/>
+                                        </g>
                                     </g>
-                                </g>
-                            </svg>
-                            <input className="navbar-inner-center-searchbar-input" placeholder="Search..." />
-                            <div className="navbar-inner-center-searchbar-shadow"></div>
+                                </svg>
+                                <div className="navbar-inner-center-searchbar-button-shadow"></div>
+                            </div>
+                            <div className="navbar-inner-center-searchbar-inner">
+                                <svg className="navbar-inner-center-searchbar-inner-icon"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <title>Search</title>
+                                    <g id="search" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                                       stroke-linecap="round" stroke-linejoin="round">
+                                        <g id="search-inner" transform="translate(2.000000, 2.000000)" stroke="#000000"
+                                           stroke-width="1.5">
+                                            <path
+                                                d="M9.27542857,0.714285714 C14.0030476,0.714285714 17.836381,4.54666667 17.836381,9.2752381 C17.836381,14.0038095 14.0030476,17.8361905 9.27542857,17.8361905 C4.54685714,17.8361905 0.71447619,14.0038095 0.71447619,9.2752381 C0.71447619,4.54666667 4.54685714,0.714285714 9.27542857,0.714285714 Z"
+                                                id="Stroke-1"/>
+                                            <path
+                                                d="M17.8989524,16.487619 C18.678,16.487619 19.3094286,17.12 19.3094286,17.8980952 C19.3094286,18.6780952 18.678,19.3095238 17.8989524,19.3095238 C17.1199048,19.3095238 16.4875238,18.6780952 16.4875238,17.8980952 C16.4875238,17.12 17.1199048,16.487619 17.8989524,16.487619 Z"
+                                                id="Stroke-3"/>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <input className="navbar-inner-center-searchbar-inner-input" placeholder="Search..."/>
+                                <div className="navbar-inner-center-searchbar-inner-shadow"></div>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -75,7 +97,7 @@ const Navbar = ({ searchbar }) => {
                         <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
                             <img className="navbar-inner-right-profile-container-image"
                                  src="https://images.unsplash.com/photo-1595258545564-bffdf78be46c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                 alt="Profile" />
+                                 alt="Profile"/>
                         </div>
                         <div className="navbar-inner-right-profile-menu" ref={menuRef} style={profileMenuStyle}>
                             <div className="navbar-inner-right-profile-menu-top">

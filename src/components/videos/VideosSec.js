@@ -252,7 +252,6 @@ const VideosSec  = () => {
             time: "21:45",
             background: process.env.PUBLIC_URL + `/images/image-9.jpg`
         }
-
     ];
 
     return (
