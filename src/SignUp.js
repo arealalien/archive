@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink } from "react-router-dom";
 import './css/main.css';
+import { AuthContext } from './contexts/AuthContext';
 
 // Components
 import Navbar from "./components/Navbar";
 import DocumentTitle from "./components/DocumentTitle";
 
 function SignUp() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState('');
+    const [error, setError] = useState('');
+    const { signup } = useContext(AuthContext);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+        setError('');
+        try {
+            await signup(email, password, name);
+        } catch (error) {
+            setError('Signup failed');
+        }
+    };
+
     return (
         <>
             <DocumentTitle title="Archive - Sign up"/>
@@ -26,7 +48,7 @@ function SignUp() {
                         </div>
                     </div>
                     <div className="signup-inner-right">
-                        <form className="signup-inner-right-form" action="">
+                        <form className="signup-inner-right-form" onSubmit={handleSubmit}>
                             <div className="signup-inner-right-form-top">
                                 <h1 className="signup-inner-right-form-top-title">Sign up</h1>
                             </div>
@@ -52,7 +74,7 @@ function SignUp() {
                                             </g>
                                         </svg>
                                         <input id="username" type="text" placeholder="Username"
-                                               name="username" aria-label="" required/>
+                                               value={name} onChange={(e) => setName(e.target.value)} name="username" aria-label="" required/>
                                     </div>
                                 </div>
                                 <div className="signup-inner-right-form-center-container">
@@ -76,7 +98,7 @@ function SignUp() {
                                             </g>
                                         </svg>
                                         <input id="email" type="email" placeholder="Email"
-                                               name="email" aria-label="" required/>
+                                               value={email} onChange={(e) => setEmail(e.target.value)} name="email" aria-label="" required/>
                                     </div>
                                 </div>
                             </fieldset>
@@ -110,7 +132,7 @@ function SignUp() {
                                             </g>
                                         </svg>
                                         <input id="password" type="password" placeholder="Password"
-                                               name="password" aria-label="" required/>
+                                               value={password} onChange={(e) => setPassword(e.target.value)} name="password" aria-label="" required/>
                                     </div>
                                 </div>
                                 <div className="signup-inner-right-form-center-container">
@@ -142,12 +164,13 @@ function SignUp() {
                                             </g>
                                         </svg>
                                         <input id="confirm-password" type="password" placeholder="Confirm Password"
-                                               name="confirm-password" aria-label="" required/>
+                                               value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} name="confirm-password" aria-label="" required/>
                                     </div>
                                 </div>
                             </fieldset>
+                            {error && <p>{error}</p>}
                             <fieldset className="signup-inner-right-form-bottom">
-                                <button className="mainbutton">Sign up</button>
+                                <button className="mainbutton" type="submit">Sign up</button>
                             </fieldset>
                         </form>
                     </div>

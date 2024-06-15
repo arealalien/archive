@@ -96,6 +96,24 @@ const Navbar = ({ searchbar }) => {
                     </div>
                     <div className="navbar-inner-right">
                         <div className="navbar-inner-right-profile">
+                            <div className="navbar-inner-right-profile-button">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <title>Notification</title>
+                                    <g id="notification" stroke="none" stroke-width="1" fill="none"
+                                       fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                        <g id="notification-inner" transform="translate(4.614552, 2.514190)" stroke="#000000"
+                                           stroke-width="1.5">
+                                            <path
+                                                d="M7.38163814,2.84217094e-14 C2.94735243,2.84217094e-14 1.02068576,4.0152381 1.02068576,6.66952381 C1.02068576,8.65333333 1.30830481,8.06952381 0.210209572,10.4895238 C-1.13074281,13.9380952 4.26163814,15.347619 7.38163814,15.347619 C10.5006858,15.347619 15.8930667,13.9380952 14.5530667,10.4895238 C13.4549715,8.06952381 13.7425905,8.65333333 13.7425905,6.66952381 C13.7425905,4.0152381 11.8149715,2.84217094e-14 7.38163814,2.84217094e-14 Z"
+                                                id="Stroke-1"/>
+                                            <path
+                                                d="M9.691448,17.998 C8.39716229,19.4437143 6.37811467,19.4608571 5.071448,17.998"
+                                                id="Stroke-3"/>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
                             <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
                                 <img className="navbar-inner-right-profile-container-image"
                                      src="https://images.unsplash.com/photo-1610555248279-adea4c523fb3?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

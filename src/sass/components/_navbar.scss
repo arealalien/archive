@@ -156,7 +156,18 @@
       height: 100%;
       &-profile {
         height: 100%;
+        gap: .25em;
         @include flex-center();
+        &-button {
+          svg {
+            width: calc($navbar-height - 2em);
+            g {
+              g {
+                stroke: hslac($white, 1);
+              }
+            }
+          }
+        }
         &-container {
           width: calc($navbar-height - 2em);
           aspect-ratio: 1 / 1;

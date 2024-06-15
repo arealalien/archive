@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink } from "react-router-dom";
 import './css/main.css';
+import { AuthContext } from './contexts/AuthContext';
 
 // Components
 import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
 
 function Login() {
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const { login } = useContext(AuthContext);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await login(name, password);
+    };
+
     return (
         <>
             <DocumentTitle title="Archive - Login"/>
@@ -26,7 +36,7 @@ function Login() {
                         </div>
                     </div>
                     <div className="signup-inner-right">
-                        <form className="signup-inner-right-form" action="">
+                        <form className="signup-inner-right-form" onSubmit={handleSubmit}>
                             <div className="signup-inner-right-form-top">
                                 <h1 className="signup-inner-right-form-top-title">Login</h1>
                             </div>
@@ -52,7 +62,7 @@ function Login() {
                                             </g>
                                         </svg>
                                         <input id="username" type="text" placeholder="Username"
-                                               name="username" aria-label="" required/>
+                                               value={name} onChange={(e) => setName(e.target.value)} name="username" aria-label="" required/>
                                     </div>
                                 </div>
                                 <div className="signup-inner-right-form-center-container">
@@ -84,12 +94,12 @@ function Login() {
                                             </g>
                                         </svg>
                                         <input id="password" type="password" placeholder="Password"
-                                               name="password" aria-label="" required/>
+                                               value={password} onChange={(e) => setPassword(e.target.value)} name="password" aria-label="" required/>
                                     </div>
                                 </div>
                             </fieldset>
                             <fieldset className="signup-inner-right-form-bottom">
-                                <button className="mainbutton">Login</button>
+                                <button className="mainbutton" type="submit">Login</button>
                             </fieldset>
                         </form>
                     </div>
