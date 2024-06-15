@@ -12,9 +12,16 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 
 app.post('/signup', async (req, res) => {
-    const { email, password, name } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { email, password, confirmPassword, name } = req.body;
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        return res.status(400).json({ error: 'Passwords do not match' });
+    }
+
     try {
+        // Attempt to create user in database
+        const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
             data: {
                 email,
@@ -24,13 +31,23 @@ app.post('/signup', async (req, res) => {
         });
         res.status(201).json(user);
     } catch (error) {
-        res.status(400).json({ error: 'Email already exists' });
+        if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+            // Handle duplicate email error
+            res.status(400).json({ error: 'Email already exists' });
+        } else if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
+            // Handle duplicate name error
+            res.status(400).json({ error: 'Name already exists' });
+        } else {
+            // Handle other errors
+            console.error(error);
+            res.status(500).json({ error: 'Signup failed' });
+        }
     }
 });
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    const user = await prisma.user.findUnique({ where: { email } });
+    const { name, password } = req.body;
+    const user = await prisma.user.findUnique({ where: { name } });
     if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({ userId: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
         res.json({ token });

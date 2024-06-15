@@ -10,6 +10,7 @@ import DocumentTitle from "./components/DocumentTitle";
 function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const [confirmPassword, setConfirmPassword] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
@@ -17,15 +18,10 @@ function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-        setError('');
         try {
-            await signup(email, password, name);
+            await signup(email, password, confirmPassword, name);
         } catch (error) {
-            setError('Signup failed');
+            setError(error.message);
         }
     };
 
@@ -136,7 +132,7 @@ function SignUp() {
                                     </div>
                                 </div>
                                 <div className="signup-inner-right-form-center-container">
-                                    <label className="signup-inner-right-form-center-container-label">Password*</label>
+                                    <label className="signup-inner-right-form-center-container-label">Confirm Password*</label>
                                     <div className="signup-inner-right-form-center-container-input">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="24px" height="24px"

@@ -1,20 +1,22 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const login = async (name, password) => {
-        const response = await axios.post('http://localhost:3000/login', { name, password });
-        localStorage.setItem('token', response.data.token);
-        const userResponse = await axios.get('http://localhost:3000/profile', {
-            headers: {
-                Authorization: `Bearer ${response.data.token}`,
-            },
-        });
-        setUser(userResponse.data);
+        try {
+            const response = await axios.post('http://localhost:5000/login', { name, password });
+            localStorage.setItem('token', response.data.token);
+            await fetchUser(response.data.token);
+            navigate('/');
+        } catch (error) {
+            throw new Error('Login failed');
+        }
     };
 
     const signup = async (email, password, confirmPassword, name) => {
@@ -22,34 +24,41 @@ export const AuthProvider = ({ children }) => {
             throw new Error('Passwords do not match');
         }
         try {
-            const response = await axios.post('http://localhost:3000/signup', { email, password, name });
-            const { token, error } = response.data;
-            if (error) {
-                throw new Error(error);
-            }
+            const response = await axios.post('http://localhost:5000/signup', { email, password, confirmPassword, name });
             await login(name, password);
+            navigate('/login');
         } catch (error) {
-            throw new Error('Signup failed');
+            throw new Error(error.response?.data?.error || 'Signup failed');
+        }
+    };
+
+    const signOut = () => {
+        setUser(null);
+        localStorage.removeItem('token');
+    };
+
+    const fetchUser = async (token) => {
+        try {
+            const response = await axios.get('http://localhost:5000/profile', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setUser(response.data);
+        } catch (error) {
+            localStorage.removeItem('token');
         }
     };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            axios.get('http://localhost:3000/profile', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }).then(response => {
-                setUser(response.data);
-            }).catch(() => {
-                localStorage.removeItem('token');
-            });
+            fetchUser(token);
         }
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, login, signup }}>
+        <AuthContext.Provider value={{ user, login, signup, signOut }}>
             {children}
         </AuthContext.Provider>
     );

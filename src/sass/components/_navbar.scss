@@ -154,6 +154,8 @@
     }
     &-right {
       height: 100%;
+      position: relative;
+      z-index: 10005;
       &-profile {
         height: 100%;
         gap: .25em;

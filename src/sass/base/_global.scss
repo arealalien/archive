@@ -52,6 +52,7 @@ body {
   font-family: $font-main;
   font-size: $paragraph-large;
   color: hslac($white, 1);
+  text-decoration: none;
   background-color: hslac($primary, 1);
   border: none;
   border-radius: 5em;
@@ -88,6 +89,17 @@ body {
   path:nth-child(3) {
     fill: $verified-brown2;
   }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: hslac($white, 1);
+  color: hslac($white, 1);
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 50px 50px hslac($white, .1);
 }
 
 ::selection {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import './css/main.css';
 
 // Components
@@ -9,11 +10,13 @@ import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 
 function Profile() {
+    const { username } = useParams();
+
     return (
         <>
             <DocumentTitle title="Archive - Profile"/>
             <Navbar searchbar="yes"/>
-            <ProfileSec/>
+            <ProfileSec username={username} />
             <PageShadow/>
             <Footer/>
         </>
