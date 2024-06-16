@@ -15,7 +15,7 @@ function Profile() {
 
     return (
         <>
-            <DocumentTitle title="Archive - Profile"/>
+            <DocumentTitle title={username + ` - Archive`}/>
             <Navbar searchbar="yes"/>
             <section className="profile">
                 <div className="profile-inner view-width">

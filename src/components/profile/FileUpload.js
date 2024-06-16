@@ -27,7 +27,7 @@ const FileUpload = ({ uploadUrl, onSuccess }) => {
                 },
             };
             const response = await axios.post(uploadUrl, formData, config);
-            onSuccess(response.data.filePath); // Pass the uploaded file path to onSuccess callback
+            onSuccess(response.data.filePath);
         } catch (err) {
             setError(err.response?.data?.error || 'Upload failed');
         }

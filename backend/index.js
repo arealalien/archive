@@ -20,20 +20,35 @@ app.use(express.json());
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Define upload directory paths
-const profilePicturesDirectory = path.join(__dirname, 'uploads', 'profile_pictures');
-const bannersDirectory = path.join(__dirname, 'uploads', 'banners');
+// Root storage directory
+const rootStorageDirectory = path.join(__dirname, 'base_dir', 'users');
 
-// Create directories if they don't exist
-fs.mkdirSync(profilePicturesDirectory, { recursive: true });
-fs.mkdirSync(bannersDirectory, { recursive: true });
+// Function to create directory if it doesn't exist
+const createDirectoryIfNotExists = (directory) => {
+    if (!fs.existsSync(directory)) {
+        fs.mkdirSync(directory, { recursive: true });
+    }
+};
+
+// Middleware for token validation
+const validateToken = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ error: 'No token provided' });
+    }
+    try {
+        const decoded = jwt.verify(token, 'your_jwt_secret');
+        req.userId = decoded.userId;
+        next();
+    } catch (error) {
+        return res.status(401).json({ error: 'Invalid token' });
+    }
+};
 
 // Function to handle file upload and validation
 const handleFileUpload = async (req, res, directory, dimensionCheck, aspectRatio) => {
     const { file } = req;
-    const token = req.headers.authorization.split(' ')[1];
-    const decoded = jwt.verify(token, 'your_jwt_secret');
-    const userId = decoded.userId;
+    const userId = req.userId;
 
     if (!file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -60,9 +75,13 @@ const handleFileUpload = async (req, res, directory, dimensionCheck, aspectRatio
             return res.status(400).json({ error: `Image aspect ratio must be ${aspectRatio}:1` });
         }
 
+        // Create user-specific directory if it doesn't exist
+        const userDirectory = path.join(rootStorageDirectory, userId.toString());
+        createDirectoryIfNotExists(userDirectory);
+
         // Save image to file system
-        const filename = `${userId}-${uuidv4()}${path.extname(file.originalname)}`;
-        const filePath = path.join(directory, filename);
+        const filename = `${uuidv4()}${path.extname(file.originalname)}`;
+        const filePath = path.join(userDirectory, filename);
         await image.toFile(filePath);
 
         return filePath;
@@ -73,13 +92,16 @@ const handleFileUpload = async (req, res, directory, dimensionCheck, aspectRatio
 };
 
 // Endpoint to upload profile picture
-app.post('/upload/profile-picture', upload.single('profilePicture'), async (req, res) => {
+app.post('/upload/profile-picture', validateToken, upload.single('profilePicture'), async (req, res) => {
     try {
-        const filePath = await handleFileUpload(req, res, profilePicturesDirectory, { width: 300, height: 300 }, 1);
+        const userDirectory = path.join(rootStorageDirectory, req.userId.toString());
+        createDirectoryIfNotExists(userDirectory);
+
+        const filePath = await handleFileUpload(req, res, userDirectory, { width: 300, height: 300 }, 1);
 
         // Update user's profile picture in database
         await prisma.user.update({
-            where: { id: userId },
+            where: { id: req.userId },
             data: { profilePicture: filePath },
         });
 
@@ -91,13 +113,16 @@ app.post('/upload/profile-picture', upload.single('profilePicture'), async (req,
 });
 
 // Endpoint to upload banner
-app.post('/upload/banner', upload.single('banner'), async (req, res) => {
+app.post('/upload/banner', validateToken, upload.single('banner'), async (req, res) => {
     try {
-        const filePath = await handleFileUpload(req, res, bannersDirectory, { width: 1496, height: 544 }, 2.75);
+        const userDirectory = path.join(rootStorageDirectory, req.userId.toString());
+        createDirectoryIfNotExists(userDirectory);
+
+        const filePath = await handleFileUpload(req, res, userDirectory, { width: 1496, height: 544 }, 2.75);
 
         // Update user's banner in database
         await prisma.user.update({
-            where: { id: userId },
+            where: { id: req.userId },
             data: { banner: filePath },
         });
 

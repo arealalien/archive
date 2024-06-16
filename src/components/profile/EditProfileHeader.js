@@ -1,49 +1,16 @@
-import React, { useState } from "react";
-import axios from 'axios';
+import React, {useState} from "react";
 import FileUpload from './FileUpload';
 
 const EditProfileHeader  = () => {
     const [profilePictureUrl, setProfilePictureUrl] = useState('');
     const [bannerUrl, setBannerUrl] = useState('');
 
-    // Function to handle profile picture upload
-    const handleProfilePictureUpload = async (file) => {
-        try {
-            const formData = new FormData();
-            formData.append('profilePicture', file);
-
-            const response = await axios.post('/upload/profile-picture', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`, // Replace with your token retrieval method
-                },
-            });
-
-            setProfilePictureUrl(response.data.filePath);
-        } catch (error) {
-            console.error('Error uploading profile picture:', error);
-            // Handle error, e.g., display error message to user
-        }
+    const handleProfilePictureUpload = (filePath) => {
+        setProfilePictureUrl(filePath);
     };
 
-    // Function to handle banner upload
-    const handleBannerUpload = async (file) => {
-        try {
-            const formData = new FormData();
-            formData.append('banner', file);
-
-            const response = await axios.post('/upload/banner', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`, // Replace with your token retrieval method
-                },
-            });
-
-            setBannerUrl(response.data.filePath);
-        } catch (error) {
-            console.error('Error uploading banner:', error);
-            // Handle error, e.g., display error message to user
-        }
+    const handleBannerUpload = (filePath) => {
+        setBannerUrl(filePath);
     };
 
     return (
@@ -71,7 +38,8 @@ const EditProfileHeader  = () => {
                     <img className="editprofile-inner-details-picture-container-image" src={profilePictureUrl} alt=""/>
                 </div>
             </div>
-            <FileUpload uploadUrl="/upload/profile-picture" onUpload={handleProfilePictureUpload} />
+            <FileUpload uploadUrl={`/upload/profile-picture`}
+                        onSuccess={handleProfilePictureUpload}/>
             <div className="editprofile-inner-details-header">
                 <div className="editprofile-inner-details-header-edit">
                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +63,7 @@ const EditProfileHeader  = () => {
                     <img className="editprofile-inner-details-header-container-image" src={bannerUrl} alt=""/>
                 </div>
             </div>
-            <FileUpload uploadUrl="/upload/banner" onUpload={handleBannerUpload} />
+            <FileUpload uploadUrl={`/upload/banner`} onSuccess={handleBannerUpload}/>
         </section>
     );
 };
