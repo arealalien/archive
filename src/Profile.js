@@ -5,6 +5,7 @@ import './css/main.css';
 // Components
 import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
+import ProfileHeader from "./components/profile/ProfileHeader";
 import ProfileSec from "./components/profile/ProfileSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
@@ -16,7 +17,12 @@ function Profile() {
         <>
             <DocumentTitle title="Archive - Profile"/>
             <Navbar searchbar="yes"/>
-            <ProfileSec username={username} />
+            <section className="profile">
+                <div className="profile-inner view-width">
+                    <ProfileHeader username={username} />
+                    <ProfileSec />
+                </div>
+            </section>
             <PageShadow/>
             <Footer/>
         </>

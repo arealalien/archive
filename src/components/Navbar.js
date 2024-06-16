@@ -190,7 +190,7 @@ const Navbar = ({ searchbar }) => {
                                         </g>
                                     </svg>
                                 </NavLink>
-                                <p className="navbar-inner-right-profile-menu-top-text-link">Edit profile</p>
+                                <NavLink to="/editprofile" className="navbar-inner-right-profile-menu-top-text-link">Edit profile</NavLink>
                             </div>
                         </div>
                         <div className="navbar-inner-right-profile-menu-center">

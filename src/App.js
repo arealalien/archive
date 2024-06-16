@@ -5,6 +5,7 @@ import Home from "./Home";
 import SignUp from "./SignUp";
 import Login from "./Login";
 import Profile from "./Profile"
+import EditProfile from "./EditProfile"
 import Pictures from "./Pictures";
 import Video from "./Video";
 
@@ -14,7 +15,8 @@ function App() {
           <Route path="/" element={<Home/>}/>
           <Route path="/signup" element={<SignUp/>}/>
           <Route path="/login" element={<Login/>}/>
-          <Route path="/profile/:username" element={<Profile/>}/>
+          <Route path="/profile/:username" element={<Profile/>}/>/>
+          <Route path="/editprofile" element={<EditProfile/>}/>
           <Route path="/pictures" element={<Pictures/>}/>
           <Route path="/video" element={<Video/>}/>
       </Routes>

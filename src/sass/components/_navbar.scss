@@ -246,6 +246,7 @@
                 color: hslac($white, .5);
                 font-size: $paragraph;
                 font-weight: 300;
+                text-decoration: none;
                 opacity: 1;
                 transition: all .25s cubic-bezier($transition-main, 1);
                 &:hover {
