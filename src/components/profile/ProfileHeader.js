@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileHeader  = ({ username }) => {
+const ProfileHeader  = ({ username, userid }) => {
 
     return (
                 <header className="profile-inner-header">
@@ -8,7 +8,7 @@ const ProfileHeader  = ({ username }) => {
                         <div className="profile-inner-header-info-left">
                             <div className="profile-inner-header-info-left-container">
                                 <img className="profile-inner-header-info-left-container-image"
-                                     src="https://images.unsplash.com/photo-1610555248279-adea4c523fb3?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                     src={process.env.PUBLIC_URL + userid?.profilePicture}
                                      alt=""/>
                             </div>
                             <div className="profile-inner-header-info-left-text">
@@ -50,7 +50,7 @@ const ProfileHeader  = ({ username }) => {
                     </div>
                     <div className="profile-inner-header-overlay"></div>
                     <img className="profile-inner-header-background"
-                         src="https://images.unsplash.com/photo-1690796033760-790beb3b7506?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         src={process.env.PUBLIC_URL + userid?.banner}
                          alt=""/>
                 </header>
     );

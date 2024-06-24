@@ -50,9 +50,6 @@
       @include flex-center();
 
       &:hover {
-        .videos-inner-item-top-info-user {
-          opacity: 0;
-        }
         .videos-inner-item-overlay {
           opacity: .4;
         }

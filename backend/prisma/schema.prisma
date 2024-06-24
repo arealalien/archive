@@ -18,8 +18,8 @@ model User {
   email          String    @unique
   password       String
   name           String    @unique
-  profilePicture String?
-  banner         String?
+  profilePicture String    @default("users/0/profilePicture.jpg")
+  banner         String    @default("users/0/banner.jpg")
   videos         Video[]
   posts          Post[]
   playlists      Playlist[]

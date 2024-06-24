@@ -1,25 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
 
-const FileUpload = ({ uploadUrl, onSuccess }) => {
+const FileUpload = forwardRef(({ uploadUrl, onSuccess }, ref) => {
     const [file, setFile] = useState(null);
     const [error, setError] = useState('');
 
+    useImperativeHandle(ref, () => ({
+        triggerFileInput() {
+            document.getElementById(uploadUrl).click();
+        }
+    }));
+
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
         setError('');
+        handleSubmit(selectedFile);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!file) {
+    const handleSubmit = async (selectedFile) => {
+        if (!selectedFile) {
             setError('No file selected');
             return;
         }
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append(uploadUrl.includes('profile-picture') ? 'profilePicture' : 'banner', selectedFile);
+
         try {
-            const token = localStorage.getItem('token'); // Retrieve token from localStorage or context
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setError('Token not found. Please log in again.');
+                return;
+            }
+            console.log("Token sent: ", token); // Debugging line
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -27,19 +40,25 @@ const FileUpload = ({ uploadUrl, onSuccess }) => {
                 },
             };
             const response = await axios.post(uploadUrl, formData, config);
+            console.log('File upload response:', response.data); // Debugging line
             onSuccess(response.data.filePath);
         } catch (err) {
+            console.error("Upload error: ", err.response?.data || err.message); // Debugging line
             setError(err.response?.data?.error || 'Upload failed');
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="file" onChange={handleFileChange} />
-            <button type="submit">Upload</button>
+        <form>
+            <input
+                type="file"
+                id={uploadUrl}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+            />
             {error && <p>{error}</p>}
         </form>
     );
-};
+});
 
 export default FileUpload;

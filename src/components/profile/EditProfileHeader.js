@@ -1,22 +1,27 @@
-import React, {useState} from "react";
+import React, {useContext, useState, useRef} from "react";
+import { AuthContext } from '../../contexts/AuthContext';
 import FileUpload from './FileUpload';
 
-const EditProfileHeader  = () => {
+const EditProfileHeader = () => {
     const [profilePictureUrl, setProfilePictureUrl] = useState('');
     const [bannerUrl, setBannerUrl] = useState('');
+    const { user } = useContext(AuthContext);
+
+    const profilePictureUploadRef = useRef(null);
+    const bannerUploadRef = useRef(null);
 
     const handleProfilePictureUpload = (filePath) => {
-        setProfilePictureUrl(filePath);
+        setProfilePictureUrl(`http://localhost:5000/${filePath}`);
     };
 
     const handleBannerUpload = (filePath) => {
-        setBannerUrl(filePath);
+        setBannerUrl(`http://localhost:5000/${filePath}`);
     };
 
     return (
         <section className="editprofile-inner-details">
             <div className="editprofile-inner-details-picture">
-                <div className="editprofile-inner-details-picture-edit">
+                <div className="editprofile-inner-details-picture-edit" onClick={() => profilePictureUploadRef.current.triggerFileInput()}>
                     <svg xmlns="http://www.w3.org/2000/svg"
                          height="24px" viewBox="0 0 24 24" version="1.1">
                         <title>Edit</title>
@@ -35,13 +40,15 @@ const EditProfileHeader  = () => {
                     <div className="editprofile-inner-details-picture-edit-shadow"></div>
                 </div>
                 <div className="editprofile-inner-details-picture-container">
-                    <img className="editprofile-inner-details-picture-container-image" src={profilePictureUrl} alt=""/>
+                    <img className="editprofile-inner-details-picture-container-image" src={process.env.PUBLIC_URL + user?.profilePicture} alt=""/>
                 </div>
             </div>
-            <FileUpload uploadUrl={`/upload/profile-picture`}
-                        onSuccess={handleProfilePictureUpload}/>
+            <FileUpload ref={profilePictureUploadRef}
+                        uploadUrl={`http://localhost:5000/upload/profile-picture`}
+                        onSuccess={handleProfilePictureUpload}
+                        fileKey="profilePicture" />
             <div className="editprofile-inner-details-header">
-                <div className="editprofile-inner-details-header-edit">
+                <div className="editprofile-inner-details-header-edit" onClick={() => bannerUploadRef.current.triggerFileInput()}>
                     <svg xmlns="http://www.w3.org/2000/svg"
                          height="24px" viewBox="0 0 24 24" version="1.1">
                         <title>Edit</title>
@@ -60,10 +67,13 @@ const EditProfileHeader  = () => {
                     <div className="editprofile-inner-details-header-edit-shadow"></div>
                 </div>
                 <div className="editprofile-inner-details-header-container">
-                    <img className="editprofile-inner-details-header-container-image" src={bannerUrl} alt=""/>
+                    <img className="editprofile-inner-details-header-container-image" src={process.env.PUBLIC_URL + user?.banner} alt=""/>
                 </div>
             </div>
-            <FileUpload uploadUrl={`/upload/banner`} onSuccess={handleBannerUpload}/>
+            <FileUpload ref={bannerUploadRef}
+                        uploadUrl={`http://localhost:5000/upload/banner`}
+                        onSuccess={handleBannerUpload}
+                        fileKey="banner" />
         </section>
     );
 };

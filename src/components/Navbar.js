@@ -126,7 +126,7 @@ const Navbar = ({ searchbar }) => {
                                 <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
                                     <img
                                         className="navbar-inner-right-profile-container-image"
-                                        src="https://images.unsplash.com/photo-1610555248279-adea4c523fb3?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        src={process.env.PUBLIC_URL + user?.profilePicture}
                                         alt="Profile"
                                     />
                                 </div>
@@ -157,7 +157,7 @@ const Navbar = ({ searchbar }) => {
                         <div className="navbar-inner-right-profile-menu-top">
                             <NavLink to={`/profile/` + user?.name} className="navbar-inner-right-profile-container">
                                 <img className="navbar-inner-right-profile-container-image"
-                                     src="https://images.unsplash.com/photo-1610555248279-adea4c523fb3?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                     src={process.env.PUBLIC_URL + user?.profilePicture}
                                      alt="Profile"/>
                             </NavLink>
                             <div className="navbar-inner-right-profile-menu-top-text">

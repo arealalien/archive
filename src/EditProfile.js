@@ -14,7 +14,7 @@ function EditProfile() {
 
     return (
         <>
-            <DocumentTitle title="Archive - Profile"/>
+            <DocumentTitle title="Archive - Edit Profile"/>
             <Navbar searchbar="yes"/>
             <section className="editprofile">
                 <div className="editprofile-inner view-width">
