@@ -20,7 +20,7 @@
       background-color: hslac($black, 0);
       border: 1px solid hslac($white, .5);
       border-radius: 5em;
-      backdrop-filter: blur(1.5rem) brightness(70%);
+      backdrop-filter: blur(1.5rem) brightness(60%);
       gap: 2em;
       @include flex-space-bet();
 
@@ -28,8 +28,8 @@
         top: .75em;
         width: 100%; height: 100%;
         position: absolute;
-        background-color: hslac($black, .55);
-        transform: scale(.96, .96);
+        background-color: hslac($black, .35);
+        transform: scale(.98, .98);
         filter: blur(2rem);
         z-index: 10003;
       }
@@ -82,7 +82,7 @@
         background-color: hslac($black, 0);
         border: 1px solid hslac($white, .5);
         border-radius: 3rem;
-        backdrop-filter: blur(1.5rem) brightness(70%);
+        backdrop-filter: blur(1.5rem) brightness(60%);
         clip-path: circle(0 at 0 0);
         gap: 2em;
         opacity: 1;
@@ -109,7 +109,8 @@
           width: 100%;
           height: 100%;
           position: absolute;
-          background-color: hslac($black, .5);
+          background-color: hslac($black, .35);
+          transform: scale(.98, .98);
           filter: blur(1.5rem);
           z-index: -1;
         }
@@ -194,7 +195,7 @@
           background-color: hslac($black, 0);
           border: 1px solid hslac($white, .5);
           border-radius: 3rem;
-          backdrop-filter: blur(1.5rem) brightness(70%);
+          backdrop-filter: blur(1.5rem) brightness(60%);
           clip-path: circle(0 at 100% 0);
           gap: 2em;
           opacity: 1;
@@ -206,7 +207,8 @@
             top: 1em;
             width: 100%; height: 100%;
             position: absolute;
-            background-color: hslac($black, .5);
+            background-color: hslac($black, .35);
+            transform: scale(.98, .98);
             filter: blur(1.5rem);
             z-index: -1;
           }

@@ -42,7 +42,7 @@ function Profile() {
     return (
         <>
             <DocumentTitle title={user.name + ` - Archive`}/>
-            <Navbar searchbar="yes"/>
+            <Navbar searchbar="yes" profile="yes" />
             <section className="profile">
                 <div className="profile-inner view-width">
                     <header className="profile-inner-header">

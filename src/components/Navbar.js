@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { AuthContext } from '../contexts/AuthContext';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-const Navbar = ({ searchbar }) => {
+const Navbar = ({ searchbar, profile }) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [profileMenuVisible, setProfileMenuVisible] = useState(false);
     const profileMenuRef = useRef(null);
     const menuRef = useRef(null);
 
-    const { user } = useContext(AuthContext);
-    const { signOut } = useContext(AuthContext);
+    const { user, signOut } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSignOut = () => {
         signOut();
+        navigate('/');
     };
 
     const toggleMenu = () => {
@@ -59,7 +60,15 @@ const Navbar = ({ searchbar }) => {
         transition: 'all .35s cubic-bezier(.175, .685, .32, 1)'
     };
 
-    const profilePictureUrl = `http://localhost:5000/${user.profilePicture}`;
+    let profilePictureUrl;
+
+    if (user) {
+        profilePictureUrl = `${process.env.PUBLIC_URL}/${user.profilePicture}`;
+
+        if (profile && user) {
+            profilePictureUrl = `${process.env.PUBLIC_URL}/../${user.profilePicture}`;
+        }
+    }
 
     return (
         <nav className="navbar">
@@ -197,7 +206,7 @@ const Navbar = ({ searchbar }) => {
                         </div>
                         <div className="navbar-inner-right-profile-menu-center">
                             <ul className="navbar-inner-right-profile-menu-center-list">
-                                <li className="navbar-inner-right-profile-menu-center-list-item">
+                                <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">
@@ -219,8 +228,8 @@ const Navbar = ({ searchbar }) => {
                                             </g>
                                         </g>
                                     </svg>
-                                </li>
-                                <li className="navbar-inner-right-profile-menu-center-list-item">
+                                </NavLink>
+                                <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">
@@ -241,8 +250,8 @@ const Navbar = ({ searchbar }) => {
                                             </g>
                                         </g>
                                     </svg>
-                                </li>
-                                <li className="navbar-inner-right-profile-menu-center-list-item">
+                                </NavLink>
+                                <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">
@@ -261,7 +270,7 @@ const Navbar = ({ searchbar }) => {
                                             </g>
                                         </g>
                                     </svg>
-                                </li>
+                                </NavLink>
                             </ul>
                         </div>
                         <div className="navbar-inner-right-profile-menu-bottom">
