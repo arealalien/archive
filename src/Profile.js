@@ -1,21 +1,47 @@
-import React, {useContext} from 'react';
-import { AuthContext } from './contexts/AuthContext';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import './css/main.css';
 
 // Components
 import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
-import ProfileHeader from "./components/profile/ProfileHeader";
 import ProfileSec from "./components/profile/ProfileSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 
 function Profile() {
-    const { user } = useContext(AuthContext);
+    const { username } = useParams();
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/user/${username}`);
+                setUser(response.data);
+            } catch (err) {
+                setError('Failed to fetch user data');
+            }
+        };
+
+        fetchUserData();
+    }, [username]);
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
+    const profilePictureUrl = `http://localhost:5000/${user.profilePicture}`;
+    const bannerUrl = `http://localhost:5000/${user.banner}`;
 
     return (
         <>
-            <DocumentTitle title={user?.name + ` - Archive`}/>
+            <DocumentTitle title={user.name + ` - Archive`}/>
             <Navbar searchbar="yes"/>
             <section className="profile">
                 <div className="profile-inner view-width">
@@ -24,12 +50,12 @@ function Profile() {
                             <div className="profile-inner-header-info-left">
                                 <div className="profile-inner-header-info-left-container">
                                     <img className="profile-inner-header-info-left-container-image"
-                                         src={process.env.PUBLIC_URL + user?.profilePicture}
+                                         src={profilePictureUrl}
                                          alt=""/>
                                 </div>
                                 <div className="profile-inner-header-info-left-text">
                                     <h1 className="profile-inner-header-info-left-text-username">
-                                        <span>{user?.name}</span>
+                                        <span>{user.name}</span>
                                         <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                             <g>
                                                 <linearGradient gradientUnits="userSpaceOnUse" id="a" x1="4.411"
@@ -68,7 +94,7 @@ function Profile() {
                         </div>
                         <div className="profile-inner-header-overlay"></div>
                         <img className="profile-inner-header-background"
-                             src={process.env.PUBLIC_URL + user?.banner}
+                             src={bannerUrl}
                              alt=""/>
                     </header>
                     <ProfileSec/>

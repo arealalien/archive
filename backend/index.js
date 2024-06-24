@@ -16,6 +16,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+// Import routes
+const profileRoutes = require('./routes/profile');
+
+// Use routes
+app.use(profileRoutes);
+
 const storage = multer.diskStorage({
     limits: { fileSize: 5 * 1024 * 1024 },
     destination: (req, file, cb) => {

@@ -59,6 +59,8 @@ const Navbar = ({ searchbar }) => {
         transition: 'all .35s cubic-bezier(.175, .685, .32, 1)'
     };
 
+    const profilePictureUrl = `http://localhost:5000/${user.profilePicture}`;
+
     return (
         <nav className="navbar">
             <div className="navbar-inner view-width">
@@ -126,7 +128,7 @@ const Navbar = ({ searchbar }) => {
                                 <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
                                     <img
                                         className="navbar-inner-right-profile-container-image"
-                                        src={process.env.PUBLIC_URL + user?.profilePicture}
+                                        src={profilePictureUrl}
                                         alt="Profile"
                                     />
                                 </div>
@@ -157,7 +159,7 @@ const Navbar = ({ searchbar }) => {
                         <div className="navbar-inner-right-profile-menu-top">
                             <NavLink to={`/profile/` + user?.name} className="navbar-inner-right-profile-container">
                                 <img className="navbar-inner-right-profile-container-image"
-                                     src={process.env.PUBLIC_URL + user?.profilePicture}
+                                     src={profilePictureUrl}
                                      alt="Profile"/>
                             </NavLink>
                             <div className="navbar-inner-right-profile-menu-top-text">
