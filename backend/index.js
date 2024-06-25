@@ -7,6 +7,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const sharp = require('sharp');
 
 const prisma = new PrismaClient();
 const app = express();
@@ -38,8 +39,7 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const fileType = req.route.path.includes('profile-picture') ? 'profilePicture' : 'banner';
-        const fileExtension = path.extname(file.originalname);
-        cb(null, `${fileType}${fileExtension}`);
+        cb(null, `${fileType}.jpg`); // Save as JPG
     }
 });
 
@@ -76,23 +76,32 @@ const handleFileUpload = async (req, res) => {
         const fileType = req.route.path.includes('profile-picture') ? 'profilePicture' : 'banner';
         const filePath = path.join('users', req.userId.toString(), file.filename);
 
+        // Convert to JPEG using sharp
+        const jpegFilePath = path.join('users', req.userId.toString(), `${fileType}.jpg`);
+        await sharp(file.path)
+            .jpeg()
+            .toFile(path.join(__dirname, '..', 'public', jpegFilePath));
+
+        // Remove the original uploaded file
+        fs.unlinkSync(file.path);
+
         console.log('Attempting to update user in database with:', {
             userId: req.userId,
             fileType,
-            filePath
+            filePath: jpegFilePath
         });
 
         // Store file path in the database using Prisma
         const updatedUser = await prisma.user.update({
             where: { id: req.userId },
             data: {
-                [fileType]: filePath, // Dynamic field based on 'profilePicture' or 'banner'
+                [fileType]: jpegFilePath, // Dynamic field based on 'profilePicture' or 'banner'
             },
         });
 
         console.log('Database update successful:', updatedUser);
 
-        res.status(200).json({ filePath: filePath });
+        res.status(200).json({ filePath: jpegFilePath });
     } catch (error) {
         console.error('Error processing file:', error); // Detailed error logging
         res.status(500).json({ error: 'Internal server error', details: error.message });
