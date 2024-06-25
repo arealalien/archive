@@ -52,6 +52,7 @@ const FileUpload = forwardRef(({ uploadUrl, onSuccess }, ref) => {
         <form>
             <input
                 type="file"
+                accept="image/jpeg, image/png"
                 id={uploadUrl}
                 style={{ display: 'none' }}
                 onChange={handleFileChange}

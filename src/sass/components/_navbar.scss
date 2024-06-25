@@ -179,8 +179,12 @@
           overflow: hidden;
           cursor: pointer;
           z-index: 10005;
+          transition: all .25s cubic-bezier($transition-main, 1);
           @include flex-center();
 
+          &:hover {
+            opacity: .5;
+          }
           &-image {
             min-width: 100%; min-height: 100%;
             max-width: 105%;

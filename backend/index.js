@@ -6,31 +6,22 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const { v4: uuidv4 } = require('uuid');
 const sharp = require('sharp');
+const profileRoutes = require('./routes/profile');
 
 const prisma = new PrismaClient();
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
-// Import routes
-const profileRoutes = require('./routes/profile');
-
-// Use routes
 app.use(profileRoutes);
 
 const storage = multer.diskStorage({
-    limits: { fileSize: 5 * 1024 * 1024 },
     destination: (req, file, cb) => {
-        // Set the directory where files will be saved
         const userId = req.userId;
         const uploadDir = path.join(__dirname, '..', 'public', 'users', userId.toString());
 
-        // Create directory if it doesn't exist
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
@@ -39,13 +30,12 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const fileType = req.route.path.includes('profile-picture') ? 'profilePicture' : 'banner';
-        cb(null, `${fileType}.jpg`); // Save as JPG
+        cb(null, `${fileType}-original-${Date.now()}.jpg`);
     }
 });
 
 const upload = multer({ storage });
 
-// Middleware for token validation
 const validateToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     console.log("Token received: ", token); // Debugging line
@@ -65,6 +55,22 @@ const validateToken = (req, res, next) => {
     }
 };
 
+const unlinkFile = (filePath, attempts = 5, delay = 100) => {
+    setTimeout(() => {
+        try {
+            fs.unlinkSync(filePath);
+            console.log('Successfully removed original file:', filePath);
+        } catch (err) {
+            if (attempts > 0 && err.code === 'EPERM') {
+                console.warn(`Retrying file deletion: ${filePath}, attempts left: ${attempts - 1}`);
+                unlinkFile(filePath, attempts - 1, delay * 2); // Retry with exponential backoff
+            } else {
+                console.error('Error removing original file:', err);
+            }
+        }
+    }, delay);
+};
+
 const handleFileUpload = async (req, res) => {
     try {
         const { file } = req;
@@ -74,34 +80,38 @@ const handleFileUpload = async (req, res) => {
         }
 
         const fileType = req.route.path.includes('profile-picture') ? 'profilePicture' : 'banner';
-        const filePath = path.join('users', req.userId.toString(), file.filename);
+        const userDir = path.join(__dirname, '..', 'public', 'users', req.userId.toString());
+        const originalFilePath = file.path;
+        const jpegFilePath = path.join(userDir, `${fileType}.jpg`);
+
+        console.log('Original file path:', originalFilePath); // Debugging line
+        console.log('JPEG file path:', jpegFilePath); // Debugging line
 
         // Convert to JPEG using sharp
-        const jpegFilePath = path.join('users', req.userId.toString(), `${fileType}.jpg`);
-        await sharp(file.path)
+        await sharp(originalFilePath)
             .jpeg()
-            .toFile(path.join(__dirname, '..', 'public', jpegFilePath));
+            .toFile(jpegFilePath);
 
-        // Remove the original uploaded file
-        fs.unlinkSync(file.path);
+        // Ensure the file is no longer being used before unlinking
+        unlinkFile(originalFilePath);
 
         console.log('Attempting to update user in database with:', {
             userId: req.userId,
             fileType,
-            filePath: jpegFilePath
+            filePath: path.join('users', req.userId.toString(), `${fileType}.jpg`)
         });
 
         // Store file path in the database using Prisma
         const updatedUser = await prisma.user.update({
             where: { id: req.userId },
             data: {
-                [fileType]: jpegFilePath, // Dynamic field based on 'profilePicture' or 'banner'
+                [fileType]: path.join('users', req.userId.toString(), `${fileType}.jpg`),
             },
         });
 
         console.log('Database update successful:', updatedUser);
 
-        res.status(200).json({ filePath: jpegFilePath });
+        res.status(200).json({ filePath: path.join('users', req.userId.toString(), `${fileType}.jpg`) });
     } catch (error) {
         console.error('Error processing file:', error); // Detailed error logging
         res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -161,6 +171,7 @@ app.get('/profile', validateToken, async (req, res) => {
     }
 });
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

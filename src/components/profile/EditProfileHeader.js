@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef} from "react";
+import React, { useContext, useState, useRef } from "react";
 import { AuthContext } from '../../contexts/AuthContext';
 import FileUpload from './FileUpload';
 
@@ -40,7 +40,7 @@ const EditProfileHeader = () => {
                     <div className="editprofile-inner-details-picture-edit-shadow"></div>
                 </div>
                 <div className="editprofile-inner-details-picture-container">
-                    <img className="editprofile-inner-details-picture-container-image" src={process.env.PUBLIC_URL + user?.profilePicture} alt=""/>
+                    <img className="editprofile-inner-details-picture-container-image" src={profilePictureUrl || (process.env.PUBLIC_URL + user?.profilePicture)} alt=""/>
                 </div>
             </div>
             <FileUpload ref={profilePictureUploadRef}
@@ -67,7 +67,7 @@ const EditProfileHeader = () => {
                     <div className="editprofile-inner-details-header-edit-shadow"></div>
                 </div>
                 <div className="editprofile-inner-details-header-container">
-                    <img className="editprofile-inner-details-header-container-image" src={process.env.PUBLIC_URL + user?.banner} alt=""/>
+                    <img className="editprofile-inner-details-header-container-image" src={bannerUrl || (process.env.PUBLIC_URL + user?.banner)} alt=""/>
                 </div>
             </div>
             <FileUpload ref={bannerUploadRef}

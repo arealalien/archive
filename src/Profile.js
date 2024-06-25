@@ -18,7 +18,7 @@ function Profile() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/user/${username}`);
+                const response = await axios.get(`http://localhost:5000/user/${encodeURIComponent(username)}`);
                 setUser(response.data);
             } catch (err) {
                 setError('Failed to fetch user data');
