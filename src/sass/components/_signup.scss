@@ -11,7 +11,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     background-color: hslac($black, 1);
-    border: 1px solid hslac($white, .5);
+    border: 1px solid hslac($white, .1);
     border-radius: 4em;
     gap: 2em;
     @media (max-width: $layout-breakpoint-small) {
@@ -135,7 +135,7 @@
                 font-size: $paragraph-large;
                 font-weight: 300;
                 background-color: hslac($white, .1);
-                border: 1px solid hslac($white, .5);
+                border: 1px solid hslac($white, .1);
                 border-radius: 5em;
                 backdrop-filter: blur(1.5rem);
               }
