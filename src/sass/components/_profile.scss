@@ -83,6 +83,10 @@
           padding: 0 0 2em 0;
           height: 100%;
           @include flex-left-end();
+
+          .blackbutton {
+            font-size: $paragraph-large;
+          }
         }
       }
       &-overlay {

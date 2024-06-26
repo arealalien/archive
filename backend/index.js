@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 const profileRoutes = require('./routes/profile');
+const subscribeRoutes = require('./routes/subscribe');
 
 const prisma = new PrismaClient();
 const app = express();
@@ -15,7 +16,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
-app.use(profileRoutes);
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -36,6 +36,47 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+app.post('/signup', async (req, res) => {
+    const { email, password, confirmPassword, name } = req.body;
+
+    if (password !== confirmPassword) {
+        res.status(400).json({ error: 'Passwords do not match' });
+        return;
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await prisma.user.create({
+            data: {
+                email,
+                password: hashedPassword,
+                name,
+            },
+        });
+        res.status(201).json(user);
+    } catch (error) {
+        if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+            res.status(400).json({ error: 'Email already exists' });
+        } else if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
+            res.status(400).json({ error: 'Name already exists' });
+        } else {
+            console.error(error);
+            res.status(500).json({ error: 'Signup failed' });
+        }
+    }
+});
+
+app.post('/login', async (req, res) => {
+    const { name, password } = req.body;
+    const user = await prisma.user.findUnique({ where: { name } });
+    if (user && (await bcrypt.compare(password, user.password))) {
+        const token = jwt.sign({ userId: user.id }, 'your_jwt_secret', { expiresIn: '30d' });
+        res.json({ token });
+    } else {
+        res.status(401).json({ error: 'Invalid credentials' });
+    }
+});
+
 const validateToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     console.log("Token received: ", token); // Debugging line
@@ -54,6 +95,9 @@ const validateToken = (req, res, next) => {
         return;
     }
 };
+
+app.use(validateToken, profileRoutes);
+app.use(validateToken, subscribeRoutes);
 
 const unlinkFile = (filePath, attempts = 5, delay = 100) => {
     setTimeout(() => {
@@ -120,47 +164,6 @@ const handleFileUpload = async (req, res) => {
 
 app.post('/upload/profile-picture', validateToken, upload.single('profilePicture'), handleFileUpload);
 app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpload);
-
-app.post('/signup', async (req, res) => {
-    const { email, password, confirmPassword, name } = req.body;
-
-    if (password !== confirmPassword) {
-        res.status(400).json({ error: 'Passwords do not match' });
-        return;
-    }
-
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await prisma.user.create({
-            data: {
-                email,
-                password: hashedPassword,
-                name,
-            },
-        });
-        res.status(201).json(user);
-    } catch (error) {
-        if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
-            res.status(400).json({ error: 'Email already exists' });
-        } else if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
-            res.status(400).json({ error: 'Name already exists' });
-        } else {
-            console.error(error);
-            res.status(500).json({ error: 'Signup failed' });
-        }
-    }
-});
-
-app.post('/login', async (req, res) => {
-    const { name, password } = req.body;
-    const user = await prisma.user.findUnique({ where: { name } });
-    if (user && (await bcrypt.compare(password, user.password))) {
-        const token = jwt.sign({ userId: user.id }, 'your_jwt_secret', { expiresIn: '30d' });
-        res.json({ token });
-    } else {
-        res.status(401).json({ error: 'Invalid credentials' });
-    }
-});
 
 app.get('/profile', validateToken, async (req, res) => {
     try {

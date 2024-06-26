@@ -25,6 +25,8 @@ model User {
   playlists      Playlist[]
   likedVideos    Video[]   @relation("LikedVideos")
   comments       Comment[]
+  subscribers    Subscription[]  @relation("SubscribedTo")
+  subscriptions  Subscription[]  @relation("Subscribers")
 }
 
 model Video {
@@ -74,4 +76,14 @@ model Comment {
   videoId        Int?
   post           Post?     @relation(fields: [postId], references: [id])
   postId         Int?
+}
+
+model Subscription {
+  id             Int             @id @default(autoincrement())
+  subscriber     User            @relation("Subscribers", fields: [subscriberId], references: [id])
+  subscriberId   Int
+  subscribedTo   User            @relation("SubscribedTo", fields: [subscribedToId], references: [id])
+  subscribedToId Int
+
+  @@unique([subscriberId, subscribedToId])
 }

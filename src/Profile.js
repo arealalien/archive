@@ -13,20 +13,58 @@ import Footer from "./components/Footer";
 function Profile() {
     const { username } = useParams();
     const [user, setUser] = useState(null);
+    const [subscriberCount, setSubscriberCount] = useState(null);
     const [error, setError] = useState('');
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setError('No token found');
+                return;
+            }
+
             try {
-                const response = await axios.get(`http://localhost:5000/user/${encodeURIComponent(username)}`);
+                const headers = { Authorization: `Bearer ${token}` };
+
+                // Fetch user data
+                const response = await axios.get(`http://localhost:5000/user/${encodeURIComponent(username)}`, { headers });
                 setUser(response.data);
+
+                // Fetch subscription status
+                const subscriptionStatus = await axios.get(`http://localhost:5000/subscribe/status/${encodeURIComponent(username)}`, { headers });
+                setIsSubscribed(subscriptionStatus.data.isSubscribed);
+
+                // Fetch subscriber count
+                const subscriberResponse = await axios.get(`http://localhost:5000/user/${encodeURIComponent(username)}/subscribers`, { headers });
+                setSubscriberCount(subscriberResponse.data.subscriberCount);
             } catch (err) {
+                console.error('Error fetching user data:', err);
                 setError('Failed to fetch user data');
             }
         };
 
         fetchUserData();
     }, [username]);
+
+    const handleSubscribe = async () => {
+        try {
+            const endpoint = isSubscribed ? `unsubscribe` : `subscribe`;
+            const response = await axios.post(`http://localhost:5000/subscribe/${encodeURIComponent(username)}`, {}, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+
+            // Check response and update state accordingly
+            if (response.data.message === 'Subscribed successfully') {
+                setIsSubscribed(true); // Update to subscribed
+            } else if (response.data.message === 'Unsubscribed successfully') {
+                setIsSubscribed(false); // Update to unsubscribed
+            }
+        } catch (err) {
+            setError('Failed to subscribe');
+        }
+    };
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -85,11 +123,20 @@ function Profile() {
                                             </g>
                                         </svg>
                                     </h1>
-                                    <p className="profile-inner-header-info-left-text-subs">15M Subscribers</p>
+                                    <p className="profile-inner-header-info-left-text-subs">{subscriberCount} Subscribers</p>
                                 </div>
                             </div>
                             <div className="profile-inner-header-info-right">
-                                <button className="mainbutton">Subscribe</button>
+                                {isSubscribed ? (
+                                    <button className="blackbutton" onClick={handleSubscribe} disabled={isSubscribed}>
+                                        Subscribed
+                                        <div className="blackbutton-shadow"></div>
+                                    </button>
+                                ) : (
+                                    <button className="mainbutton" onClick={handleSubscribe} disabled={isSubscribed}>
+                                        Subscribe
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <div className="profile-inner-header-overlay"></div>
