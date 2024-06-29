@@ -13,9 +13,12 @@
     border-radius: 4em;
     @include flex-center();
 
-    &-first {
-      width: 100%; height: 100%;
+    .hidden {
       display: none !important;
+    }
+    &-first {
+      margin: 30vh 0;
+      width: 100%; height: 100%;
       @include flex-center();
     }
     &-second {
@@ -183,6 +186,7 @@
           bottom: 4.6em;
           padding: 0 2.5em;
           position: fixed;
+          z-index: 523;
           @include flex-center();
 
           &-inner {

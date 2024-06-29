@@ -34,6 +34,9 @@ model Video {
   creator        User      @relation(fields: [creatorId], references: [id])
   creatorId      Int
   title          String
+  description    String
+  videoUrl       String    @unique
+  datePosted     DateTime  @default(now())
   views          Int       @default(0)
   likes          Int       @default(0)
   comments       Comment[]

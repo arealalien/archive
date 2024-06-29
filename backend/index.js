@@ -7,6 +7,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+const { v4: uuidv4 } = require('uuid');
 const profileRoutes = require('./routes/profile');
 const subscribeRoutes = require('./routes/subscribe');
 
@@ -35,6 +36,53 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+const videoStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const userId = req.userId;
+        const videoId = uuidv4(); // Generate a unique ID for the video
+        const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
+        if (!fs.existsSync(videoFolder)) {
+            fs.mkdirSync(videoFolder, { recursive: true });
+        }
+        req.videoId = videoId; // Pass the video ID for use in the filename
+        cb(null, videoFolder);
+    },
+    filename: (req, file, cb) => {
+        const fileName = `${req.videoId}${path.extname(file.originalname)}`;
+        cb(null, fileName);
+    }
+});
+const thumbnailStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const userId = req.userId;
+        const videoId = req.body.videoId; // Use the videoId passed in the request body
+        const thumbnailFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
+        cb(null, thumbnailFolder);
+    },
+    filename: (req, file, cb) => {
+        cb(null, 'thumbnail.jpg');
+    }
+});
+const videoUpload = multer({
+    storage: videoStorage,
+    fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(mp4|avi|mov)$/)) {
+            return cb(new Error('Only video files are allowed!'), false);
+        }
+        cb(null, true);
+    }
+});
+
+const thumbnailUpload = multer({
+    storage: thumbnailStorage,
+    fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+    }
+});
 
 app.post('/signup', async (req, res) => {
     const { email, password, confirmPassword, name } = req.body;
@@ -164,6 +212,81 @@ const handleFileUpload = async (req, res) => {
 
 app.post('/upload/profile-picture', validateToken, upload.single('profilePicture'), handleFileUpload);
 app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpload);
+
+app.post('/upload/video', validateToken, videoUpload.single('video'), async (req, res) => {
+    const { title, description } = req.body;
+    const videoFile = req.file;
+
+    const videoUrl = path.join(videoFile.filename);
+
+    try {
+        const video = await prisma.video.create({
+            data: {
+                creatorId: req.userId,
+                videoUrl,
+                title,
+                description,
+                datePosted: new Date(),
+            },
+        });
+        res.json({ message: 'Video uploaded successfully!', videoId: video.id });
+    } catch (error) {
+        console.error('Error saving video metadata:', error);
+        res.status(500).json({ error: 'Failed to save video metadata', details: error.message });
+    }
+});
+
+app.post('/upload/thumbnail', validateToken, thumbnailUpload.single('image'), async (req, res) => {
+    const { videoId } = req.body;
+    const imageFile = req.file;
+    const thumbnailPath = path.join('users', req.userId.toString(), 'videos', videoId, 'thumbnail.jpg');
+    const temporaryThumbnailPath = path.join(__dirname, '..', 'public', 'users', req.userId.toString(), 'videos', videoId, 'temp_thumbnail.jpg');
+
+    try {
+        // Process and save thumbnail
+        await sharp(imageFile.path)
+            .resize({ width: 1280, height: 720 }) // Resize image as needed
+            .jpeg()
+            .toFile(temporaryThumbnailPath);
+
+        // Move the temporary file to the final destination
+        fs.renameSync(temporaryThumbnailPath, path.join(__dirname, '..', 'public', thumbnailPath));
+        console.log('Thumbnail saved at:', thumbnailPath); // Log thumbnail path
+
+        // Remove original image file after processing
+        unlinkFile(imageFile.path);
+
+        res.json({ message: 'Thumbnail uploaded successfully!' });
+    } catch (error) {
+        console.error('Error processing thumbnail:', error);
+        res.status(500).json({ error: 'Failed to process thumbnail', details: error.message });
+    }
+});
+
+app.get('/videos', async (req, res) => {
+    try {
+        const videos = await prisma.video.findMany({
+            select: {
+                id: true,
+                creatorId: true,
+                title: true,
+                description: true,
+                videoUrl: true,
+                datePosted: true,
+                creator: {
+                    select: {
+                        name: true,
+                        profilePicture: true,
+                    },
+                },
+            },
+        });
+        res.json(videos);
+    } catch (error) {
+        console.error('Error fetching videos:', error);
+        res.status(500).json({ error: 'Failed to fetch videos' });
+    }
+});
 
 app.get('/profile', validateToken, async (req, res) => {
     try {
