@@ -76,7 +76,7 @@ const VideosSec = () => {
                         <p className="videos-inner-item-bottom-info-title">{video.title}</p>
                         <p className="videos-inner-item-bottom-info-info">{video.views} Views &middot; {video.date}</p>
                     </div>
-                    <NavLink to="/video" className="videos-inner-item-overlay"></NavLink>
+                    <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-overlay"></NavLink>
                     <img className="videos-inner-item-background" src={process.env.PUBLIC_URL + "/users/" + video.creatorId + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"} alt=""/>
                 </div>
             ))}

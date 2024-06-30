@@ -40,12 +40,12 @@ const upload = multer({ storage });
 const videoStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const userId = req.userId;
-        const videoId = uuidv4(); // Generate a unique ID for the video
+        const videoId = uuidv4();
         const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
         if (!fs.existsSync(videoFolder)) {
             fs.mkdirSync(videoFolder, { recursive: true });
         }
-        req.videoId = videoId; // Pass the video ID for use in the filename
+        req.videoId = videoId;
         cb(null, videoFolder);
     },
     filename: (req, file, cb) => {
@@ -53,17 +53,25 @@ const videoStorage = multer.diskStorage({
         cb(null, fileName);
     }
 });
+
 const thumbnailStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const userId = req.userId;
-        const videoId = req.body.videoId; // Use the videoId passed in the request body
+        const videoId = req.body.videoUrl; // Fetch videoId from the request body
+        if (!videoId) {
+            return cb(new Error('videoId is missing'));
+        }
         const thumbnailFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
+        if (!fs.existsSync(thumbnailFolder)) {
+            fs.mkdirSync(thumbnailFolder, { recursive: true });
+        }
         cb(null, thumbnailFolder);
     },
     filename: (req, file, cb) => {
         cb(null, 'thumbnail.jpg');
     }
 });
+
 const videoUpload = multer({
     storage: videoStorage,
     fileFilter: (req, file, cb) => {
@@ -216,7 +224,6 @@ app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpl
 app.post('/upload/video', validateToken, videoUpload.single('video'), async (req, res) => {
     const { title, description } = req.body;
     const videoFile = req.file;
-
     const videoUrl = path.join(videoFile.filename);
 
     try {
@@ -229,7 +236,7 @@ app.post('/upload/video', validateToken, videoUpload.single('video'), async (req
                 datePosted: new Date(),
             },
         });
-        res.json({ message: 'Video uploaded successfully!', videoId: video.id });
+        res.json({ message: 'Video uploaded successfully!', videoId: video.id, videoUrl }); // Include videoUrl
     } catch (error) {
         console.error('Error saving video metadata:', error);
         res.status(500).json({ error: 'Failed to save video metadata', details: error.message });
@@ -237,25 +244,11 @@ app.post('/upload/video', validateToken, videoUpload.single('video'), async (req
 });
 
 app.post('/upload/thumbnail', validateToken, thumbnailUpload.single('image'), async (req, res) => {
-    const { videoId } = req.body;
     const imageFile = req.file;
+    const videoId = req.body.videoUrl; // Fetch videoId from the request body
     const thumbnailPath = path.join('users', req.userId.toString(), 'videos', videoId, 'thumbnail.jpg');
-    const temporaryThumbnailPath = path.join(__dirname, '..', 'public', 'users', req.userId.toString(), 'videos', videoId, 'temp_thumbnail.jpg');
 
     try {
-        // Process and save thumbnail
-        await sharp(imageFile.path)
-            .resize({ width: 1280, height: 720 }) // Resize image as needed
-            .jpeg()
-            .toFile(temporaryThumbnailPath);
-
-        // Move the temporary file to the final destination
-        fs.renameSync(temporaryThumbnailPath, path.join(__dirname, '..', 'public', thumbnailPath));
-        console.log('Thumbnail saved at:', thumbnailPath); // Log thumbnail path
-
-        // Remove original image file after processing
-        unlinkFile(imageFile.path);
-
         res.json({ message: 'Thumbnail uploaded successfully!' });
     } catch (error) {
         console.error('Error processing thumbnail:', error);

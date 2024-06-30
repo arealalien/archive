@@ -40,12 +40,20 @@ const UploadForm = () => {
                 },
             });
 
-            const videoId = videoResponse.data.videoId;
+            const { videoId, videoUrl } = videoResponse.data;
+
+            alert('Video Response:' + videoId + " - " + videoUrl);
+
+            // Ensure videoUrl is not undefined
+            if (!videoUrl) {
+                throw new Error('Video URL is missing in the response');
+            }
 
             // Upload thumbnail image
             const imageFormData = new FormData();
             imageFormData.append('image', imageFile);
-            imageFormData.append('videoId', videoId); // Pass the videoId here
+            imageFormData.append('videoId', videoId); // Pass the videoId to the thumbnail upload
+            imageFormData.append('videoUrl', videoUrl.split('.')[0]); // Pass the videoUrl to the thumbnail upload
 
             await axios.post('http://localhost:5000/upload/thumbnail', imageFormData, {
                 headers: {
