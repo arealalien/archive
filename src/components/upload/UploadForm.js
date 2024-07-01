@@ -42,8 +42,6 @@ const UploadForm = () => {
 
             const { videoId, videoUrl } = videoResponse.data;
 
-            alert('Video Response:' + videoId + " - " + videoUrl);
-
             // Ensure videoUrl is not undefined
             if (!videoUrl) {
                 throw new Error('Video URL is missing in the response');
