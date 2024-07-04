@@ -83,6 +83,11 @@
   justify-content: space-between;
   align-items: flex-end;
 }
+@mixin flex-space-bet-start {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
 @mixin flex-space-bet-start-col {
   display: flex;
   justify-content: space-between;

@@ -63,7 +63,7 @@
         width: 100%;
         position: absolute;
         z-index: 100;
-        @include flex-space-bet();
+        @include flex-space-bet-start();
 
         &-user {
           padding: .4em;
