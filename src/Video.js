@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { format } from "date-fns";
 import './css/main.css';
 
 // Components
@@ -10,14 +13,61 @@ import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 
 function Video() {
+    const location = useLocation();
+    const [videoDetails, setVideoDetails] = useState(null);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchVideoData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setError('No token found');
+                return;
+            }
+
+            const queryParams = new URLSearchParams(location.search);
+            const videoUrl = queryParams.get('view');
+
+            if (!videoUrl) {
+                setError('No video URL found');
+                return;
+            }
+
+            try {
+                const headers = { Authorization: `Bearer ${token}` };
+
+                // First, increment view count
+                await axios.post(`http://localhost:5000/videos/${encodeURIComponent(videoUrl)}/increment-view`, {}, { headers });
+
+                // Then fetch video details
+                const videoResponse = await axios.get(`http://localhost:5000/videos/${encodeURIComponent(videoUrl)}`, { headers });
+                setVideoDetails(videoResponse.data);
+
+            } catch (err) {
+                console.error('Error fetching video data:', err);
+                setError('Failed to fetch video data');
+            }
+        };
+
+        fetchVideoData();
+    }, [location.search]);
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!videoDetails) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <>
-            <DocumentTitle title="Archive - Video"/>
+            <DocumentTitle title={`Archive - ` + videoDetails.title} />
             <Navbar searchbar="yes"/>
             <section className="video">
                 <div className="video-inner view-width">
                     <div className="video-inner-left">
-                        <VideoSec/>
+                        <VideoSec video={videoDetails}/>
                         <section className="videos">
                             <div className="videos-inner videos-inner-3">
                                 <VideosSec/>
@@ -27,7 +77,8 @@ function Video() {
                     <div className="video-inner-right">
                         <div className="video-inner-right-box">
                             <div className="video-inner-right-box-top">
-                                <h3 className="video-inner-right-box-top-title">Photography shoot at night | EP 1</h3>
+                                <h3 className="video-inner-right-box-top-title">{videoDetails.title}</h3>
+                                <p className="video-inner-right-box-top-subtitle">{videoDetails.views} Views &middot; {format(new Date(videoDetails.datePosted), 'MMM d, yyyy')}</p>
                             </div>
                             <div className="video-inner-right-box-center">
                                 <div className="video-inner-right-box-center-user">
@@ -95,7 +146,7 @@ function Video() {
                                             </g>
                                         </g>
                                     </svg>
-                                    <p className="homebar-inner-text">21k</p>
+                                    <p className="homebar-inner-text">{videoDetails.likes}</p>
                                 </div>
                                 <div className="video-inner-right-box-bottom-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +169,7 @@ function Video() {
                                             </g>
                                         </g>
                                     </svg>
-                                    <p className="homebar-inner-text">1.2k</p>
+                                    <p className="homebar-inner-text">0</p>
                                 </div>
                                 <div className="video-inner-right-box-bottom-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"

@@ -10,6 +10,7 @@ const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 const profileRoutes = require('./routes/profile');
 const subscribeRoutes = require('./routes/subscribe');
+const videoRoutes = require('./routes/video');
 
 const prisma = new PrismaClient();
 const app = express();
@@ -154,6 +155,7 @@ const validateToken = (req, res, next) => {
 
 app.use(validateToken, profileRoutes);
 app.use(validateToken, subscribeRoutes);
+app.use(validateToken, videoRoutes);
 
 const unlinkFile = (filePath, attempts = 5, delay = 100) => {
     setTimeout(() => {

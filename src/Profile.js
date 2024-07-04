@@ -71,7 +71,9 @@ function Profile() {
     }
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <section className="loading">
+            <div className="loading-box"><p className="loading-box-text">Loading</p></div>
+        </section>;
     }
 
     const profilePictureUrl = `http://localhost:5000/${user.profilePicture}`;
@@ -144,7 +146,7 @@ function Profile() {
                              src={bannerUrl}
                              alt=""/>
                     </header>
-                    <ProfileSec/>
+                    <ProfileSec profileName={user.name} />
                 </div>
             </section>
             <PageShadow/>

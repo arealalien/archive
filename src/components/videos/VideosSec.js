@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 
-const VideosSec = () => {
+const VideosSec = ({ videoCreator }) => {
     const [videos, setVideos] = useState([]);
 
     useEffect(() => {
         const fetchVideos = async () => {
             try {
                 const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
-                const response = await fetch('http://localhost:5000/videos', {
+                let url = 'http://localhost:5000/videos';
+
+                if (videoCreator) {
+                    url = `http://localhost:5000/videos?creator=${encodeURIComponent(videoCreator)}`;
+                }
+
+                const response = await fetch(url, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -24,7 +31,7 @@ const VideosSec = () => {
         };
 
         fetchVideos();
-    }, []);
+    }, [videoCreator]);
 
     return (
         <>
@@ -74,10 +81,10 @@ const VideosSec = () => {
                     </div>
                     <div className="videos-inner-item-bottom-info">
                         <p className="videos-inner-item-bottom-info-title">{video.title}</p>
-                        <p className="videos-inner-item-bottom-info-info">{video.views} Views &middot; {video.date}</p>
+                        <p className="videos-inner-item-bottom-info-info">{video.views} Views &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</p>
                     </div>
                     <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-overlay"></NavLink>
-                    <img className="videos-inner-item-background" src={process.env.PUBLIC_URL + "/users/" + video.creatorId + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"} alt=""/>
+                    <img className="videos-inner-item-background" src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"} alt=""/>
                 </div>
             ))}
         </>

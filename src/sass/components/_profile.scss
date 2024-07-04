@@ -173,3 +173,25 @@
     }
   }
 }
+.loading {
+  width: 100vw; height: 100vh;
+  @include flex-center();
+
+  &-box {
+    width: 15em;
+    aspect-ratio: 1 / 1;
+    border: 1px solid hslac($white, .1);
+    border-radius: 50%;
+    animation: boxRotation 5s cubic-bezier($transition-main, 1) infinite;
+    @include flex-center();
+
+    &-text {
+      color: hslac($white, 1);
+    }
+  }
+}
+
+@keyframes boxRotation {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}

@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 // Components
 import VideosSec from "../videos/VideosSec";
 
-const ProfileSec  = () => {
+const ProfileSec  = ({ profileName }) => {
     return (
         <div className="profile-inner-content">
             <div className="profile-inner-content-left">
@@ -95,7 +95,7 @@ const ProfileSec  = () => {
                 </ul>
             </div>
             <div className="profile-inner-content-right videos-inner videos-inner-3">
-                <VideosSec/>
+                <VideosSec videoCreator={profileName}/>
             </div>
         </div>
     );
