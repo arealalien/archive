@@ -24,7 +24,10 @@ const VideosSec = ({ videoCreator }) => {
                     throw new Error('Failed to fetch videos');
                 }
                 const data = await response.json();
-                setVideos(data);
+                setVideos(data.map(video => ({
+                    ...video,
+                    duration: formatDuration(video.duration),
+                })));
             } catch (error) {
                 console.error('Error fetching video data:', error);
             }
@@ -32,6 +35,18 @@ const VideosSec = ({ videoCreator }) => {
 
         fetchVideos();
     }, [videoCreator]);
+
+    const formatDuration = (durationInSeconds) => {
+        const hours = Math.floor(durationInSeconds / 3600);
+        const minutes = Math.floor((durationInSeconds % 3600) / 60);
+        const seconds = durationInSeconds % 60;
+
+        if (hours > 0) {
+            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        } else {
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+    };
 
     return (
         <>
@@ -75,7 +90,7 @@ const VideosSec = ({ videoCreator }) => {
                             <div className="videos-inner-item-top-info-user-shadow"></div>
                         </NavLink>
                         <div className="videos-inner-item-top-info-time">
-                            <p>{video.time}</p>
+                            <p>{video.duration}</p>
                             <div className="videos-inner-item-top-info-time-shadow"></div>
                         </div>
                     </div>

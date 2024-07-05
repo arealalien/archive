@@ -55,6 +55,16 @@ const videoStorage = multer.diskStorage({
     }
 });
 
+const videoUpload = multer({
+    storage: videoStorage,
+    fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(mp4|avi|mov)$/)) {
+            return cb(new Error('Only video files are allowed!'), false);
+        }
+        cb(null, true);
+    }
+});
+
 const thumbnailStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const userId = req.userId;
@@ -70,16 +80,6 @@ const thumbnailStorage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         cb(null, 'thumbnail.jpg');
-    }
-});
-
-const videoUpload = multer({
-    storage: videoStorage,
-    fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(mp4|avi|mov)$/)) {
-            return cb(new Error('Only video files are allowed!'), false);
-        }
-        cb(null, true);
     }
 });
 
@@ -224,11 +224,16 @@ app.post('/upload/profile-picture', validateToken, upload.single('profilePicture
 app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpload);
 
 app.post('/upload/video', validateToken, videoUpload.single('video'), async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, duration } = req.body;
     const videoFile = req.file;
-    const videoUrl = path.join(videoFile.filename);
 
     try {
+        if (!videoFile) {
+            throw new Error('No video file uploaded');
+        }
+
+        const videoUrl = path.join(videoFile.filename);
+
         const video = await prisma.video.create({
             data: {
                 creatorId: req.userId,
@@ -236,6 +241,7 @@ app.post('/upload/video', validateToken, videoUpload.single('video'), async (req
                 title,
                 description,
                 datePosted: new Date(),
+                duration: parseFloat(duration),
             },
         });
         res.json({ message: 'Video uploaded successfully!', videoId: video.id, videoUrl }); // Include videoUrl

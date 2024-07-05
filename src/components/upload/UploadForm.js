@@ -7,13 +7,15 @@ const UploadForm = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [videoFile, setVideoFile] = useState(null);
+    const [videoDuration, setVideoDuration] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [showDetailsForm, setShowDetailsForm] = useState(false);
     const videoUploadRef = useRef(null);
     const imageUploadRef = useRef(null);
 
-    const handleVideoFileChange = (file) => {
+    const handleVideoFileChange = (file, duration) => {
         setVideoFile(file);
+        setVideoDuration(duration);
         setShowDetailsForm(true);
     };
 
@@ -32,6 +34,7 @@ const UploadForm = () => {
             videoFormData.append('video', videoFile);
             videoFormData.append('title', title);
             videoFormData.append('description', description);
+            videoFormData.append('duration', videoDuration);
 
             const videoResponse = await axios.post('http://localhost:5000/upload/video', videoFormData, {
                 headers: {
@@ -40,7 +43,7 @@ const UploadForm = () => {
                 },
             });
 
-            const { videoId, videoUrl } = videoResponse.data;
+            const { videoUrl } = videoResponse.data;
 
             // Ensure videoUrl is not undefined
             if (!videoUrl) {
@@ -50,7 +53,6 @@ const UploadForm = () => {
             // Upload thumbnail image
             const imageFormData = new FormData();
             imageFormData.append('image', imageFile);
-            imageFormData.append('videoId', videoId); // Pass the videoId to the thumbnail upload
             imageFormData.append('videoUrl', videoUrl.split('.')[0]); // Pass the videoUrl to the thumbnail upload
 
             await axios.post('http://localhost:5000/upload/thumbnail', imageFormData, {

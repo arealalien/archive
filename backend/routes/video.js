@@ -79,6 +79,7 @@ router.get('/videos', async (req, res) => {
                 datePosted: true,
                 views: true,
                 likes: true,
+                duration: true,
                 creator: {
                     select: {
                         id: true,

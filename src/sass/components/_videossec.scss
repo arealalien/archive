@@ -134,6 +134,7 @@
           @include flex-center();
 
           p {
+            color: hslac($white, .7);
             font-size: $paragraph;
           }
           &-shadow {

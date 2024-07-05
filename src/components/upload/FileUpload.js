@@ -14,7 +14,16 @@ const FileUpload = forwardRef(({ onFileChange }, ref) => {
         setError('');
 
         if (selectedFile) {
-            onFileChange(selectedFile);
+            const videoElement = document.createElement('video');
+            videoElement.preload = 'metadata';
+
+            videoElement.onloadedmetadata = function() {
+                window.URL.revokeObjectURL(videoElement.src);
+                const duration = videoElement.duration;
+                onFileChange(selectedFile, duration);
+            }
+
+            videoElement.src = URL.createObjectURL(selectedFile);
         } else {
             setError('No file selected.');
         }

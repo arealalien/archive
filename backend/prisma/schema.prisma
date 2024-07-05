@@ -36,6 +36,7 @@ model Video {
   title          String
   description    String
   videoUrl       String    @unique
+  duration       Int       @default(0)
   datePosted     DateTime  @default(now())
   views          Int       @default(0)
   likes          Int       @default(0)
