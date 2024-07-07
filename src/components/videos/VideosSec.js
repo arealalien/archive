@@ -48,6 +48,25 @@ const VideosSec = ({ videoCreator }) => {
         }
     };
 
+    function formatViews(views) {
+        if (views < 1000) return views.toString();
+        if (views < 10000) {
+            const result = (views / 1000).toFixed(1);
+            return result.endsWith('.0') ? Math.floor(views / 1000) + 'k' : result + 'k';
+        }
+        if (views < 1000000) return Math.floor(views / 1000) + 'k';
+        if (views < 10000000) {
+            const result = (views / 1000000).toFixed(1);
+            return result.endsWith('.0') ? Math.floor(views / 1000000) + ' mill.' : result + ' mill.';
+        }
+        if (views < 1000000000) return Math.floor(views / 1000000) + ' mill.';
+        if (views < 10000000000) {
+            const result = (views / 1000000000).toFixed(1);
+            return result.endsWith('.0') ? Math.floor(views / 1000000000) + ' bill.' : result + ' bill.';
+        }
+        return Math.floor(views / 1000000000) + ' bill.';
+    }
+
     return (
         <>
             {videos.map((video, index) => (
@@ -96,7 +115,7 @@ const VideosSec = ({ videoCreator }) => {
                     </div>
                     <div className="videos-inner-item-bottom-info">
                         <p className="videos-inner-item-bottom-info-title">{video.title}</p>
-                        <p className="videos-inner-item-bottom-info-info">{video.views} Views &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</p>
+                        <p className="videos-inner-item-bottom-info-info">Seen {formatViews(video.views)} times &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</p>
                     </div>
                     <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-overlay"></NavLink>
                     <img className="videos-inner-item-background" src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"} alt=""/>

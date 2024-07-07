@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {NavLink, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import { format } from "date-fns";
+import { NumericFormat } from "react-number-format";
 import './css/main.css';
 
 // Components
@@ -175,7 +176,13 @@ function Video() {
                             </div>
                             <div className="video-inner-right-box-center">
                                 <h3 className="video-inner-right-box-center-title">{videoDetails.title}</h3>
-                                <p className="video-inner-right-box-center-subtitle">{videoDetails.views} Views &middot; {format(new Date(videoDetails.datePosted), 'MMM d, yyyy')}</p>
+                                <p className="video-inner-right-box-center-subtitle">
+                                    <NumericFormat
+                                    value={videoDetails.views}
+                                    thousandSeparator=" "
+                                    displayType="text"
+                                    renderText={(value) => <b>{value}</b>}
+                                /> Views &middot; {format(new Date(videoDetails.datePosted), 'MMM d, yyyy')}</p>
                                 <p className="video-inner-right-box-center-description">{videoDetails.description}</p>
                             </div>
                             <div className="video-inner-right-box-bottom">

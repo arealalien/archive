@@ -13,6 +13,7 @@
     }
     &-left {
       width: 100%;
+      position: relative;
       gap: 4em;
       @include flex-col();
 
@@ -41,8 +42,7 @@
         background-color: hslac($black, 0);
         border: 1px solid hslac($white, .1);
         border-radius: 2.5rem;
-        backdrop-filter: blur(1.5rem) brightness(90%);
-        gap: 3em;
+        backdrop-filter: blur(1.5rem) brightness(70%);
         @include flex-col();
 
         &-top {
@@ -67,7 +67,6 @@
               grid-template-columns: auto 1fr;
               place-items: center;
               text-decoration: none;
-              gap: 1em;
 
               &:hover {
                 .video-inner-right-box-top-user-container {
@@ -81,12 +80,14 @@
             &-overlay {
               width: 100%; height: 100%;
               position: absolute;
+              mask-image: linear-gradient(hslac($black, 1), transparent);
               background: linear-gradient(2deg, hslac($black, 1) 0, hslac($black, .25) 100%);
               z-index: 3;
             }
             &-background {
-              min-width: 105%; min-height: 105%;
-              max-width: 110%;
+              height: 100%;
+              filter: brightness(70%);
+              mask-image: linear-gradient(hslac($black, 1), transparent);
               position: absolute;
               object-fit: cover;
             }
@@ -107,6 +108,7 @@
               }
             }
             &-text {
+              padding: 0 0 0 1em;
               width: 100%;
               position: relative;
               gap: .25em;
@@ -146,7 +148,7 @@
           }
         }
         &-center {
-          padding: 0 2.5em;
+          padding: 1em 2.5em 0 2.5em;
           width: 100%;
           gap: 1em;
           @include flex-col-left();
@@ -171,7 +173,7 @@
           }
         }
         &-bottom {
-          padding: 0 2.5em 2.5em 2.5em;
+          padding: 2.5em;
           width: 100%;
           @include flex-space-bet();
 
@@ -193,7 +195,7 @@
           top: 1em;
           width: 100%; height: 100%;
           position: absolute;
-          background-color: hslac($black, .5);
+          background-color: hslac($black, .3);
           filter: blur(1.5rem);
           z-index: -1;
         }
@@ -205,7 +207,7 @@
         background-color: hslac($black, 0);
         border: 1px solid hslac($white, .1);
         border-radius: 2.5rem;
-        backdrop-filter: blur(1.5rem) brightness(90%);
+        backdrop-filter: blur(1.5rem) brightness(70%);
         gap: 3em;
         @include flex-col();
 
@@ -221,7 +223,7 @@
           width: 100%;
           height: 100%;
           position: absolute;
-          background-color: hslac($black, .5);
+          background-color: hslac($black, .3);
           filter: blur(1.5rem);
           z-index: -1;
         }
@@ -343,6 +345,44 @@
             transition: all .3s cubic-bezier($transition-main, 1);
             @include flex-center();
 
+            &-progress {
+              left: 0;
+              width: 0; height: 2px;
+              position: absolute;
+              background: hslac($white, 1);
+              border-radius: 5em;
+            }
+            &-input {
+              -webkit-appearance :none;
+              -moz-appearance :none;
+              appearance :none;
+              width: 100%; height: 100%;
+              background: hslac($white, 0);
+              cursor: pointer;
+
+              &::-webkit-slider-thumb {
+                -webkit-appearance :none;
+                -moz-appearance :none;
+                appearance :none;
+                margin-top: -2px; margin-left: 0;
+                width: 6px; height: 6px;
+                background-color: hslac($white, 1);
+                border-radius: 50%;
+              }
+              &::-webkit-slider-runnable-track {
+                height: 2px;
+                background-color: hslac($white, .1);
+                border-radius: 5em;
+              }
+              &::-webkit-progress-value {
+                height: 2px;
+                background: hslac($white, 1);
+              }
+              &::-moz-range-progress {
+                height: 2px;
+                background: hslac($white, 1);
+              }
+            }
             &-inner {
               width: 100%; height: 2px;
               position: relative;
@@ -424,6 +464,51 @@
           cursor: pointer;
           @include flex-center();
 
+          &-progress {
+            left: 0;
+            width: 0; height: 3px;
+            position: absolute;
+            background: hslac($primary, 1);
+            border-radius: 5em;
+          }
+          &-input {
+            -webkit-appearance :none;
+            -moz-appearance :none;
+            appearance :none;
+            width: 100%; height: 100%;
+            background: hslac($white, 0);
+            cursor: pointer;
+
+            &:hover {
+              &::-webkit-slider-thumb {
+                transform: scale(1, 1);
+              }
+            }
+            &::-webkit-slider-thumb {
+              -webkit-appearance :none;
+              -moz-appearance :none;
+              appearance :none;
+              margin-top: -3px; margin-left: 0;
+              width: 9px; height: 9px;
+              background-color: hslac($primary, 1);
+              border-radius: 50%;
+              transform: scale(0, 0);
+              transition: transform .3s cubic-bezier($transition-main, 1);
+            }
+            &::-webkit-slider-runnable-track {
+              height: 3px;
+              background-color: hslac($white, .1);
+              border-radius: 5em;
+            }
+            &::-webkit-progress-value {
+              height: 3px;
+              background: hslac($primary, 1);
+            }
+            &::-moz-range-progress {
+              height: 3px;
+              background: hslac($primary, 1);
+            }
+          }
           &-inner {
             width: 100%; height: 3px;
             position: relative;
@@ -481,8 +566,20 @@
 .video-inner-left-box.fullscreen {
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  position: absolute;
+  position: fixed;
   aspect-ratio: auto;
   border-radius: 0;
   z-index: 100000;
+}
+#canvas {
+  top: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: absolute;
+  filter: blur(15rem);
+  transform: scale(1.5, 1.5);
+  opacity: .5;
+}
+#canvas.fullscreen {
+  display: none;
 }

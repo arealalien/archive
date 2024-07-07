@@ -159,20 +159,20 @@ app.use(validateToken, videoRoutes);
 
 const unlinkFile = (filePath, attempts = 5, delay = 100) => {
     setTimeout(() => {
-        try {
-            fs.unlinkSync(filePath);
-            console.log('Successfully removed original file:', filePath);
-        } catch (err) {
-            if (attempts > 0 && err.code === 'EPERM') {
-                console.warn(`Retrying file deletion: ${filePath}, attempts left: ${attempts - 1}`);
-                unlinkFile(filePath, attempts - 1, delay * 2); // Retry with exponential backoff
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                if (attempts > 0 && err.code === 'EPERM') {
+                    console.warn(`Retrying file deletion: ${filePath}, attempts left: ${attempts - 1}`);
+                    unlinkFile(filePath, attempts - 1, delay * 2); // Retry with exponential backoff
+                } else {
+                    console.error('Error removing original file:', err);
+                }
             } else {
-                console.error('Error removing original file:', err);
+                console.log('Successfully removed original file:', filePath);
             }
-        }
+        });
     }, delay);
 };
-
 const handleFileUpload = async (req, res) => {
     try {
         const { file } = req;
