@@ -36,7 +36,11 @@ const VideoSec  = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [volume, setVolume] = useState(0.5);
+    const [volume, setVolume] = useState(() => {
+        // Retrieve volume from localStorage if it exists
+        const savedVolume = localStorage.getItem('videoVolume');
+        return savedVolume ? parseFloat(savedVolume) : 0.5;
+    });
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [volumeIcon, setVolumeIcon] = useState(null);
     const [played, setPlayed] = useState(0);
@@ -45,6 +49,7 @@ const VideoSec  = () => {
     const canvasRef = useRef(null);
     const progressRef = useRef(null);
     const progressBarRef = useRef(null);
+    const audioProgressBarRef = useRef(null);
 
     const icons = {
         mute: (
@@ -102,7 +107,21 @@ const VideoSec  = () => {
         };
 
         fetchVideoData();
-    }, [location.search]);
+
+        const updateVolumeIcon = () => {
+            if (volume === 0) {
+                setVolumeIcon(icons.mute);
+            } else if (volume > 0 && volume <= 0.3) {
+                setVolumeIcon(icons.low);
+            } else if (volume > 0.3 && volume <= 0.6) {
+                setVolumeIcon(icons.medium);
+            } else {
+                setVolumeIcon(icons.high);
+            }
+        };
+
+        updateVolumeIcon(volume);
+    }, [location.search, volume]);
 
     useEffect(() => {
         const updateVolumeIcon = () => {
@@ -159,7 +178,17 @@ const VideoSec  = () => {
 
     const handleVolumeChange = (e) => {
         setVolume(parseFloat(e.target.value));
+        localStorage.setItem('videoVolume', parseFloat(e.target.value));
+        const width = e.target.value * 100;
+        audioProgressBarRef.current.style.width = `${width}%`;
     };
+
+    useEffect(() => {
+        if (audioProgressBarRef.current) {
+            const width = volume * 100;
+            audioProgressBarRef.current.style.width = `${width}%`;
+        }
+    }, [volume]);
 
     const handleProgress = (state) => {
         const currentTime = state.playedSeconds;
@@ -292,6 +321,8 @@ const VideoSec  = () => {
                                         {volumeIcon}
                                     </div>
                                     <div className="player-bottom-inner-left-audio-bar">
+                                        <div ref={audioProgressBarRef}
+                                             className="player-bottom-inner-left-audio-bar-progress"></div>
                                         <input
                                             className="player-bottom-inner-left-audio-bar-input"
                                             type="range"
