@@ -321,7 +321,7 @@ const VideoSec  = () => {
                                         {volumeIcon}
                                     </div>
                                     <div className="player-bottom-inner-left-audio-bar">
-                                        <div ref={audioProgressBarRef}
+                                        <div ref={audioProgressBarRef} style={{width:`${volume * 100}%`}}
                                              className="player-bottom-inner-left-audio-bar-progress"></div>
                                         <input
                                             className="player-bottom-inner-left-audio-bar-input"
