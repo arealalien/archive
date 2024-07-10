@@ -71,6 +71,9 @@ router.get('/videos', async (req, res) => {
 
         const videos = await prisma.video.findMany({
             where,
+            orderBy: {
+                datePosted: 'desc',
+            },
             select: {
                 id: true,
                 title: true,

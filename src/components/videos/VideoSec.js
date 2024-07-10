@@ -50,6 +50,7 @@ const VideoSec  = () => {
     const progressRef = useRef(null);
     const progressBarRef = useRef(null);
     const audioProgressBarRef = useRef(null);
+    const playerPopupRef = useRef(null);
 
     const icons = {
         mute: (
@@ -159,6 +160,15 @@ const VideoSec  = () => {
     const togglePlayPause = () => {
         setIsPlaying((prevIsPlaying) => !prevIsPlaying);
 
+        if (playerPopupRef.current) {
+            playerPopupRef.current.style.opacity = "1";
+            playerPopupRef.current.style.transform = "scale(.85, .85)";
+            setTimeout(function () {
+                playerPopupRef.current.style.opacity = "0";
+                playerPopupRef.current.style.transform = "scale(1, 1)";
+            }, 300);
+        }
+
         if (!canvasRef.current) return;
 
         const videoElement = playerRef.current.getInternalPlayer();
@@ -260,6 +270,33 @@ const VideoSec  = () => {
             <canvas id="canvas" className={`${isFullScreen ? 'fullscreen' : ''}`} ref={canvasRef}></canvas>
             <div className={`video-inner-left-box ${isFullScreen ? 'fullscreen' : ''}`}>
                 <div className="player">
+                    <div ref={playerPopupRef} className="player-popup">
+                        {isPlaying ? (
+                            <svg className="video-play-pause" xmlns="http://www.w3.org/2000/svg"
+                                 id="Xnix_Line_Pause" data-name="Xnix/Line/Pause"
+                                 width="24" height="24" viewBox="0 0 24 24">
+                                <path id="Vector"
+                                      d="M0,1.125v5.75A1.118,1.118,0,0,0,1.111,8H2.222A1.118,1.118,0,0,0,3.333,6.875V1.125A1.118,1.118,0,0,0,2.222,0H1.111A1.118,1.118,0,0,0,0,1.125Z"
+                                      transform="translate(7 8)" fill="none" stroke="#000"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round" stroke-width="1.5"/>
+                                <path id="Vector-2" data-name="Vector"
+                                      d="M6.667,1.125v5.75A1.118,1.118,0,0,0,7.778,8H8.889A1.118,1.118,0,0,0,10,6.875V1.125A1.118,1.118,0,0,0,8.889,0H7.778A1.118,1.118,0,0,0,6.667,1.125Z"
+                                      transform="translate(7 8)" fill="none" stroke="#000"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round" stroke-width="1.5"/>
+                            </svg>
+                        ) : (
+                            <svg className="video-play-play" xmlns="http://www.w3.org/2000/svg"
+                                 id="Xnix_Line_Play" data-name="Xnix/Line/Play"
+                                 width="24" height="24" viewBox="0 0 24 24">
+                                <path id="Vector"
+                                      d="M.35,6.285,4.647.6a1.412,1.412,0,0,1,2.3,0l4.7,5.69A1.676,1.676,0,0,1,10.5,9H1.5A1.676,1.676,0,0,1,.35,6.285Z"
+                                      transform="translate(16 6) rotate(90)" fill="none" stroke="#000"
+                                      stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                            </svg>
+                        )}
+                    </div>
                     <div className="player-bottom">
                         <div className="player-bottom-inner">
                             <div className="player-bottom-inner-left">
@@ -388,6 +425,7 @@ const VideoSec  = () => {
                     playing={isPlaying}
                     volume={volume}
                     controls={false}
+                    onReady={togglePlayPause}
                     onProgress={handleProgress}
                     onDuration={handleDuration}
                     width="100%"
