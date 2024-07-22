@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
-const VideosSec = ({ videoCreator }) => {
+const VideosSec = ({ videoCreator, search }) => {
     const [videos, setVideos] = useState([]);
 
     useEffect(() => {
@@ -13,6 +13,10 @@ const VideosSec = ({ videoCreator }) => {
 
                 if (videoCreator) {
                     url = `http://localhost:5000/videos?creator=${encodeURIComponent(videoCreator)}`;
+                }
+
+                if (search) {
+                    url = `http://localhost:5000/videos/search?query=${encodeURIComponent(search)}`;
                 }
 
                 const response = await fetch(url, {

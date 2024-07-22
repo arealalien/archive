@@ -11,6 +11,8 @@ const { v4: uuidv4 } = require('uuid');
 const profileRoutes = require('./routes/profile');
 const subscribeRoutes = require('./routes/subscribe');
 const videoRoutes = require('./routes/video');
+const SearchRoutes = require('./routes/search');
+const CreatorsRoutes = require('./routes/creators');
 
 const prisma = new PrismaClient();
 const app = express();
@@ -289,6 +291,9 @@ app.get('/videos', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch videos' });
     }
 });
+
+app.use('/videos', SearchRoutes);
+app.use('/creators', CreatorsRoutes);
 
 app.get('/profile', validateToken, async (req, res) => {
     try {

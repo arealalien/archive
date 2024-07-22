@@ -8,8 +8,18 @@ const Navbar = ({ searchbar, profile }) => {
     const profileMenuRef = useRef(null);
     const menuRef = useRef(null);
 
+    const [query, setQuery] = useState('');
+
     const { user, signOut } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const handleSearch = async () => {
+        try {
+            navigate(`/search?query=${query}`);
+        } catch (error) {
+            console.error('Error fetching videos:', error);
+        }
+    };
 
     const handleSignOut = () => {
         signOut();
@@ -92,7 +102,7 @@ const Navbar = ({ searchbar, profile }) => {
                     <div className="navbar-inner-center">
                         {searchbar !== "no" && (
                             <div className="navbar-inner-center-searchbar">
-                                <svg className="navbar-inner-center-searchbar-icon"
+                                <svg onClick={handleSearch} className="navbar-inner-center-searchbar-icon"
                                      xmlns="http://www.w3.org/2000/svg"
                                      height="24px" viewBox="0 0 24 24" version="1.1">
                                     <title>Search</title>
@@ -109,7 +119,12 @@ const Navbar = ({ searchbar, profile }) => {
                                         </g>
                                     </g>
                                 </svg>
-                                <input className="navbar-inner-center-searchbar-input" placeholder="Search..."/>
+                                <input
+                                    className="navbar-inner-center-searchbar-input"
+                                    placeholder="Search..."
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
                             </div>
                         )}
                     </div>
