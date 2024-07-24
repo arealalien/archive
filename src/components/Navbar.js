@@ -284,7 +284,7 @@ const Navbar = ({ profile }) => {
                                 <div className="navbar-inner-left-link-text-shadow"></div>
                             </div>
                             <div className="navbar-inner-left-link-bigdot">
-                                <span>3</span>
+                                <span>219</span>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -433,7 +433,7 @@ const Navbar = ({ profile }) => {
                                 </div>
                                 <div className="navbar-inner-right-profile-menu-center-left-link">
                                     <div className="navbar-inner-right-profile-menu-center-left-link-bigdot">
-                                        <span>3</span>
+                                        <span>219</span>
                                     </div>
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -480,8 +480,6 @@ const Navbar = ({ profile }) => {
                                     <div className="navbar-inner-right-profile-menu-center-right-filter-switch">
                                         <input type="checkbox"
                                                className="navbar-inner-right-profile-menu-center-right-filter-toggle"/>
-                                        <label
-                                            className="navbar-inner-right-profile-menu-center-right-filter-togglelabel"></label>
                                     </div>
                                 </div>
                             </div>

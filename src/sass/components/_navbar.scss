@@ -62,6 +62,17 @@
             opacity: 1;
           }
         }
+        @media (max-width: $layout-breakpoint-xsmall) {
+          &:nth-child(5) {
+            display: none;
+          }
+          &:nth-child(6) {
+            display: none;
+          }
+          &:nth-child(7) {
+            display: none;
+          }
+        }
         &-text {
           bottom: -6em;
           padding: 1.25em 2em;
@@ -92,16 +103,16 @@
           }
         }
         &-bigdot {
-          top: .5em; left: 2.1em;
-          width: 1.5em; height: 1.5em;
+          bottom: -.35em;
           position: absolute;
-          background-color: hslac($primary, 1);
-          border-radius: 50%;
           z-index: 10007;
           @include flex-center();
 
           span {
+            padding: .5em 1em .25em .9em;
             font-size: $paragraph-small;
+            background-color: hslac($primary, 1);
+            border-radius: 5em;
           }
         }
         svg {
@@ -304,6 +315,11 @@
             .blackbutton {
               font-weight: 300;
             }
+            @media (max-width: $layout-breakpoint-xsmall) {
+              .blackbutton {
+                display: none;
+              }
+            }
           }
           &-center {
             width: 100%;
@@ -311,6 +327,12 @@
             grid-template-columns: 1fr auto;
             place-items: flex-start;
             align-items: center;
+            @media (max-width: $layout-breakpoint-xsmall) {
+              grid-template-columns: 1fr;
+              place-items: center;
+              gap: 2em;
+            }
+
             &-left {
               gap: 1em;
               @include flex-left();
@@ -328,16 +350,16 @@
                 @include flex-center();
 
                 &-bigdot {
-                  top: .5em; left: 2.1em;
-                  width: 1.25em; height: 1.25em;
+                  bottom: -.35em;
                   position: absolute;
-                  background-color: hslac($primary, 1);
-                  border-radius: 50%;
                   z-index: 10007;
                   @include flex-center();
 
                   span {
+                    padding: .5em 1em .25em .9em;
                     font-size: $paragraph-small;
+                    background-color: hslac($primary, 1);
+                    border-radius: 5em;
                   }
                 }
                 svg {
@@ -365,35 +387,35 @@
                   color: hslac($white, 1);
                 }
                 &-switch {
-                  label {
-                    display: block;
-                    width: 4em;
-                    height: 2em;
-                    padding: 3px;
-                    border-radius: 15px;
-                    border: 1px solid hslac($white, .1);
-                    cursor: pointer;
-                    transition: all .3s cubic-bezier($transition-main, 1);
-                  }
-                  label::after {
-                    content: "";
-                    display: inherit;
-                    width: 1.2em; height: 1.2em;
-                    border-radius: 50%;
+                  input[type="checkbox"] {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 4em; height: 2em;
+                    position: relative;
                     background-color: hslac($black, 0);
                     border: 1px solid hslac($white, .1);
-                    backdrop-filter: blur(1.5rem) invert(100%);
-                    transition: all .3s cubic-bezier($transition-main, 1);
+                    backdrop-filter: blur(.5rem) brightness(70%);
+                    outline: none;
+                    border-radius: 5em;
+                    cursor: pointer;
                   }
-                  input {
-                    display: none;
+                  input[type="checkbox"]::before {
+                    content: "";
+                    top: .3em; left: .3em;
+                    width: 1.25em; height: 1.25em;
+                    position: absolute;
+                    background-color: hslac($white, .1);
+                    border: 1px solid hslac($white, .1);
+                    border-radius: 50%;
+                    transition: all .5s cubic-bezier($transition-main, 1);
                   }
-                  input:checked label {
-                    border-color: hslac($white, 1);
+                  input[type="checkbox"]:checked::before {
+                    transform: translateX(1.9em);
+                    background-color: hslac($white, .7);
+                    border: 1px solid hslac($white, .1);
                   }
-                  input:checked label::after {
-                    translate: 5em 0;
-                    background: hslac($white, 1);
+                  input[type="checkbox"]:checked {
+
                   }
                 }
               }
@@ -406,6 +428,9 @@
 
             .list-2 {
               grid-template-columns: repeat(2, 1fr);
+              @media (max-width: $layout-breakpoint-xsmall) {
+                grid-template-columns: 1fr;
+              }
             }
             .list-1 {
               grid-template-columns: 1fr;
