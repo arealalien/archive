@@ -15,13 +15,13 @@
     @include flex-center();
 
     &-padding {
-      padding: 0 1em;
+      padding: 0 .6em;
       width: 100%; height: 100%;
       background-color: hslac($black, 0);
       border: 1px solid hslac($white, .1);
       border-radius: 5em;
       backdrop-filter: blur(1.5rem) brightness(60%);
-      gap: 2em;
+      gap: 3em;
       @include flex-space-bet();
 
       &-shadow {
@@ -37,118 +37,156 @@
     &-left {
       height: 100%;
       position: relative;
+      gap: .75em;
       z-index: 10005;
       @include flex-center();
-      &-burger {
-        margin: 0 1.5em 0 1.25em;
-        width: calc($navbar-height / 3);
+
+      .active {
+        border: 1px solid hslac($white, .1);
+      }
+      &-link {
+        height: calc(100% - 1.2em);
         aspect-ratio: 1 / 1;
         position: relative;
-        opacity: .5;
-        cursor: pointer;
-        @include flex-center();
-        &:hover {
-          opacity: .7;
-        }
-
-        &-line, &-line-2 {
-          position: absolute;
-          background-color: hslac($white, 1);
-          border-radius: 5em;
-          transition: all .35s cubic-bezier($transition-main, 1);
-        }
-        &-line {
-          width: 100%; height: 2px;
-        }
-        &-line-2 {
-          width: 2px; height: 100%;
-        }
-      }
-      &-logo {
-        height: 100%;
-        cursor: pointer;
-        @include flex-center();
-
-        svg {
-          width: calc($navbar-height / 2);
-          fill: hslac($white, .7);
-        }
-      }
-      &-menu {
-        top: calc($navbar-height + 1em);
-        left: 2em;
-        padding: 2em;
-        position: absolute;
         background-color: hslac($black, 0);
-        border: 1px solid hslac($white, .1);
-        border-radius: 3rem;
-        backdrop-filter: blur(1.5rem) brightness(60%);
-        clip-path: circle(0 at 0 0);
-        gap: 2em;
-        opacity: 1;
-        pointer-events: none;
-        z-index: 10007;
-        @include flex-col();
+        border: 1px solid hslac($white, 0);
+        border-radius: 50%;
+        backdrop-filter: blur(.5rem) invert(50%);
+        cursor: pointer;
+        @include flex-center();
 
-        &-inner {
-          width: 100%;
-          &-list {
-            gap: 1em;
-            @include flex-col-left();
-            &-item {
-              &-link {
-                color: hslac($white, 1);
-                font-size: $paragraph-large;
-                text-decoration: none;
-              }
-            }
+        &:hover {
+          .navbar-inner-left-link-text {
+            transform: scale(1, 1);
+            opacity: 1;
           }
         }
-        &-shadow {
-          top: 1em;
-          width: 100%;
-          height: 100%;
+        &-text {
+          bottom: -6em;
+          padding: 1.25em 2em;
           position: absolute;
-          background-color: hslac($black, .35);
-          transform: scale(.98, .98);
-          filter: blur(1.5rem);
-          z-index: -1;
+          background-color: hslac($black, 1);
+          border: 1px solid hslac($white, .1);
+          border-radius: 5em;
+          transform: scale(0, 0);
+          opacity: 0;
+          pointer-events: none;
+          transition: all .3s cubic-bezier($transition-main, 1);
+          z-index: 10007;
+          @include flex-center();
+
+          &-shadow {
+            top: .75em;
+            width: 100%; height: 100%;
+            position: absolute;
+            background-color: hslac($black, .5);
+            transform: scale(.98, .98);
+            filter: blur(1rem);
+            z-index: 10003;
+          }
+          &-label {
+            position: relative;
+            color: hslac($white, .7);
+            z-index: 10008;
+          }
+        }
+        &-bigdot {
+          top: .5em; left: 2.1em;
+          width: 1.5em; height: 1.5em;
+          position: absolute;
+          background-color: hslac($primary, 1);
+          border-radius: 50%;
+          z-index: 10007;
+          @include flex-center();
+
+          span {
+            font-size: $paragraph-small;
+          }
+        }
+        svg {
+          width: calc($navbar-height - 3em);
+          g {
+            stroke: hslac($white, .7);
+          }
         }
       }
-    }
-    &-center {
-      width: 100%; height: 100%;
-      @include flex-center();
-
       &-searchbar {
-        width: 100%; max-width: calc($max-view-width / 2.4);
+        max-width: 15em;
         height: 100%;
         position: relative;
         @include flex-center();
 
         &-icon {
-          right: 2.75em;
+          right: 2em;
           height: 2em;
           position: absolute;
           z-index: 10007;
           #search-inner {
-            stroke: hslac($white, .5);
+            stroke: hslac($white, .7);
           }
         }
         &-input {
-          width: 100%; height: 100%;
-          padding: 0 0 0 2em;
+          width: 100%; height: calc(100% - .7em);
+          padding: 0 3em 0 1.25em;
           font-family: $font-main;
           color: hslac($white, 1);
           font-size: $paragraph-large;
           font-weight: 300;
           background-color: hslac($black, 0);
+          border: 1px solid hslac($white, 0);
           border-radius: 5em;
-          border: none;
+          backdrop-filter: blur(.5rem) invert(50%);
           z-index: 10005;
 
           &::placeholder {
             color: hslac($white, .5);
+          }
+          &:focus {
+            border: 1px solid hslac($white, .1);
+            outline: none;
+
+          }
+        }
+      }
+      &-searchbar-absolute {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 100010;
+        @include flex-center();
+
+        &-icon {
+          right: 2em;
+          height: 2em;
+          position: absolute;
+          z-index: 10007;
+          #search-inner {
+            stroke: hslac($white, .7);
+          }
+        }
+        &-input {
+          width: 100%; height: calc(100% - .7em);
+          padding: 0 3em 0 1.25em;
+          font-family: $font-main;
+          color: hslac($white, 1);
+          font-size: $paragraph-large;
+          font-weight: 300;
+          background-color: hslac($black, 0);
+          border: 1px solid hslac($white, 0);
+          border-radius: 5em;
+          backdrop-filter: blur(.5rem) invert(50%);
+          z-index: 10005;
+
+          &::placeholder {
+            color: hslac($white, .5);
+          }
+          &:focus {
+            border: 1px solid hslac($white, .1);
+            outline: none;
+
           }
         }
       }
@@ -161,18 +199,9 @@
         height: 100%;
         gap: .25em;
         @include flex-center();
-        &-button {
-          svg {
-            width: calc($navbar-height - 2em);
-            g {
-              g {
-                stroke: hslac($white, .7);
-              }
-            }
-          }
-        }
+
         &-container {
-          width: calc($navbar-height - 2em);
+          height: calc(100% - 1.2em);
           aspect-ratio: 1 / 1;
           position: relative;
           border-radius: 50%;
@@ -221,6 +250,10 @@
             gap: 1em;
             @include flex-space-bet();
 
+            &-image {
+              width: calc($navbar-height - 1em);
+              height: auto;
+            }
             &-text {
               padding: 0 5em 0 0;
               gap: .25em;

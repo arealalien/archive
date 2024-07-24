@@ -49,7 +49,6 @@ function Creators() {
                                          alt={`${creator.name}'s profile`}/>
                                 )}
                                 <p className="creators-inner-creator-inner-name">{creator.name}</p>
-                                <div className="creators-inner-creator-inner-shadow"></div>
                             </div>
                             <div className="creators-inner-creator-overlay"></div>
                             {creator.banner && (

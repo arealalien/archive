@@ -2,11 +2,17 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { AuthContext } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from "react-router-dom";
 
-const Navbar = ({ searchbar, profile }) => {
-    const [menuVisible, setMenuVisible] = useState(false);
+const Navbar = ({ profile }) => {
     const [profileMenuVisible, setProfileMenuVisible] = useState(false);
     const profileMenuRef = useRef(null);
-    const menuRef = useRef(null);
+    const inputRef = useRef(null);
+    const searchRef = useRef(null);
+    const homeRef = useRef(null);
+    const discoveryRef = useRef(null);
+    const liveRef = useRef(null);
+    const playlistsRef = useRef(null);
+    const notificationsRef = useRef(null);
+
 
     const [query, setQuery] = useState('');
 
@@ -21,13 +27,64 @@ const Navbar = ({ searchbar, profile }) => {
         }
     };
 
+    const handleInput = () => {
+        if (inputRef.current) {
+            inputRef.current.style.opacity = '1';
+            inputRef.current.style.pointerEvents = 'auto';
+            inputRef.current.click();
+
+            searchRef.current.style.opacity = '0';
+            searchRef.current.style.pointerEvents = 'none';
+            homeRef.current.style.opacity = '0';
+            homeRef.current.style.pointerEvents = 'none';
+            discoveryRef.current.style.opacity = '0';
+            discoveryRef.current.style.pointerEvents = 'none';
+            liveRef.current.style.opacity = '0';
+            liveRef.current.style.pointerEvents = 'none';
+            playlistsRef.current.style.opacity = '0';
+            playlistsRef.current.style.pointerEvents = 'none';
+            notificationsRef.current.style.opacity = '0';
+            notificationsRef.current.style.pointerEvents = 'none';
+        }
+    };
+
+    const shrinkSearchBar = () => {
+        if (inputRef.current) {
+            inputRef.current.style.opacity = '0';
+            inputRef.current.style.pointerEvents = 'none';
+
+            searchRef.current.style.opacity = '1';
+            searchRef.current.style.pointerEvents = 'auto';
+            homeRef.current.style.opacity = '1';
+            homeRef.current.style.pointerEvents = 'auto';
+            discoveryRef.current.style.opacity = '1';
+            discoveryRef.current.style.pointerEvents = 'auto';
+            liveRef.current.style.opacity = '1';
+            liveRef.current.style.pointerEvents = 'auto';
+            playlistsRef.current.style.opacity = '1';
+            playlistsRef.current.style.pointerEvents = 'auto';
+            notificationsRef.current.style.opacity = '1';
+            notificationsRef.current.style.pointerEvents = 'auto';
+        }
+    };
+
+    const handleClickshrinkSearchBar = (event) => {
+        if (inputRef.current && !inputRef.current.contains(event.target)) {
+            shrinkSearchBar();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickshrinkSearchBar);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickshrinkSearchBar);
+        };
+    }, []);
+
     const handleSignOut = () => {
         signOut();
         navigate('/');
-    };
-
-    const toggleMenu = () => {
-        setMenuVisible(prevState => !prevState);
     };
 
     const handleProfileClick = () => {
@@ -41,33 +98,18 @@ const Navbar = ({ searchbar, profile }) => {
     };
 
     useEffect(() => {
-        if (profileMenuVisible) {
-            document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            document.removeEventListener("mousedown", handleClickOutside);
-        }
+        document.addEventListener("mousedown", handleClickOutside);
+
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [profileMenuVisible]);
+    }, []);
 
     const profileMenuStyle = {
         opacity: profileMenuVisible ? 1 : 1,
         clipPath: profileMenuVisible ? "circle(160% at 100% 0)" : "circle(0 at 100% 0)",
         pointerEvents: profileMenuVisible ? "auto" : "none",
         transition: 'all .65s cubic-bezier(.32, .685, .32, 1)'
-    };
-
-    const menuStyle = {
-        opacity: menuVisible ? 1 : 1,
-        clipPath: menuVisible ? "circle(160% at 0 0)" : "circle(0 at 0 0)",
-        pointerEvents: menuVisible ? "auto" : "none",
-        transition: 'all .65s cubic-bezier(.32, .685, .32, 1)'
-    };
-
-    const menuIcon = {
-        transform: menuVisible ? "rotate(45deg)" : "rotate(0)",
-        transition: 'all .35s cubic-bezier(.175, .685, .32, 1)'
     };
 
     let profilePictureUrl;
@@ -82,72 +124,172 @@ const Navbar = ({ searchbar, profile }) => {
 
     return (
         <nav className="navbar">
-            <div className="navbar-inner view-width">
+            <div className="navbar-inner">
                 <div className="navbar-inner-padding">
                     <div className="navbar-inner-padding-shadow"></div>
                     <div className="navbar-inner-left">
-                        <div className="navbar-inner-left-burger" onClick={toggleMenu} style={menuIcon}>
-                            <div className="navbar-inner-left-burger-line"></div>
-                            <div className="navbar-inner-left-burger-line-2"></div>
+                        <div ref={inputRef} className="navbar-inner-left-searchbar-absolute">
+                            <svg onClick={handleSearch} className="navbar-inner-left-searchbar-absolute-icon"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 height="24px" viewBox="0 0 24 24" version="1.1">
+                                <title>Search</title>
+                                <g id="search" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                    <g id="search-inner" transform="translate(2.000000, 2.000000)" stroke="#000000"
+                                       stroke-width="1.5">
+                                        <path
+                                            d="M9.27542857,0.714285714 C14.0030476,0.714285714 17.836381,4.54666667 17.836381,9.2752381 C17.836381,14.0038095 14.0030476,17.8361905 9.27542857,17.8361905 C4.54685714,17.8361905 0.71447619,14.0038095 0.71447619,9.2752381 C0.71447619,4.54666667 4.54685714,0.714285714 9.27542857,0.714285714 Z"
+                                            id="Stroke-1"/>
+                                        <path
+                                            d="M17.8989524,16.487619 C18.678,16.487619 19.3094286,17.12 19.3094286,17.8980952 C19.3094286,18.6780952 18.678,19.3095238 17.8989524,19.3095238 C17.1199048,19.3095238 16.4875238,18.6780952 16.4875238,17.8980952 C16.4875238,17.12 17.1199048,16.487619 17.8989524,16.487619 Z"
+                                            id="Stroke-3"/>
+                                    </g>
+                                </g>
+                            </svg>
+                            <input
+                                className="navbar-inner-left-searchbar-absolute-input"
+                                placeholder="Search..."
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                            />
                         </div>
-                        <NavLink to="/" className="navbar-inner-left-logo">
-                            <svg xmlns="http://www.w3.org/2000/svg" id="navbar-logo" data-name="navbar logo"
-                                 viewBox="0 0 1364.51 1119.19">
-                                <path className="archive-path"
-                                      d="M1007.28,1368.47c-32.46,29.89-62.09,56.5-91,83.89C799.16,1563.4,618,1603.53,466,1491.2c-112.66-83.27-159.88-199.69-145.9-339.16,8.6-85.72,44.87-157.48,106.62-219.71C559.43,798.61,688.52,661.33,819,525.39,854.67,488.16,894.88,458.8,946,446c52.21-13,100.51-2.33,146.92,21.55,34.69,17.85,64.58,42.27,91.76,70,132.65,135.48,266.31,270,397.58,406.8,178,185.52,99.47,475.35-88,575.12-142.81,76-323.38,41.57-426.62-83.43C1047.72,1412,1026,1389.37,1007.28,1368.47Zm113-694c0-11.13-5.59-14.51-9.81-18.32-16.13-14.56-31.94-29.57-49-42.91-47.44-37-76-35.4-121,5.41-4.48,4.05-8.75,8.34-12.92,12.7Q733.1,834.08,538.89,1036.91a330.76,330.76,0,0,0-56.17,79.51c-64.54,126.92,51.92,280.25,169.22,288.11,65.85,4.41,117.46-21.34,161.29-66.92,65.29-67.91,129.82-136.55,194.95-204.62,20.87-21.81,42.35-43,64-64a270.91,270.91,0,0,1,30.52-25.56c68.76-49.18,134.61-44.77,196.57,13q100.67,93.94,201.19,188c6.54,6.09,11.37,16.46,25,12.92,20.35-72.59,6.4-139.37-43.38-195.12-57.88-64.81-119.37-126.49-181-187.83-34.54-34.38-78.15-45.85-126.75-38.36-47.88,7.38-84.61,33.68-116.91,67.46Q921,1046.27,784.91,1189.37c-11.66,12.22-23,25.07-36.17,35.46-32.84,25.89-73.53,23.78-102.23-3.85-26.76-25.77-30.93-66.54-8.8-99.46,8-11.9,18.6-22.19,28.66-32.59,105-108.49,210.6-216.4,315-325.51C1020.48,722.46,1063.64,689.22,1120.24,674.46Zm295.33,711.1c-59.82-60.68-122.12-112.07-177-171.09a114.93,114.93,0,0,0-13.32-12.21c-25.27-19.77-42.55-19.53-68.17.65-52.81,41.61-52.52,43.27-9.83,93,30.87,35.94,63.57,69.26,107.1,89.8C1306.23,1410.14,1358.36,1412.86,1415.57,1385.56Z"
-                                      transform="translate(-317.74 -440.41)"/>
+                        <NavLink ref={homeRef} to="/" className="navbar-inner-left-link">
+                            <div className="navbar-inner-left-link-text">
+                                <p className="navbar-inner-left-link-text-label">Home</p>
+                                <div className="navbar-inner-left-link-text-shadow"></div>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <title>Home</title>
+                                <g id="home" stroke="none" stroke-width="1" fill="none"
+                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                    <g id="home-inner" transform="translate(2.400000, 2.000000)" stroke="#000000"
+                                       stroke-width="1.5">
+                                        <line x1="6.6787" y1="14.1354" x2="12.4937" y2="14.1354" id="Stroke-1"/>
+                                        <path
+                                            d="M1.24344979e-14,11.713 C1.24344979e-14,6.082 0.614,6.475 3.919,3.41 C5.365,2.246 7.615,0 9.558,0 C11.5,0 13.795,2.235 15.254,3.41 C18.559,6.475 19.172,6.082 19.172,11.713 C19.172,20 17.213,20 9.586,20 C1.959,20 1.24344979e-14,20 1.24344979e-14,11.713 Z"
+                                            id="Stroke-2"/>
+                                    </g>
+                                </g>
                             </svg>
                         </NavLink>
-                    </div>
-                    <div className="navbar-inner-center">
-                        {searchbar !== "no" && (
-                            <div className="navbar-inner-center-searchbar">
-                                <svg onClick={handleSearch} className="navbar-inner-center-searchbar-icon"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <title>Search</title>
-                                    <g id="search" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
-                                       stroke-linecap="round" stroke-linejoin="round">
-                                        <g id="search-inner" transform="translate(2.000000, 2.000000)" stroke="#000000"
-                                           stroke-width="1.5">
-                                            <path
-                                                d="M9.27542857,0.714285714 C14.0030476,0.714285714 17.836381,4.54666667 17.836381,9.2752381 C17.836381,14.0038095 14.0030476,17.8361905 9.27542857,17.8361905 C4.54685714,17.8361905 0.71447619,14.0038095 0.71447619,9.2752381 C0.71447619,4.54666667 4.54685714,0.714285714 9.27542857,0.714285714 Z"
-                                                id="Stroke-1"/>
-                                            <path
-                                                d="M17.8989524,16.487619 C18.678,16.487619 19.3094286,17.12 19.3094286,17.8980952 C19.3094286,18.6780952 18.678,19.3095238 17.8989524,19.3095238 C17.1199048,19.3095238 16.4875238,18.6780952 16.4875238,17.8980952 C16.4875238,17.12 17.1199048,16.487619 17.8989524,16.487619 Z"
-                                                id="Stroke-3"/>
-                                        </g>
+                        <div ref={searchRef} onClick={handleInput} className="navbar-inner-left-searchbar">
+                            <svg onClick={handleSearch} className="navbar-inner-left-searchbar-icon"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 height="24px" viewBox="0 0 24 24" version="1.1">
+                                <title>Search</title>
+                                <g id="search" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                    <g id="search-inner" transform="translate(2.000000, 2.000000)" stroke="#000000"
+                                       stroke-width="1.5">
+                                        <path
+                                            d="M9.27542857,0.714285714 C14.0030476,0.714285714 17.836381,4.54666667 17.836381,9.2752381 C17.836381,14.0038095 14.0030476,17.8361905 9.27542857,17.8361905 C4.54685714,17.8361905 0.71447619,14.0038095 0.71447619,9.2752381 C0.71447619,4.54666667 4.54685714,0.714285714 9.27542857,0.714285714 Z"
+                                            id="Stroke-1"/>
+                                        <path
+                                            d="M17.8989524,16.487619 C18.678,16.487619 19.3094286,17.12 19.3094286,17.8980952 C19.3094286,18.6780952 18.678,19.3095238 17.8989524,19.3095238 C17.1199048,19.3095238 16.4875238,18.6780952 16.4875238,17.8980952 C16.4875238,17.12 17.1199048,16.487619 17.8989524,16.487619 Z"
+                                            id="Stroke-3"/>
                                     </g>
-                                </svg>
-                                <input
-                                    className="navbar-inner-center-searchbar-input"
-                                    placeholder="Search..."
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                />
+                                </g>
+                            </svg>
+                            <input
+                                className="navbar-inner-left-searchbar-input"
+                                placeholder="Search..."
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                            />
+                        </div>
+                        <NavLink ref={discoveryRef} to="/pictures" className="navbar-inner-left-link">
+                            <div className="navbar-inner-left-link-text">
+                                <p className="navbar-inner-left-link-text-label">Discover</p>
+                                <div className="navbar-inner-left-link-text-shadow"></div>
                             </div>
-                        )}
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <title>Discovery</title>
+                                <g id="discovery" stroke="none" stroke-width="1" fill="none"
+                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                    <g id="discovery-inner" transform="translate(2.000000, 2.000000)" stroke="#000000"
+                                       stroke-width="1.5">
+                                        <path
+                                            d="M0.75,10.0001 C0.75,16.9371 3.063,19.2501 10,19.2501 C16.937,19.2501 19.25,16.9371 19.25,10.0001 C19.25,3.0631 16.937,0.7501 10,0.7501 C3.063,0.7501 0.75,3.0631 0.75,10.0001 Z"
+                                            id="Stroke-1"/>
+                                        <polygon id="Stroke-3"
+                                                 points="6.6978 13.3023 8.2718 8.2723 13.3018 6.6983 11.7278 11.7273"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </NavLink>
+                        <NavLink ref={liveRef} to="/live" className="navbar-inner-left-link">
+                            <div className="navbar-inner-left-link-text">
+                                <p className="navbar-inner-left-link-text-label">Livestreams</p>
+                                <div className="navbar-inner-left-link-text-shadow"></div>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <title>Video</title>
+                                <g id="video" stroke="none" stroke-width="1" fill="none"
+                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                    <g id="video-inner" transform="translate(2.514381, 5.114095)" stroke="#000000"
+                                       stroke-width="1.5">
+                                        <path
+                                            d="M13.6370476,4.55866688 C15.4751429,3.10152403 17.9418095,1.69200022 18.4084762,2.19676212 C19.1799048,3.02533355 19.1132381,10.9110478 18.4084762,11.6634288 C17.9799048,12.1300955 15.4941905,10.7205716 13.6370476,9.2729526"
+                                            id="Stroke-1"/>
+                                        <path
+                                            d="M-6.21724894e-15,6.92285714 C-6.21724894e-15,1.73047619 1.7247619,-2.66453526e-15 6.90095238,-2.66453526e-15 C12.0761905,-2.66453526e-15 13.8009524,1.73047619 13.8009524,6.92285714 C13.8009524,12.1142857 12.0761905,13.8457143 6.90095238,13.8457143 C1.7247619,13.8457143 -6.21724894e-15,12.1142857 -6.21724894e-15,6.92285714 Z"
+                                            id="Stroke-3"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </NavLink>
+                        <NavLink ref={playlistsRef} to="/playlists" className="navbar-inner-left-link">
+                            <div className="navbar-inner-left-link-text">
+                                <p className="navbar-inner-left-link-text-label">Playlists</p>
+                                <div className="navbar-inner-left-link-text-shadow"></div>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <title>Folder</title>
+                                <g id="folder" stroke="none" stroke-width="1" fill="none"
+                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                    <g id="folder-inner" transform="translate(2.500000, 2.500000)" stroke="#000000"
+                                       stroke-width="1.5">
+                                        <line x1="4.8057" y1="12.0742685" x2="14.3987" y2="12.0742685" id="Stroke-1"/>
+                                        <path
+                                            d="M-1.13686838e-13,5.29836453 C-1.13686838e-13,2.85645977 1.25,0.75931691 3.622,0.272650243 C5.993,-0.214968804 7.795,-0.0463973758 9.292,0.761221672 C10.79,1.56884072 10.361,2.76122167 11.9,3.63645977 C13.44,4.51265024 15.917,3.19645977 17.535,4.94217405 C19.229,6.7697931 19.2200005,9.57550739 19.2200005,11.3640788 C19.2200005,18.1602693 15.413,18.6993169 9.61,18.6993169 C3.807,18.6993169 -1.13686838e-13,18.2288407 -1.13686838e-13,11.3640788 L-1.13686838e-13,5.29836453 Z"
+                                            id="Stroke-2"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </NavLink>
+                        <div ref={notificationsRef} className="navbar-inner-left-link">
+                            <div className="navbar-inner-left-link-text">
+                                <p className="navbar-inner-left-link-text-label">Notifications</p>
+                                <div className="navbar-inner-left-link-text-shadow"></div>
+                            </div>
+                            <div className="navbar-inner-left-link-bigdot">
+                                <span>3</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <title>Notification</title>
+                                <g id="notification" stroke="none" stroke-width="1" fill="none"
+                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                    <g id="notification-inner" transform="translate(4.614552, 2.514190)"
+                                       stroke="#000000"
+                                       stroke-width="1.5">
+                                        <path
+                                            d="M7.38163814,2.84217094e-14 C2.94735243,2.84217094e-14 1.02068576,4.0152381 1.02068576,6.66952381 C1.02068576,8.65333333 1.30830481,8.06952381 0.210209572,10.4895238 C-1.13074281,13.9380952 4.26163814,15.347619 7.38163814,15.347619 C10.5006858,15.347619 15.8930667,13.9380952 14.5530667,10.4895238 C13.4549715,8.06952381 13.7425905,8.65333333 13.7425905,6.66952381 C13.7425905,4.0152381 11.8149715,2.84217094e-14 7.38163814,2.84217094e-14 Z"
+                                            id="Stroke-1"/>
+                                        <path
+                                            d="M9.691448,17.998 C8.39716229,19.4437143 6.37811467,19.4608571 5.071448,17.998"
+                                            id="Stroke-3"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
                     </div>
                     <div className="navbar-inner-right">
                         <div className="navbar-inner-right-profile">
-                            <div className="navbar-inner-right-profile-button">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <title>Notification</title>
-                                    <g id="notification" stroke="none" stroke-width="1" fill="none"
-                                       fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                        <g id="notification-inner" transform="translate(4.614552, 2.514190)" stroke="#000000"
-                                           stroke-width="1.5">
-                                            <path
-                                                d="M7.38163814,2.84217094e-14 C2.94735243,2.84217094e-14 1.02068576,4.0152381 1.02068576,6.66952381 C1.02068576,8.65333333 1.30830481,8.06952381 0.210209572,10.4895238 C-1.13074281,13.9380952 4.26163814,15.347619 7.38163814,15.347619 C10.5006858,15.347619 15.8930667,13.9380952 14.5530667,10.4895238 C13.4549715,8.06952381 13.7425905,8.65333333 13.7425905,6.66952381 C13.7425905,4.0152381 11.8149715,2.84217094e-14 7.38163814,2.84217094e-14 Z"
-                                                id="Stroke-1"/>
-                                            <path
-                                                d="M9.691448,17.998 C8.39716229,19.4437143 6.37811467,19.4608571 5.071448,17.998"
-                                                id="Stroke-3"/>
-                                        </g>
-                                    </g>
-                                </svg>
-                            </div>
                             {user ? (
                                 <div className="navbar-inner-right-profile-container" onClick={handleProfileClick}>
                                     <img
@@ -162,32 +304,18 @@ const Navbar = ({ searchbar, profile }) => {
                         </div>
                     </div>
                 </div>
-                <div className="navbar-inner-left-menu" ref={menuRef} style={menuStyle}>
-                    <div className="navbar-inner-left-menu-inner">
-                        <ul className="navbar-inner-left-menu-inner-list">
-                            <li className="navbar-inner-left-menu-inner-list-item">
-                                <NavLink to="/" className="navbar-inner-left-menu-inner-list-item-link">Videos</NavLink>
-                            </li>
-                            <li className="navbar-inner-left-menu-inner-list-item">
-                                <NavLink to="/" className="navbar-inner-left-menu-inner-list-item-link">Pictures</NavLink>
-                            </li>
-                            <li className="navbar-inner-left-menu-inner-list-item">
-                                <NavLink to="/" className="navbar-inner-left-menu-inner-list-item-link">Livestreams</NavLink>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="navbar-inner-left-menu-shadow"></div>
-                </div>
                 {user && (
                     <div className="navbar-inner-right-profile-menu" ref={profileMenuRef} style={profileMenuStyle}>
                         <div className="navbar-inner-right-profile-menu-top">
-                            <NavLink to={`/profile/` + user?.name} className="navbar-inner-right-profile-container">
+                            <NavLink to={`/profile/` + user?.name}
+                                     className="navbar-inner-right-profile-container navbar-inner-right-profile-menu-top-image">
                                 <img className="navbar-inner-right-profile-container-image"
                                      src={profilePictureUrl}
                                      alt="Profile"/>
                             </NavLink>
                             <div className="navbar-inner-right-profile-menu-top-text">
-                                <NavLink to={`/profile/` + user?.name} className="navbar-inner-right-profile-menu-top-text-username">
+                                <NavLink to={`/profile/` + user?.name}
+                                         className="navbar-inner-right-profile-menu-top-text-username">
                                     <span>{user?.name}</span>
                                     <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                         <g>
