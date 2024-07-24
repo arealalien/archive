@@ -79,7 +79,7 @@
             top: .75em;
             width: 100%; height: 100%;
             position: absolute;
-            background-color: hslac($black, .5);
+            background-color: hslac($black, .25);
             transform: scale(.98, .98);
             filter: blur(1rem);
             z-index: 10003;
@@ -222,14 +222,15 @@
           }
         }
         &-menu {
-          top: calc($navbar-height + 1em); right: 2em;
+          top: calc($navbar-height + 1em);
+          width: calc(100% - 4em);
           padding: 2em 2em 2.5em 2em;
           position: absolute;
           background-color: hslac($black, 0);
           border: 1px solid hslac($white, .1);
           border-radius: 3rem;
           backdrop-filter: blur(1.5rem) brightness(60%);
-          clip-path: circle(0 at 100% 0);
+          clip-path: circle(0 at 50% 0);
           gap: 2em;
           opacity: 1;
           pointer-events: none;
@@ -247,15 +248,17 @@
           }
           &-top {
             width: 100%;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            place-items: center;
             gap: 1em;
-            @include flex-space-bet();
 
             &-image {
               width: calc($navbar-height - 1em);
               height: auto;
             }
             &-text {
-              padding: 0 5em 0 0;
+              width: 100%;
               gap: .25em;
               @include flex-col-left();
 
@@ -293,6 +296,9 @@
                 }
               }
             }
+            .blackbutton {
+              font-weight: 300;
+            }
           }
           &-center {
             width: 100%;
@@ -302,14 +308,16 @@
               grid-template-columns: repeat(3, 1fr);
               gap: 2em;
               &-item {
+                padding: 1em 1.5em;
                 width: 100%;
-                aspect-ratio: 1 / 1;
-                background-color: hslac($white, .1);
-                border: 1px solid hslac($white, .1);
-                backdrop-filter: blur(1.5rem);
-                border-radius: 1.5rem;
                 cursor: pointer;
-                @include flex-center();
+                text-decoration: none;
+                background-color: hslac($black, 0);
+                border: 1px solid hslac($white, .1);
+                backdrop-filter: blur(1.5rem) brightness(70%);
+                border-radius: 5rem;
+                gap: 1em;
+                @include flex-left();
 
                 svg {
                   width: 2em;
@@ -319,6 +327,9 @@
                     }
                   }
                 }
+                span {
+                  color: hslac($white, 1);
+                }
               }
             }
           }
@@ -326,16 +337,18 @@
             width: 100%;
             &-list {
               padding: 0;
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
               gap: 1em;
-              @include flex-col();
+
               &-item {
                 padding: 1em 1.5em;
                 width: 100%;
                 font-size: $paragraph-medium;
                 font-weight: 500;
-                background-color: hslac($white, .1);
+                background-color: hslac($black, 0);
                 border: 1px solid hslac($white, .1);
-                backdrop-filter: blur(1.5rem);
+                backdrop-filter: blur(1.5rem) invert(30%);
                 border-radius: 5rem;
                 gap: .75em;
                 cursor: pointer;

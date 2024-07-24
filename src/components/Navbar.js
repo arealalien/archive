@@ -31,7 +31,7 @@ const Navbar = ({ profile }) => {
         if (inputRef.current) {
             inputRef.current.style.opacity = '1';
             inputRef.current.style.pointerEvents = 'auto';
-            inputRef.current.click();
+            inputRef.current.focus();
 
             searchRef.current.style.opacity = '0';
             searchRef.current.style.pointerEvents = 'none';
@@ -107,7 +107,7 @@ const Navbar = ({ profile }) => {
 
     const profileMenuStyle = {
         opacity: profileMenuVisible ? 1 : 1,
-        clipPath: profileMenuVisible ? "circle(160% at 100% 0)" : "circle(0 at 100% 0)",
+        clipPath: profileMenuVisible ? "circle(160% at 50% 0)" : "circle(0 at 50% 0)",
         pointerEvents: profileMenuVisible ? "auto" : "none",
         transition: 'all .65s cubic-bezier(.32, .685, .32, 1)'
     };
@@ -346,6 +346,10 @@ const Navbar = ({ profile }) => {
                                 </NavLink>
                                 <NavLink to="/editprofile" className="navbar-inner-right-profile-menu-top-text-link">Edit profile</NavLink>
                             </div>
+                            <NavLink to={`/profile/` + user?.name} className="blackbutton">
+                                <span>Go to channel</span>
+                                <div className="blackbutton-shadow"></div>
+                            </NavLink>
                         </div>
                         <div className="navbar-inner-right-profile-menu-center">
                             <ul className="navbar-inner-right-profile-menu-center-list">
@@ -371,6 +375,7 @@ const Navbar = ({ profile }) => {
                                             </g>
                                         </g>
                                     </svg>
+                                    <span>Upload</span>
                                 </NavLink>
                                 <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -393,6 +398,7 @@ const Navbar = ({ profile }) => {
                                             </g>
                                         </g>
                                     </svg>
+                                    <span>Upload</span>
                                 </NavLink>
                                 <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -413,6 +419,7 @@ const Navbar = ({ profile }) => {
                                             </g>
                                         </g>
                                     </svg>
+                                    <span>Go live</span>
                                 </NavLink>
                             </ul>
                         </div>
