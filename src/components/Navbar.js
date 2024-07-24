@@ -6,6 +6,7 @@ const Navbar = ({ profile }) => {
     const [profileMenuVisible, setProfileMenuVisible] = useState(false);
     const profileMenuRef = useRef(null);
     const inputRef = useRef(null);
+    const inputSearchRef = useRef(null);
     const searchRef = useRef(null);
     const homeRef = useRef(null);
     const discoveryRef = useRef(null);
@@ -31,39 +32,55 @@ const Navbar = ({ profile }) => {
         if (inputRef.current) {
             inputRef.current.style.opacity = '1';
             inputRef.current.style.pointerEvents = 'auto';
-            inputRef.current.focus();
+            inputRef.current.style.maxWidth = '100%';
+            inputRef.current.style.left = '0';
+            inputSearchRef.current.focus();
 
             searchRef.current.style.opacity = '0';
+            searchRef.current.style.transform = 'scale(0, 0)';
             searchRef.current.style.pointerEvents = 'none';
             homeRef.current.style.opacity = '0';
+            homeRef.current.style.transform = 'scale(0, 0)';
             homeRef.current.style.pointerEvents = 'none';
             discoveryRef.current.style.opacity = '0';
+            discoveryRef.current.style.transform = 'scale(0, 0)';
             discoveryRef.current.style.pointerEvents = 'none';
             liveRef.current.style.opacity = '0';
+            liveRef.current.style.transform = 'scale(0, 0)';
             liveRef.current.style.pointerEvents = 'none';
             playlistsRef.current.style.opacity = '0';
+            playlistsRef.current.style.transform = 'scale(0, 0)';
             playlistsRef.current.style.pointerEvents = 'none';
             notificationsRef.current.style.opacity = '0';
+            notificationsRef.current.style.transform = 'scale(0, 0)';
             notificationsRef.current.style.pointerEvents = 'none';
         }
     };
 
     const shrinkSearchBar = () => {
         if (inputRef.current) {
-            inputRef.current.style.opacity = '0';
+            inputRef.current.style.maxWidth = '15em';
+            inputRef.current.style.left = '5.3em';
+            inputRef.current.style.opacity = '1';
             inputRef.current.style.pointerEvents = 'none';
 
-            searchRef.current.style.opacity = '1';
+            searchRef.current.style.opacity = '0';
+            searchRef.current.style.transform = 'scale(1, 1)';
             searchRef.current.style.pointerEvents = 'auto';
             homeRef.current.style.opacity = '1';
+            homeRef.current.style.transform = 'scale(1, 1)';
             homeRef.current.style.pointerEvents = 'auto';
             discoveryRef.current.style.opacity = '1';
+            discoveryRef.current.style.transform = 'scale(1, 1)';
             discoveryRef.current.style.pointerEvents = 'auto';
             liveRef.current.style.opacity = '1';
+            liveRef.current.style.transform = 'scale(1, 1)';
             liveRef.current.style.pointerEvents = 'auto';
             playlistsRef.current.style.opacity = '1';
+            playlistsRef.current.style.transform = 'scale(1, 1)';
             playlistsRef.current.style.pointerEvents = 'auto';
             notificationsRef.current.style.opacity = '1';
+            notificationsRef.current.style.transform = 'scale(1, 1)';
             notificationsRef.current.style.pointerEvents = 'auto';
         }
     };
@@ -146,7 +163,7 @@ const Navbar = ({ profile }) => {
                                     </g>
                                 </g>
                             </svg>
-                            <input
+                            <input ref={inputSearchRef}
                                 className="navbar-inner-left-searchbar-absolute-input"
                                 placeholder="Search..."
                                 value={query}

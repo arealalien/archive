@@ -53,6 +53,7 @@
         border-radius: 50%;
         backdrop-filter: blur(.5rem) invert(50%);
         cursor: pointer;
+        transition: opacity .3s cubic-bezier($transition-main, 1), transform .3s cubic-bezier($transition-main, 1);
         @include flex-center();
 
         &:hover {
@@ -114,6 +115,7 @@
         max-width: 15em;
         height: 100%;
         position: relative;
+        opacity: 0;
         @include flex-center();
 
         &-icon {
@@ -149,12 +151,14 @@
         }
       }
       &-searchbar-absolute {
+        left: 5.3em;
         width: 100%;
-        max-width: 100%;
+        max-width: 15em;
         height: 100%;
         position: absolute;
-        opacity: 0;
+        opacity: 1;
         pointer-events: none;
+        transition: max-width .3s cubic-bezier($transition-main, 1), left .3s cubic-bezier($transition-main, 1);
         z-index: 100010;
         @include flex-center();
 
@@ -306,6 +310,10 @@
             grid-template-columns: 1fr auto;
             &-left {
               @include flex-left();
+
+              img {
+                height:  5em;
+              }
             }
             &-right {
               &-filter {
@@ -347,16 +355,12 @@
                   input {
                     display: none;
                   }
-                  input:checked ~ label {
+                  input:checked label {
                     border-color: hslac($white, 1);
                   }
-                  input:checked ~ label::after {
+                  input:checked label::after {
                     translate: 5em 0;
                     background: hslac($white, 1);
-                  }
-                  input:disabled ~ label {
-                    opacity: 0.5;
-                    cursor: not-allowed;
                   }
                 }
               }
