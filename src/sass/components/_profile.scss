@@ -5,6 +5,9 @@
   &-inner {
     gap: 10em;
     @include flex-col();
+    @media (max-width: $layout-breakpoint-xsmall) {
+      gap: 4em;
+    }
 
     &-header {
       margin: calc($navbar-height / 2) 0 0 0;
@@ -17,6 +20,12 @@
       @media (max-width: $layout-breakpoint-medium) {
         margin: 11em 0 0 0;
       }
+      @media (max-width: $layout-breakpoint-small) {
+        border-radius: 3em;
+      }
+      @media (max-width: $layout-breakpoint-xsmall) {
+        border-radius: 2em;
+      }
 
       &-info {
         bottom: 0;
@@ -27,6 +36,10 @@
         @include flex-space-bet-end();
         @media (max-width: $layout-breakpoint-small) {
           width: 100%;
+          padding: 1em;
+        }
+        @media (max-width: $layout-breakpoint-xsmall) {
+          padding: .75em;
         }
 
         &-left {
@@ -47,6 +60,9 @@
             @media (max-width: $layout-breakpoint-small) {
               height: 60%;
             }
+            @media (max-width: $layout-breakpoint-xsmall) {
+              height: 50%;
+            }
 
             &-image {
               min-width: 100%; min-height: 100%;
@@ -59,6 +75,9 @@
             padding: 2em;
             gap: .5em;
             @include flex-col-left();
+            @media (max-width: $layout-breakpoint-xsmall) {
+              padding: 1em;
+            }
 
             &-username {
               gap: .75em;
@@ -68,14 +87,26 @@
                 color: hslac($white, 1);
                 font-size: $heading-medium;
                 font-weight: 800;
+                @media (max-width: $layout-breakpoint-small) {
+                  font-size: $heading-small;
+                  font-weight: 700;
+                }
               }
               svg {
                 width: $heading-medium;
+                @media (max-width: $layout-breakpoint-small) {
+                  width: $heading-small;
+                }
               }
             }
             &-subs {
               color: hslac($white, .7);
               font-weight: 300;
+
+              @media (max-width: $layout-breakpoint-small) {
+                font-size: $paragraph;
+                font-weight: 300;
+              }
             }
           }
         }
@@ -83,9 +114,21 @@
           padding: 0 0 2em 0;
           height: 100%;
           @include flex-left-end();
+          @media (max-width: $layout-breakpoint-small) {
+            padding: 0 0 1em 0;
+          }
 
           .blackbutton {
             font-size: $paragraph-large;
+            @media (max-width: $layout-breakpoint-small) {
+              font-size: $paragraph-medium;
+            }
+          }
+          .mainbutton {
+            font-size: $paragraph-large;
+            @media (max-width: $layout-breakpoint-small) {
+              font-size: $paragraph-medium;
+            }
           }
         }
       }
@@ -111,6 +154,7 @@
       }
       @media (max-width: $layout-breakpoint-xsmall) {
         grid-template-columns: 1fr;
+        gap: 2em;
       }
 
       &-left {
@@ -121,6 +165,7 @@
           @include flex-col-left();
           @media (max-width: $layout-breakpoint-xsmall) {
             @include flex-left();
+            flex-direction: row;
           }
 
           &-item {
@@ -141,6 +186,10 @@
               span {
                 color: hslac($white, 1);
                 font-size: $paragraph-xlarge;
+
+                @media (max-width: $layout-breakpoint-xsmall) {
+                  display: none;
+                }
               }
               svg {
                 width: 3em;

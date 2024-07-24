@@ -137,7 +137,7 @@ const Navbar = ({ profile }) => {
                 <div className="navbar-inner-padding">
                     <div className="navbar-inner-padding-shadow"></div>
                     <div className="navbar-inner-left">
-                        <div ref={inputRef} className="navbar-inner-left-searchbar-absolute">
+                        <form ref={inputRef} onSubmit={handleSearch} className="navbar-inner-left-searchbar-absolute">
                             <svg onClick={handleSearch} className="navbar-inner-left-searchbar-absolute-icon"
                                  xmlns="http://www.w3.org/2000/svg"
                                  height="24px" viewBox="0 0 24 24" version="1.1">
@@ -161,7 +161,7 @@ const Navbar = ({ profile }) => {
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                             />
-                        </div>
+                        </form>
                         <NavLink ref={homeRef} to="/" className="navbar-inner-left-link">
                             <div className="navbar-inner-left-link-text">
                                 <p className="navbar-inner-left-link-text-label">Home</p>
@@ -357,7 +357,8 @@ const Navbar = ({ profile }) => {
                                         </g>
                                     </svg>
                                 </NavLink>
-                                <NavLink to="/editprofile" className="navbar-inner-right-profile-menu-top-text-link">Edit profile</NavLink>
+                                <NavLink to="/editprofile" className="navbar-inner-right-profile-menu-top-text-link">Edit
+                                    profile</NavLink>
                             </div>
                             <NavLink to={`/profile/` + user?.name} className="blackbutton">
                                 <span>Go to channel</span>
