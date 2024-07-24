@@ -352,8 +352,44 @@ const Navbar = ({ profile }) => {
                             </NavLink>
                         </div>
                         <div className="navbar-inner-right-profile-menu-center">
-                            <ul className="navbar-inner-right-profile-menu-center-list">
-                                <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
+                            <div className="navbar-inner-right-profile-menu-center-left">
+                                <p>Achievements</p>
+                            </div>
+                            <div className="navbar-inner-right-profile-menu-center-right">
+                                <div className="navbar-inner-right-profile-menu-center-right-filter">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="24px" height="24px"
+                                         viewBox="0 0 24 24" version="1.1">
+                                        <title>Lock</title>
+                                        <g id="lock" stroke="none" stroke-width="1" fill="none"
+                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="lock-inner" transform="translate(3.500000, 2.000000)"
+                                               stroke="#000000"
+                                               stroke-width="1.5">
+                                                <path
+                                                    d="M12.9709,7.4033 L12.9709,5.2543 C12.9399,2.7353 10.8719,0.7193 8.3539,0.7503 C5.8869,0.7813 3.8919,2.7673 3.8499,5.2343 L3.8499,7.4033"
+                                                    id="Stroke-1"/>
+                                                <line x1="8.4103" y1="12.1562" x2="8.4103" y2="14.3772"
+                                                      id="Stroke-3"/>
+                                                <path
+                                                    d="M8.4103,6.8242 C2.6653,6.8242 0.7503,8.3922 0.7503,13.0952 C0.7503,17.7992 2.6653,19.3672 8.4103,19.3672 C14.1553,19.3672 16.0713,17.7992 16.0713,13.0952 C16.0713,8.3922 14.1553,6.8242 8.4103,6.8242 Z"
+                                                    id="Stroke-5"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <span>Filter Content</span>
+                                    <div className="navbar-inner-right-profile-menu-center-right-filter-switch">
+                                        <input type="checkbox"
+                                               className="navbar-inner-right-profile-menu-center-right-filter-toggle"/>
+                                        <label
+                                            className="navbar-inner-right-profile-menu-center-right-filter-togglelabel"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="navbar-inner-right-profile-menu-bottom">
+                            <ul className="navbar-inner-right-profile-menu-bottom-list">
+                            <NavLink to="/upload" className="navbar-inner-right-profile-menu-bottom-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">
@@ -377,7 +413,7 @@ const Navbar = ({ profile }) => {
                                     </svg>
                                     <span>Upload</span>
                                 </NavLink>
-                                <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
+                                <li className="navbar-inner-right-profile-menu-bottom-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">
@@ -399,8 +435,8 @@ const Navbar = ({ profile }) => {
                                         </g>
                                     </svg>
                                     <span>Upload</span>
-                                </NavLink>
-                                <NavLink to="/upload" className="navbar-inner-right-profile-menu-center-list-item">
+                                </li>
+                                <li className="navbar-inner-right-profile-menu-bottom-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">
@@ -419,12 +455,8 @@ const Navbar = ({ profile }) => {
                                             </g>
                                         </g>
                                     </svg>
-                                    <span>Go live</span>
-                                </NavLink>
-                            </ul>
-                        </div>
-                        <div className="navbar-inner-right-profile-menu-bottom">
-                            <ul className="navbar-inner-right-profile-menu-bottom-list">
+                                    <span>Go Live</span>
+                                </li>
                                 <li className="navbar-inner-right-profile-menu-bottom-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
@@ -445,29 +477,6 @@ const Navbar = ({ profile }) => {
                                         </g>
                                     </svg>
                                     <span>Your Studio</span>
-                                </li>
-                                <li className="navbar-inner-right-profile-menu-bottom-list-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         width="24px" height="24px"
-                                         viewBox="0 0 24 24" version="1.1">
-                                        <title>Lock</title>
-                                        <g id="lock" stroke="none" stroke-width="1" fill="none"
-                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                            <g id="lock-inner" transform="translate(3.500000, 2.000000)"
-                                               stroke="#000000"
-                                               stroke-width="1.5">
-                                                <path
-                                                    d="M12.9709,7.4033 L12.9709,5.2543 C12.9399,2.7353 10.8719,0.7193 8.3539,0.7503 C5.8869,0.7813 3.8919,2.7673 3.8499,5.2343 L3.8499,7.4033"
-                                                    id="Stroke-1"/>
-                                                <line x1="8.4103" y1="12.1562" x2="8.4103" y2="14.3772"
-                                                      id="Stroke-3"/>
-                                                <path
-                                                    d="M8.4103,6.8242 C2.6653,6.8242 0.7503,8.3922 0.7503,13.0952 C0.7503,17.7992 2.6653,19.3672 8.4103,19.3672 C14.1553,19.3672 16.0713,17.7992 16.0713,13.0952 C16.0713,8.3922 14.1553,6.8242 8.4103,6.8242 Z"
-                                                    id="Stroke-5"/>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                    <span>Filter Content</span>
                                 </li>
                                 <li className="navbar-inner-right-profile-menu-bottom-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"

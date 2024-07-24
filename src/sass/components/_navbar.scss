@@ -302,20 +302,13 @@
           }
           &-center {
             width: 100%;
-            &-list {
-              padding: 0;
-              display: grid;
-              grid-template-columns: repeat(3, 1fr);
-              gap: 2em;
-              &-item {
-                padding: 1em 1.5em;
-                width: 100%;
-                cursor: pointer;
-                text-decoration: none;
-                background-color: hslac($black, 0);
-                border: 1px solid hslac($white, .1);
-                backdrop-filter: blur(1.5rem) brightness(70%);
-                border-radius: 5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            &-left {
+              @include flex-left();
+            }
+            &-right {
+              &-filter {
                 gap: 1em;
                 @include flex-left();
 
@@ -329,6 +322,42 @@
                 }
                 span {
                   color: hslac($white, 1);
+                }
+                &-switch {
+                  label {
+                    display: block;
+                    width: 4em;
+                    height: 2em;
+                    padding: 3px;
+                    border-radius: 15px;
+                    border: 1px solid hslac($white, .1);
+                    cursor: pointer;
+                    transition: all .3s cubic-bezier($transition-main, 1);
+                  }
+                  label::after {
+                    content: "";
+                    display: inherit;
+                    width: 1.2em; height: 1.2em;
+                    border-radius: 50%;
+                    background-color: hslac($black, 0);
+                    border: 1px solid hslac($white, .1);
+                    backdrop-filter: blur(1.5rem) invert(100%);
+                    transition: all .3s cubic-bezier($transition-main, 1);
+                  }
+                  input {
+                    display: none;
+                  }
+                  input:checked ~ label {
+                    border-color: hslac($white, 1);
+                  }
+                  input:checked ~ label::after {
+                    translate: 5em 0;
+                    background: hslac($white, 1);
+                  }
+                  input:disabled ~ label {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                  }
                 }
               }
             }
@@ -346,6 +375,8 @@
                 width: 100%;
                 font-size: $paragraph-medium;
                 font-weight: 500;
+                color: hslac($white, 1);
+                text-decoration: none;
                 background-color: hslac($black, 0);
                 border: 1px solid hslac($white, .1);
                 backdrop-filter: blur(1.5rem) invert(30%);
