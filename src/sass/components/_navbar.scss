@@ -105,7 +105,8 @@
           }
         }
         svg {
-          width: calc($navbar-height - 3em);
+          width: calc($navbar-height - 3.75em);
+          height: calc($navbar-height - 3.75em);
           g {
             stroke: hslac($white, .7);
           }
@@ -308,11 +309,43 @@
             width: 100%;
             display: grid;
             grid-template-columns: 1fr auto;
+            place-items: flex-start;
+            align-items: center;
             &-left {
+              gap: 1em;
               @include flex-left();
 
-              img {
-                height:  5em;
+              &-link {
+                height: 4.5em;
+                aspect-ratio: 1 / 1;
+                position: relative;
+                background-color: hslac($black, 0);
+                border: 1px solid hslac($white, 0);
+                border-radius: 50%;
+                backdrop-filter: blur(.5rem) invert(50%);
+                cursor: pointer;
+                transition: opacity .3s cubic-bezier($transition-main, 1), transform .3s cubic-bezier($transition-main, 1);
+                @include flex-center();
+
+                &-bigdot {
+                  top: .5em; left: 2.1em;
+                  width: 1.25em; height: 1.25em;
+                  position: absolute;
+                  background-color: hslac($primary, 1);
+                  border-radius: 50%;
+                  z-index: 10007;
+                  @include flex-center();
+
+                  span {
+                    font-size: $paragraph-small;
+                  }
+                }
+                svg {
+                  width: calc($navbar-height - 4em);
+                  g {
+                    stroke: hslac($white, .7);
+                  }
+                }
               }
             }
             &-right {
@@ -368,10 +401,19 @@
           }
           &-bottom {
             width: 100%;
+            gap: 1em;
+            @include flex-col();
+
+            .list-2 {
+              grid-template-columns: repeat(2, 1fr);
+            }
+            .list-1 {
+              grid-template-columns: 1fr;
+            }
             &-list {
               padding: 0;
+              width: 100%;
               display: grid;
-              grid-template-columns: repeat(2, 1fr);
               gap: 1em;
 
               &-item {
