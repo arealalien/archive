@@ -9,6 +9,8 @@ const UploadForm = () => {
     const [videoFile, setVideoFile] = useState(null);
     const [videoDuration, setVideoDuration] = useState(null);
     const [imageFile, setImageFile] = useState(null);
+    const [thumbnails, setThumbnails] = useState({ thumbnail1: '', thumbnail2: '', thumbnail3: '' });
+    const [customThumbnail, setCustomThumbnail] = useState('');
     const [showDetailsForm, setShowDetailsForm] = useState(false);
     const videoUploadRef = useRef(null);
     const imageUploadRef = useRef(null);
@@ -17,10 +19,71 @@ const UploadForm = () => {
         setVideoFile(file);
         setVideoDuration(duration);
         setShowDetailsForm(true);
+
+        // Generate thumbnails
+        const url = URL.createObjectURL(file);
+        const video = document.createElement('video');
+
+        const captureFrame = (time) => {
+            return new Promise((resolve) => {
+                video.currentTime = time;
+                video.onseeked = function () {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = 1280;
+                    canvas.height = 720;
+
+                    // Calculate scale factor and dimensions
+                    const targetRatio = { w: 16, h: 9 };
+                    const targetDimensions = { w: 1280, h: 720 };
+
+                    const rationedWidth = video.videoWidth / targetRatio.w;
+                    const rationedHeight = video.videoHeight / targetRatio.h;
+
+                    const sideToScale = rationedWidth > rationedHeight ? 'width' : 'height';
+                    const originalSize = sideToScale === 'width' ? video.videoWidth : video.videoHeight;
+                    const targetSize = sideToScale === 'width' ? targetDimensions.w : targetDimensions.h;
+
+                    const scaleFactor = targetSize / originalSize;
+                    const width2 = Math.round(video.videoWidth * scaleFactor);
+                    const height2 = Math.round(video.videoHeight * scaleFactor);
+                    const width = (canvas.width - width2) / 2;
+                    const height = (canvas.height - height2) / 2;
+
+                    // Draw blurred background
+                    context.filter = 'blur(12.5em)';
+                    context.drawImage(video, -25, -25, 1330, 770);
+                    context.filter = 'none';
+
+                    // Draw actual video frame over blurred background
+                    context.drawImage(video, width, height, width2, height2);
+                    const image = canvas.toDataURL('image/jpeg', 1.0);
+                    resolve(image);
+                };
+            });
+        };
+
+        video.preload = 'metadata';
+        video.src = url;
+        video.muted = true;
+        video.playsInline = true;
+        video.play();
+
+        video.onloadedmetadata = async function () {
+            const duration = video.duration;
+            const thumbnail1 = await captureFrame(duration * 0.25);
+            const thumbnail2 = await captureFrame(duration * 0.5);
+            const thumbnail3 = await captureFrame(duration * 0.75);
+
+            setThumbnails({ thumbnail1, thumbnail2, thumbnail3 });
+            URL.revokeObjectURL(url);
+        };
     };
 
     const handleImageFileChange = (file) => {
         setImageFile(file);
+        const imageUrl = URL.createObjectURL(file);
+        setCustomThumbnail(imageUrl); // Set the custom thumbnail
     };
 
     const handleSubmit = async (e) => {
@@ -94,11 +157,13 @@ const UploadForm = () => {
                                 <div className="upload-inner-second-left-container">
                                     <div className="upload-inner-second-left-container-overlay"></div>
                                     <img className="upload-inner-second-left-container-background"
-                                         src="https://images.unsplash.com/photo-1675361519358-6b802204f8d5?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         src={customThumbnail || thumbnails.thumbnail1}
                                          alt=""/>
                                 </div>
                                 <div className="upload-inner-second-left-bottomcontainer">
-                                    <div className="upload-inner-second-left-bottomcontainer-upload" onClick={() => imageUploadRef.current.triggerFileInput()}>
+                                    <div className="upload-inner-second-left-bottomcontainer-upload"
+                                         onClick={() => imageUploadRef.current.triggerFileInput()}>
+                                        <p>Upload</p>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
                                     </div>
                                     <ImageUpload
@@ -107,20 +172,23 @@ const UploadForm = () => {
                                         fileKey="image"
                                     />
                                     <div className="upload-inner-second-left-bottomcontainer-image">
-                                        <img className="upload-inner-second-left-bottomcontainer-image-background"
-                                             src="https://images.unsplash.com/photo-1532373213958-5156f1836b37?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        <img id="up-image-1"
+                                             className="upload-inner-second-left-bottomcontainer-image-background"
+                                             src={thumbnails.thumbnail1}
                                              alt=""/>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
                                     </div>
                                     <div className="upload-inner-second-left-bottomcontainer-image">
-                                        <img className="upload-inner-second-left-bottomcontainer-image-background"
-                                             src="https://images.unsplash.com/photo-1667818139461-7772a11554f9?q=80&w=2062&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        <img id="up-image-2"
+                                             className="upload-inner-second-left-bottomcontainer-image-background"
+                                             src={thumbnails.thumbnail2}
                                              alt=""/>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
                                     </div>
                                     <div className="upload-inner-second-left-bottomcontainer-image">
-                                        <img className="upload-inner-second-left-bottomcontainer-image-background"
-                                             src="https://images.unsplash.com/photo-1675361519358-6b802204f8d5?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        <img id="up-image-3"
+                                             className="upload-inner-second-left-bottomcontainer-image-background"
+                                             src={thumbnails.thumbnail3}
                                              alt=""/>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
                                     </div>
