@@ -48,12 +48,15 @@ const Navbar = ({ profile }) => {
             liveRef.current.style.opacity = '0';
             liveRef.current.style.transform = 'scale(0, 0)';
             liveRef.current.style.pointerEvents = 'none';
-            playlistsRef.current.style.opacity = '0';
-            playlistsRef.current.style.transform = 'scale(0, 0)';
-            playlistsRef.current.style.pointerEvents = 'none';
-            notificationsRef.current.style.opacity = '0';
-            notificationsRef.current.style.transform = 'scale(0, 0)';
-            notificationsRef.current.style.pointerEvents = 'none';
+            
+            if (user) {
+                playlistsRef.current.style.opacity = '0';
+                playlistsRef.current.style.transform = 'scale(0, 0)';
+                playlistsRef.current.style.pointerEvents = 'none';
+                notificationsRef.current.style.opacity = '0';
+                notificationsRef.current.style.transform = 'scale(0, 0)';
+                notificationsRef.current.style.pointerEvents = 'none';
+            }
         }
     };
 
@@ -76,12 +79,15 @@ const Navbar = ({ profile }) => {
             liveRef.current.style.opacity = '1';
             liveRef.current.style.transform = 'scale(1, 1)';
             liveRef.current.style.pointerEvents = 'auto';
-            playlistsRef.current.style.opacity = '1';
-            playlistsRef.current.style.transform = 'scale(1, 1)';
-            playlistsRef.current.style.pointerEvents = 'auto';
-            notificationsRef.current.style.opacity = '1';
-            notificationsRef.current.style.transform = 'scale(1, 1)';
-            notificationsRef.current.style.pointerEvents = 'auto';
+
+            if (user) {
+                playlistsRef.current.style.opacity = '1';
+                playlistsRef.current.style.transform = 'scale(1, 1)';
+                playlistsRef.current.style.pointerEvents = 'auto';
+                notificationsRef.current.style.opacity = '1';
+                notificationsRef.current.style.transform = 'scale(1, 1)';
+                notificationsRef.current.style.pointerEvents = 'auto';
+            }
         }
     };
 
@@ -107,20 +113,6 @@ const Navbar = ({ profile }) => {
     const handleProfileClick = () => {
         setProfileMenuVisible(prevState => !prevState);
     };
-
-    const handleClickOutside = (event) => {
-        if (profileMenuVisible.current && !profileMenuVisible.current.contains(event.target)) {
-            setProfileMenuVisible(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
 
     const profileMenuStyle = {
         opacity: profileMenuVisible ? 1 : 1,
@@ -258,52 +250,56 @@ const Navbar = ({ profile }) => {
                                 </g>
                             </svg>
                         </NavLink>
-                        <NavLink ref={playlistsRef} to="/playlists" className="navbar-inner-left-link">
-                            <div className="navbar-inner-left-link-text">
-                                <p className="navbar-inner-left-link-text-label">Playlists</p>
-                                <div className="navbar-inner-left-link-text-shadow"></div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <title>Folder</title>
-                                <g id="folder" stroke="none" stroke-width="1" fill="none"
-                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                    <g id="folder-inner" transform="translate(2.500000, 2.500000)" stroke="#000000"
-                                       stroke-width="1.5">
-                                        <line x1="4.8057" y1="12.0742685" x2="14.3987" y2="12.0742685" id="Stroke-1"/>
-                                        <path
-                                            d="M-1.13686838e-13,5.29836453 C-1.13686838e-13,2.85645977 1.25,0.75931691 3.622,0.272650243 C5.993,-0.214968804 7.795,-0.0463973758 9.292,0.761221672 C10.79,1.56884072 10.361,2.76122167 11.9,3.63645977 C13.44,4.51265024 15.917,3.19645977 17.535,4.94217405 C19.229,6.7697931 19.2200005,9.57550739 19.2200005,11.3640788 C19.2200005,18.1602693 15.413,18.6993169 9.61,18.6993169 C3.807,18.6993169 -1.13686838e-13,18.2288407 -1.13686838e-13,11.3640788 L-1.13686838e-13,5.29836453 Z"
-                                            id="Stroke-2"/>
-                                    </g>
-                                </g>
-                            </svg>
-                        </NavLink>
-                        <div ref={notificationsRef} className="navbar-inner-left-link">
-                            <div className="navbar-inner-left-link-text">
-                                <p className="navbar-inner-left-link-text-label">Notifications</p>
-                                <div className="navbar-inner-left-link-text-shadow"></div>
-                            </div>
-                            <div className="navbar-inner-left-link-bigdot">
-                                <span>219</span>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <title>Notification</title>
-                                <g id="notification" stroke="none" stroke-width="1" fill="none"
-                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                    <g id="notification-inner" transform="translate(4.614552, 2.514190)"
-                                       stroke="#000000"
-                                       stroke-width="1.5">
-                                        <path
-                                            d="M7.38163814,2.84217094e-14 C2.94735243,2.84217094e-14 1.02068576,4.0152381 1.02068576,6.66952381 C1.02068576,8.65333333 1.30830481,8.06952381 0.210209572,10.4895238 C-1.13074281,13.9380952 4.26163814,15.347619 7.38163814,15.347619 C10.5006858,15.347619 15.8930667,13.9380952 14.5530667,10.4895238 C13.4549715,8.06952381 13.7425905,8.65333333 13.7425905,6.66952381 C13.7425905,4.0152381 11.8149715,2.84217094e-14 7.38163814,2.84217094e-14 Z"
-                                            id="Stroke-1"/>
-                                        <path
-                                            d="M9.691448,17.998 C8.39716229,19.4437143 6.37811467,19.4608571 5.071448,17.998"
-                                            id="Stroke-3"/>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
+                        {user && (
+                            <>
+                                <NavLink ref={playlistsRef} to="/playlists" className="navbar-inner-left-link">
+                                    <div className="navbar-inner-left-link-text">
+                                        <p className="navbar-inner-left-link-text-label">Playlists</p>
+                                        <div className="navbar-inner-left-link-text-shadow"></div>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <title>Folder</title>
+                                        <g id="folder" stroke="none" stroke-width="1" fill="none"
+                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="folder-inner" transform="translate(2.500000, 2.500000)" stroke="#000000"
+                                               stroke-width="1.5">
+                                                <line x1="4.8057" y1="12.0742685" x2="14.3987" y2="12.0742685" id="Stroke-1"/>
+                                                <path
+                                                    d="M-1.13686838e-13,5.29836453 C-1.13686838e-13,2.85645977 1.25,0.75931691 3.622,0.272650243 C5.993,-0.214968804 7.795,-0.0463973758 9.292,0.761221672 C10.79,1.56884072 10.361,2.76122167 11.9,3.63645977 C13.44,4.51265024 15.917,3.19645977 17.535,4.94217405 C19.229,6.7697931 19.2200005,9.57550739 19.2200005,11.3640788 C19.2200005,18.1602693 15.413,18.6993169 9.61,18.6993169 C3.807,18.6993169 -1.13686838e-13,18.2288407 -1.13686838e-13,11.3640788 L-1.13686838e-13,5.29836453 Z"
+                                                    id="Stroke-2"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </NavLink>
+                                <div ref={notificationsRef} className="navbar-inner-left-link">
+                                    <div className="navbar-inner-left-link-text">
+                                        <p className="navbar-inner-left-link-text-label">Notifications</p>
+                                        <div className="navbar-inner-left-link-text-shadow"></div>
+                                    </div>
+                                    <div className="navbar-inner-left-link-bigdot">
+                                        <span>219</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <title>Notification</title>
+                                        <g id="notification" stroke="none" stroke-width="1" fill="none"
+                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="notification-inner" transform="translate(4.614552, 2.514190)"
+                                               stroke="#000000"
+                                               stroke-width="1.5">
+                                                <path
+                                                    d="M7.38163814,2.84217094e-14 C2.94735243,2.84217094e-14 1.02068576,4.0152381 1.02068576,6.66952381 C1.02068576,8.65333333 1.30830481,8.06952381 0.210209572,10.4895238 C-1.13074281,13.9380952 4.26163814,15.347619 7.38163814,15.347619 C10.5006858,15.347619 15.8930667,13.9380952 14.5530667,10.4895238 C13.4549715,8.06952381 13.7425905,8.65333333 13.7425905,6.66952381 C13.7425905,4.0152381 11.8149715,2.84217094e-14 7.38163814,2.84217094e-14 Z"
+                                                    id="Stroke-1"/>
+                                                <path
+                                                    d="M9.691448,17.998 C8.39716229,19.4437143 6.37811467,19.4608571 5.071448,17.998"
+                                                    id="Stroke-3"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </>
+                        )}
                     </div>
                     <div className="navbar-inner-right">
                         <div className="navbar-inner-right-profile">
