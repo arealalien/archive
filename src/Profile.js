@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import {NavLink, useParams} from 'react-router-dom';
+import { AuthContext } from './contexts/AuthContext';
 import axios from 'axios';
 import './css/main.css';
 
@@ -12,10 +13,12 @@ import Footer from "./components/Footer";
 
 function Profile() {
     const { username } = useParams();
-    const [user, setUser] = useState(null);
+    const [user2, setUser] = useState(null);
     const [subscriberCount, setSubscriberCount] = useState(null);
     const [error, setError] = useState('');
     const [isSubscribed, setIsSubscribed] = useState(false);
+
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -70,18 +73,18 @@ function Profile() {
         return <div>Error: {error}</div>;
     }
 
-    if (!user) {
+    if (!user2) {
         return <section className="loading">
             <div className="loading-box"><p className="loading-box-text">Loading</p></div>
         </section>;
     }
 
-    const profilePictureUrl = `http://localhost:5000/${user.profilePicture}`;
-    const bannerUrl = `http://localhost:5000/${user.banner}`;
+    const profilePictureUrl = `http://localhost:5000/${user2.profilePicture}`;
+    const bannerUrl = `http://localhost:5000/${user2.banner}`;
 
     return (
         <>
-            <DocumentTitle title={user.name + ` - Archive`}/>
+            <DocumentTitle title={user2.name + ` - Archive`}/>
             <Navbar searchbar="yes" profile="yes" />
             <section className="profile">
                 <div className="profile-inner view-width">
@@ -95,7 +98,7 @@ function Profile() {
                                 </div>
                                 <div className="profile-inner-header-info-left-text">
                                     <h1 className="profile-inner-header-info-left-text-username">
-                                        <span>{user.name}</span>
+                                        <span>{user2.name}</span>
                                         <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                             <g>
                                                 <linearGradient gradientUnits="userSpaceOnUse" id="a" x1="4.411"
@@ -129,15 +132,23 @@ function Profile() {
                                 </div>
                             </div>
                             <div className="profile-inner-header-info-right">
-                                {isSubscribed ? (
-                                    <button className="blackbutton" onClick={handleSubscribe} disabled={isSubscribed}>
-                                        Subscribed
-                                        <div className="blackbutton-shadow"></div>
-                                    </button>
+                                {user.name === user2.name ? (
+                                    <NavLink to="/editprofile">
+                                        <button className="mainbutton">
+                                            Edit profile
+                                        </button>
+                                    </NavLink>
                                 ) : (
-                                    <button className="mainbutton" onClick={handleSubscribe} disabled={isSubscribed}>
-                                        Subscribe
-                                    </button>
+                                    isSubscribed ? (
+                                            <button className="blackbutton" onClick={handleSubscribe} disabled={isSubscribed}>
+                                                Subscribed
+                                                <div className="blackbutton-shadow"></div>
+                                            </button>
+                                        ) : (
+                                            <button className="mainbutton" onClick={handleSubscribe} disabled={isSubscribed}>
+                                                Subscribe
+                                            </button>
+                                        )
                                 )}
                             </div>
                         </div>
@@ -146,7 +157,7 @@ function Profile() {
                              src={bannerUrl}
                              alt=""/>
                     </header>
-                    <ProfileSec profileName={user.name} />
+                    <ProfileSec profileName={user2.name} />
                 </div>
             </section>
             <PageShadow/>
