@@ -11,6 +11,7 @@ const UploadForm = () => {
     const [imageFile, setImageFile] = useState(null);
     const [thumbnails, setThumbnails] = useState({ thumbnail1: '', thumbnail2: '', thumbnail3: '' });
     const [customThumbnail, setCustomThumbnail] = useState('');
+    const [selectedThumbnail, setSelectedThumbnail] = useState(null);
     const [showDetailsForm, setShowDetailsForm] = useState(false);
     const videoUploadRef = useRef(null);
     const imageUploadRef = useRef(null);
@@ -51,7 +52,7 @@ const UploadForm = () => {
                     const height = (canvas.height - height2) / 2;
 
                     // Draw blurred background
-                    context.filter = 'blur(12.5em)';
+                    context.filter = 'blur(20em)';
                     context.drawImage(video, -25, -25, 1330, 770);
                     context.filter = 'none';
 
@@ -76,6 +77,7 @@ const UploadForm = () => {
             const thumbnail3 = await captureFrame(duration * 0.75);
 
             setThumbnails({ thumbnail1, thumbnail2, thumbnail3 });
+            setSelectedThumbnail(thumbnail1); // Default to the first thumbnail
             URL.revokeObjectURL(url);
         };
     };
@@ -84,15 +86,19 @@ const UploadForm = () => {
         setImageFile(file);
         const imageUrl = URL.createObjectURL(file);
         setCustomThumbnail(imageUrl); // Set the custom thumbnail
+        setSelectedThumbnail(imageUrl); // Select the custom thumbnail
+    };
+
+    const handleThumbnailClick = (thumbnail) => {
+        setSelectedThumbnail(thumbnail);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
+            const token = localStorage.getItem('token');
 
-            // Upload video file
             const videoFormData = new FormData();
             videoFormData.append('video', videoFile);
             videoFormData.append('title', title);
@@ -102,7 +108,7 @@ const UploadForm = () => {
             const videoResponse = await axios.post('http://localhost:5000/upload/video', videoFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`, // Add the Authorization header
+                    'Authorization': `Bearer ${token}`,
                 },
             });
 
@@ -115,7 +121,13 @@ const UploadForm = () => {
 
             // Upload thumbnail image
             const imageFormData = new FormData();
-            imageFormData.append('image', imageFile);
+            if (selectedThumbnail === customThumbnail) {
+                imageFormData.append('image', imageFile);
+            } else {
+                const response = await fetch(selectedThumbnail);
+                const blob = await response.blob();
+                imageFormData.append('image', new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' }));
+            }
             imageFormData.append('videoUrl', videoUrl.split('.')[0]); // Pass the videoUrl to the thumbnail upload
 
             await axios.post('http://localhost:5000/upload/thumbnail', imageFormData, {
@@ -157,7 +169,7 @@ const UploadForm = () => {
                                 <div className="upload-inner-second-left-container">
                                     <div className="upload-inner-second-left-container-overlay"></div>
                                     <img className="upload-inner-second-left-container-background"
-                                         src={customThumbnail || thumbnails.thumbnail1}
+                                         src={selectedThumbnail}
                                          alt=""/>
                                 </div>
                                 <div className="upload-inner-second-left-bottomcontainer">
@@ -171,23 +183,26 @@ const UploadForm = () => {
                                         onFileChange={handleImageFileChange}
                                         fileKey="image"
                                     />
-                                    <div className="upload-inner-second-left-bottomcontainer-image">
+                                    <div onClick={() => handleThumbnailClick(thumbnails.thumbnail1)}
+                                         className="upload-inner-second-left-bottomcontainer-image">
                                         <img id="up-image-1"
-                                             className="upload-inner-second-left-bottomcontainer-image-background"
+                                             className={`upload-inner-second-left-bottomcontainer-image-background ${selectedThumbnail !== thumbnails.thumbnail1 ? 'brightness-50' : ''}`}
                                              src={thumbnails.thumbnail1}
                                              alt=""/>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
                                     </div>
-                                    <div className="upload-inner-second-left-bottomcontainer-image">
+                                    <div onClick={() => handleThumbnailClick(thumbnails.thumbnail2)}
+                                         className="upload-inner-second-left-bottomcontainer-image">
                                         <img id="up-image-2"
-                                             className="upload-inner-second-left-bottomcontainer-image-background"
+                                             className={`upload-inner-second-left-bottomcontainer-image-background ${selectedThumbnail !== thumbnails.thumbnail2 ? 'brightness-50' : ''}`}
                                              src={thumbnails.thumbnail2}
                                              alt=""/>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
                                     </div>
-                                    <div className="upload-inner-second-left-bottomcontainer-image">
+                                    <div onClick={() => handleThumbnailClick(thumbnails.thumbnail3)}
+                                         className="upload-inner-second-left-bottomcontainer-image">
                                         <img id="up-image-3"
-                                             className="upload-inner-second-left-bottomcontainer-image-background"
+                                             className={`upload-inner-second-left-bottomcontainer-image-background ${selectedThumbnail !== thumbnails.thumbnail3 ? 'brightness-50' : ''}`}
                                              src={thumbnails.thumbnail3}
                                              alt=""/>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
@@ -200,7 +215,7 @@ const UploadForm = () => {
                                         <label
                                             className="upload-inner-second-right-form-center-container-label">Title*</label>
                                         <div className="upload-inner-second-right-form-center-container-input">
-                                            <input
+                                        <input
                                                 id="title"
                                                 type="text"
                                                 placeholder="Title"
