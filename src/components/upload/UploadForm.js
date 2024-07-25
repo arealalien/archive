@@ -9,7 +9,7 @@ const UploadForm = () => {
     const [videoFile, setVideoFile] = useState(null);
     const [videoDuration, setVideoDuration] = useState(null);
     const [imageFile, setImageFile] = useState(null);
-    const [thumbnails, setThumbnails] = useState({ thumbnail1: '', thumbnail2: '', thumbnail3: '' });
+    const [thumbnails, setThumbnails] = useState({ thumbnail1: '', thumbnail2: '', thumbnail3: '', thumbnail4: '', thumbnail5: '', thumbnail6: '', thumbnail7: '' });
     const [customThumbnail, setCustomThumbnail] = useState('');
     const [selectedThumbnail, setSelectedThumbnail] = useState(null);
     const [showDetailsForm, setShowDetailsForm] = useState(false);
@@ -72,11 +72,15 @@ const UploadForm = () => {
 
         video.onloadedmetadata = async function () {
             const duration = video.duration;
-            const thumbnail1 = await captureFrame(duration * 0.25);
-            const thumbnail2 = await captureFrame(duration * 0.5);
-            const thumbnail3 = await captureFrame(duration * 0.75);
+            const thumbnail1 = await captureFrame(duration * 0.10);
+            const thumbnail2 = await captureFrame(duration * 0.20);
+            const thumbnail3 = await captureFrame(duration * 0.35);
+            const thumbnail4 = await captureFrame(duration * 0.45);
+            const thumbnail5 = await captureFrame(duration * 0.55);
+            const thumbnail6 = await captureFrame(duration * 0.70);
+            const thumbnail7 = await captureFrame(duration * 0.80);
 
-            setThumbnails({ thumbnail1, thumbnail2, thumbnail3 });
+            setThumbnails({ thumbnail1, thumbnail2, thumbnail3, thumbnail4, thumbnail5, thumbnail6, thumbnail7 });
             setSelectedThumbnail(thumbnail1); // Default to the first thumbnail
             URL.revokeObjectURL(url);
         };
@@ -207,6 +211,38 @@ const UploadForm = () => {
                                              alt=""/>
                                         <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
                                     </div>
+                                    <div onClick={() => handleThumbnailClick(thumbnails.thumbnail4)}
+                                         className="upload-inner-second-left-bottomcontainer-image">
+                                        <img id="up-image-4"
+                                             className={`upload-inner-second-left-bottomcontainer-image-background ${selectedThumbnail !== thumbnails.thumbnail4 ? 'brightness-50' : ''}`}
+                                             src={thumbnails.thumbnail4}
+                                             alt=""/>
+                                        <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
+                                    </div>
+                                    <div onClick={() => handleThumbnailClick(thumbnails.thumbnail5)}
+                                         className="upload-inner-second-left-bottomcontainer-image">
+                                        <img id="up-image-5"
+                                             className={`upload-inner-second-left-bottomcontainer-image-background ${selectedThumbnail !== thumbnails.thumbnail5 ? 'brightness-50' : ''}`}
+                                             src={thumbnails.thumbnail5}
+                                             alt=""/>
+                                        <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
+                                    </div>
+                                    <div onClick={() => handleThumbnailClick(thumbnails.thumbnail6)}
+                                         className="upload-inner-second-left-bottomcontainer-image">
+                                        <img id="up-image-6"
+                                             className={`upload-inner-second-left-bottomcontainer-image-background ${selectedThumbnail !== thumbnails.thumbnail6 ? 'brightness-50' : ''}`}
+                                             src={thumbnails.thumbnail6}
+                                             alt=""/>
+                                        <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
+                                    </div>
+                                    <div onClick={() => handleThumbnailClick(thumbnails.thumbnail7)}
+                                         className="upload-inner-second-left-bottomcontainer-image">
+                                        <img id="up-image-7"
+                                             className={`upload-inner-second-left-bottomcontainer-image-background ${selectedThumbnail !== thumbnails.thumbnail7 ? 'brightness-50' : ''}`}
+                                             src={thumbnails.thumbnail7}
+                                             alt=""/>
+                                        <div className="upload-inner-second-left-bottomcontainer-upload-shadow"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="upload-inner-second-right">
@@ -215,7 +251,7 @@ const UploadForm = () => {
                                         <label
                                             className="upload-inner-second-right-form-center-container-label">Title*</label>
                                         <div className="upload-inner-second-right-form-center-container-input">
-                                        <input
+                                            <input
                                                 id="title"
                                                 type="text"
                                                 placeholder="Title"
