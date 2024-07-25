@@ -292,7 +292,7 @@ app.get('/videos', async (req, res) => {
     }
 });
 
-app.use('/videos', SearchRoutes);
+app.use(validateToken, SearchRoutes);
 app.use('/creators', CreatorsRoutes);
 
 app.get('/profile', validateToken, async (req, res) => {

@@ -11,12 +11,12 @@ const VideosSec = ({ videoCreator, search }) => {
                 const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
                 let url = 'http://localhost:5000/videos';
 
-                if (videoCreator) {
-                    url = `http://localhost:5000/videos?creator=${encodeURIComponent(videoCreator)}`;
+                if (search) {
+                    url = `http://localhost:5000/search?query=${encodeURIComponent(search)}`;
                 }
 
-                if (search) {
-                    url = `http://localhost:5000/videos/search?query=${encodeURIComponent(search)}`;
+                if (videoCreator) {
+                    url = `http://localhost:5000/videos?creator=${encodeURIComponent(videoCreator)}`;
                 }
 
                 const response = await fetch(url, {
@@ -38,7 +38,7 @@ const VideosSec = ({ videoCreator, search }) => {
         };
 
         fetchVideos();
-    }, [videoCreator]);
+    }, [videoCreator, search]);
 
     const formatDuration = (durationInSeconds) => {
         const hours = Math.floor(durationInSeconds / 3600);

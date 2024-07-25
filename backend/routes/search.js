@@ -5,19 +5,20 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 router.get('/search', async (req, res) => {
-    const { search } = req.query;
+    const { query } = req.query;
     try {
-        if (!search) {
+        if (!query) {
             return res.status(400).json({ error: 'Query parameter is required' });
         }
 
-        const videos = await prisma.video.findMany({
-            where: {
-                title: {
-                    contains: search,
-                    mode: 'insensitive',
-                },
+        const where = query ? {
+            title: {
+                contains: query.toLowerCase(),
             },
+        } : {};
+
+        const videos = await prisma.video.findMany({
+            where,
             orderBy: {
                 datePosted: 'desc',
             },
