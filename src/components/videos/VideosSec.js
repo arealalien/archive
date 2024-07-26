@@ -76,7 +76,7 @@ const VideosSec = ({ videoCreator, search }) => {
             {videos.map((video, index) => (
                 <div className="videos-inner-item" key={index}>
                     <div className="videos-inner-item-top-info">
-                        <NavLink to={`/profile/${video.creator.name}`} className="videos-inner-item-top-info-user">
+                        <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-top-info-user">
                             <div className="videos-inner-item-top-info-user-picture">
                                 <img className="videos-inner-item-top-info-user-picture-image"
                                      src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""/>

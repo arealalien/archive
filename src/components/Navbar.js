@@ -320,14 +320,14 @@ const Navbar = ({ profile }) => {
                 {user && (
                     <div className="navbar-inner-right-profile-menu" ref={profileMenuRef} style={profileMenuStyle}>
                         <div className="navbar-inner-right-profile-menu-top">
-                            <NavLink to={`/profile/` + user?.name}
+                            <NavLink to={`/channel/` + user?.name}
                                      className="navbar-inner-right-profile-container navbar-inner-right-profile-menu-top-image">
                                 <img className="navbar-inner-right-profile-container-image"
                                      src={profilePictureUrl}
                                      alt="Profile"/>
                             </NavLink>
                             <div className="navbar-inner-right-profile-menu-top-text">
-                                <NavLink to={`/profile/` + user?.name}
+                                <NavLink to={`/channel/` + user?.name}
                                          className="navbar-inner-right-profile-menu-top-text-username">
                                     <span>{user?.name}</span>
                                     <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
@@ -360,7 +360,7 @@ const Navbar = ({ profile }) => {
                                 <NavLink to="/editprofile" className="navbar-inner-right-profile-menu-top-text-link">Edit
                                     profile</NavLink>
                             </div>
-                            <NavLink to={`/profile/` + user?.name} className="blackbutton">
+                            <NavLink to={`/channel/` + user?.name} className="blackbutton">
                                 <span>Go to channel</span>
                                 <div className="blackbutton-shadow"></div>
                             </NavLink>

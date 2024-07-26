@@ -113,7 +113,7 @@ function Video() {
                         <div className="video-inner-right-box">
                             <div className="video-inner-right-box-top">
                                 <div className="video-inner-right-box-top-user">
-                                    <NavLink to={`/profile/${videoDetails.creator.name}`} className="video-inner-right-box-top-user-inner">
+                                    <NavLink to={`/channel/${videoDetails.creator.name}`} className="video-inner-right-box-top-user-inner">
                                         <div className="video-inner-right-box-top-user-container">
                                             <img className="video-inner-right-box-top-user-container-image"
                                                  src={profilePictureUrl}

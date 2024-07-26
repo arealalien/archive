@@ -42,7 +42,7 @@ function Login() {
                             </div>
                             <fieldset className="signup-inner-right-form-center">
                                 <div className="signup-inner-right-form-center-container">
-                                    <label className="signup-inner-right-form-center-container-label">Password*</label>
+                                    <label className="signup-inner-right-form-center-container-label">Username*</label>
                                     <div className="signup-inner-right-form-center-container-input">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="24px" height="24px"

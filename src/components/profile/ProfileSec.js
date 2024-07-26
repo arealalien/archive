@@ -10,7 +10,7 @@ const ProfileSec  = ({ profileName }) => {
             <div className="profile-inner-content-left">
                 <ul className="profile-inner-content-left-list">
                     <li className="profile-inner-content-left-list-item">
-                        <NavLink to="" className="profile-inner-content-left-list-item-link">
+                        <NavLink to={`/channel/` + profileName} className="profile-inner-content-left-list-item-link">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <title>Star</title>
@@ -28,7 +28,7 @@ const ProfileSec  = ({ profileName }) => {
                         </NavLink>
                     </li>
                     <li className="profile-inner-content-left-list-item">
-                        <NavLink to="/profile/videos" className="profile-inner-content-left-list-item-link">
+                        <NavLink to={`/channel/` + profileName + `/videos`} className="profile-inner-content-left-list-item-link">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <title>Video</title>
@@ -49,7 +49,7 @@ const ProfileSec  = ({ profileName }) => {
                         </NavLink>
                     </li>
                     <li className="profile-inner-content-left-list-item">
-                        <NavLink to="/profile/pictures" className="profile-inner-content-left-list-item-link">
+                        <NavLink to={`/channel/` + profileName + `/pictures`} className="profile-inner-content-left-list-item-link">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <title>Image 2</title>
@@ -73,7 +73,7 @@ const ProfileSec  = ({ profileName }) => {
                         </NavLink>
                     </li>
                     <li className="profile-inner-content-left-list-item">
-                        <NavLink to="/profile/playlists" className="profile-inner-content-left-list-item-link">
+                        <NavLink  to={`/channel/` + profileName + `/playlists`} className="profile-inner-content-left-list-item-link">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <title>Folder</title>
