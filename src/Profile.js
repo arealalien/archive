@@ -55,6 +55,7 @@ function Profile() {
     useEffect(() => {
         if (bannerRef.current) {
             const imgElement = bannerRef.current;
+            if (!user2) return;
             const colorThief = new ColorThief();
 
             const updateBackgroundColor = () => {
