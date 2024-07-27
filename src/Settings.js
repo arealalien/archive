@@ -25,7 +25,7 @@ function Settings() {
                 <div className="settings-inner view-width">
                     <div className="settings-inner-left">
                         <ul className="settings-inner-left-list">
-                            <li className="settings-inner-left-list-item">
+                            <li className="settings-inner-left-list-item active">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                     <title>Star</title>
@@ -41,7 +41,7 @@ function Settings() {
                                 </svg>
                                 <p className="settings-inner-left-list-item-name">Profile settings</p>
                             </li>
-                            <li className="settings-inner-left-list-item active">
+                            <li className="settings-inner-left-list-item">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px"
                                      viewBox="0 0 24 24" version="1.1">
