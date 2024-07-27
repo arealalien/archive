@@ -101,7 +101,7 @@ const thumbnailUpload = multer({
 });
 
 app.post('/signup', async (req, res) => {
-    const { email, password, confirmPassword, name } = req.body;
+    const { email, password, confirmPassword, name, displayName } = req.body;
 
     if (password !== confirmPassword) {
         res.status(400).json({ error: 'Passwords do not match' });
@@ -115,6 +115,7 @@ app.post('/signup', async (req, res) => {
                 email,
                 password: hashedPassword,
                 name,
+                displayName,
             },
         });
         res.status(201).json(user);

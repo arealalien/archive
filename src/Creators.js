@@ -48,7 +48,7 @@ function Creators() {
                                          src={`http://localhost:5000/${creator.profilePicture}`}
                                          alt={`${creator.name}'s profile`}/>
                                 )}
-                                <p className="creators-inner-creator-inner-name">{creator.name}</p>
+                                <p className="creators-inner-creator-inner-name">{creator.displayName}</p>
                             </div>
                             <div className="creators-inner-creator-overlay"></div>
                             {creator.banner && (

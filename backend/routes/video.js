@@ -39,6 +39,7 @@ router.get('/videos/:videoUrl', async (req, res) => {
                     select: {
                         id: true,
                         name: true,
+                        displayName: true,
                         profilePicture: true,
                         banner: true,
                         _count: {
@@ -87,6 +88,7 @@ router.get('/videos', async (req, res) => {
                     select: {
                         id: true,
                         name: true,
+                        displayName: true,
                         profilePicture: true,
                         banner: true,
                     }

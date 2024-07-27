@@ -13,6 +13,7 @@ router.get('/user/:username', async (req, res) => {
             select: {
                 id: true,
                 name: true,
+                displayName: true,
                 profilePicture: true,
                 banner: true,
             },

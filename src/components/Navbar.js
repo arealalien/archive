@@ -329,7 +329,7 @@ const Navbar = ({ profile }) => {
                             <div className="navbar-inner-right-profile-menu-top-text">
                                 <NavLink to={`/channel/` + user?.name}
                                          className="navbar-inner-right-profile-menu-top-text-username">
-                                    <span>{user?.name}</span>
+                                    <span>{user?.displayName}</span>
                                     <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                         <g>
                                             <linearGradient gradientUnits="userSpaceOnUse" id="a" x1="4.411" x2="18.083"

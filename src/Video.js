@@ -121,7 +121,7 @@ function Video() {
                                         </div>
                                         <div className="video-inner-right-box-top-user-text">
                                             <h3 className="video-inner-right-box-top-user-text-username">
-                                                <span>{videoDetails.creator.name}</span>
+                                                <span>{videoDetails.creator.displayName}</span>
                                                 <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                                     <g>
                                                         <linearGradient gradientUnits="userSpaceOnUse" id="a" x1="4.411"

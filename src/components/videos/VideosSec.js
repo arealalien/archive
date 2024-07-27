@@ -82,7 +82,7 @@ const VideosSec = ({ videoCreator, search }) => {
                                      src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""/>
                             </div>
                             <p className="videos-inner-item-top-info-user-username">
-                                <span>{video.creator.name}</span>
+                                <span>{video.creator.displayName}</span>
                                 <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                     <g>
                                         <linearGradient gradientUnits="userSpaceOnUse" id="a" x1="4.411" x2="18.083"

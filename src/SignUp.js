@@ -13,13 +13,14 @@ function SignUp() {
 
     const [confirmPassword, setConfirmPassword] = useState('');
     const [name, setName] = useState('');
+    const [displayName, setDisplayName] = useState('');
     const [error, setError] = useState('');
     const { signup } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await signup(email, password, confirmPassword, name);
+            await signup( email, password, confirmPassword, name, displayName );
         } catch (error) {
             setError(error.message);
         }
@@ -48,9 +49,10 @@ function SignUp() {
                             <div className="signup-inner-right-form-top">
                                 <h1 className="signup-inner-right-form-top-title">Sign up</h1>
                             </div>
-                            <fieldset className="signup-inner-right-form-center">
+                            <fieldset className="signup-inner-right-form-center-2">
                                 <div className="signup-inner-right-form-center-container">
-                                    <label className="signup-inner-right-form-center-container-label">Username*</label>
+                                    <label
+                                        className="signup-inner-right-form-center-container-label">Displayname*</label>
                                     <div className="signup-inner-right-form-center-container-input">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="24px" height="24px"
@@ -69,12 +71,35 @@ function SignUp() {
                                                 </g>
                                             </g>
                                         </svg>
-                                        <input id="username" type="text" placeholder="Username"
-                                               value={name} onChange={(e) => setName(e.target.value)} name="username" aria-label="" required/>
+                                        <input id="displayname" type="text" placeholder="Displayname"
+                                               value={displayName} onChange={(e) => setDisplayName(e.target.value)}
+                                               name="displayname"
+                                               aria-label="" required/>
                                     </div>
                                 </div>
                                 <div className="signup-inner-right-form-center-container">
-                                    <label className="signup-inner-right-form-center-container-label">Password*</label>
+                                    <label className="signup-inner-right-form-center-container-label">Username*</label>
+                                    <div className="signup-inner-right-form-center-container-input">
+                                        <svg xmlns="http://www.w3.org/2000/svg" id="signup-at"
+                                             data-name="Xnix/Line/alt" width="24" height="24" viewBox="0 0 24 24">
+                                            <path id="Vector"
+                                                  d="M9.452,7a2.752,2.752,0,0,1-2.7,2.8A2.752,2.752,0,0,1,4.051,7a2.752,2.752,0,0,1,2.7-2.8A2.752,2.752,0,0,1,9.452,7Z"
+                                                  transform="translate(5 5)" fill="none" stroke="#000"
+                                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                                            <path id="Vector-2" data-name="Vector"
+                                                  d="M12.828,9.683a6.894,6.894,0,0,1-2.971,3.465,6.4,6.4,0,0,1-4.385.738,6.6,6.6,0,0,1-3.854-2.315,7.272,7.272,0,0,1-.274-8.786A6.658,6.658,0,0,1,5.046.21,6.38,6.38,0,0,1,9.467.646,6.831,6.831,0,0,1,12.647,3.9l.047.1c.714,1.629.172,4.4-1.554,4.4A1.727,1.727,0,0,1,9.452,6.637"
+                                                  transform="translate(5 5)" fill="none" stroke="#000"
+                                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                                        </svg>
+                                        <input id="username" type="text" placeholder="Username"
+                                               value={name} onChange={(e) => setName(e.target.value)} name="username"
+                                               aria-label="" required/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset className="signup-inner-right-form-center">
+                                <div className="signup-inner-right-form-center-container">
+                                    <label className="signup-inner-right-form-center-container-label">Email*</label>
                                     <div className="signup-inner-right-form-center-container-input">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="24px" height="24px"
@@ -94,7 +119,8 @@ function SignUp() {
                                             </g>
                                         </svg>
                                         <input id="email" type="email" placeholder="Email"
-                                               value={email} onChange={(e) => setEmail(e.target.value)} name="email" aria-label="" required/>
+                                               value={email} onChange={(e) => setEmail(e.target.value)} name="email"
+                                               aria-label="" required/>
                                     </div>
                                 </div>
                             </fieldset>
@@ -128,11 +154,13 @@ function SignUp() {
                                             </g>
                                         </svg>
                                         <input id="password" type="password" placeholder="Password"
-                                               value={password} onChange={(e) => setPassword(e.target.value)} name="password" aria-label="" required/>
+                                               value={password} onChange={(e) => setPassword(e.target.value)}
+                                               name="password" aria-label="" required/>
                                     </div>
                                 </div>
                                 <div className="signup-inner-right-form-center-container">
-                                    <label className="signup-inner-right-form-center-container-label">Confirm Password*</label>
+                                    <label className="signup-inner-right-form-center-container-label">Confirm
+                                        Password*</label>
                                     <div className="signup-inner-right-form-center-container-input">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="24px" height="24px"
@@ -160,7 +188,9 @@ function SignUp() {
                                             </g>
                                         </svg>
                                         <input id="confirm-password" type="password" placeholder="Confirm Password"
-                                               value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} name="confirm-password" aria-label="" required/>
+                                               value={confirmPassword}
+                                               onChange={(e) => setConfirmPassword(e.target.value)}
+                                               name="confirm-password" aria-label="" required/>
                                     </div>
                                 </div>
                             </fieldset>
