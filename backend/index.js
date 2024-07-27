@@ -102,6 +102,7 @@ const thumbnailUpload = multer({
 
 app.post('/signup', async (req, res) => {
     const { email, password, confirmPassword, name, displayName } = req.body;
+    console.log(req.body);
 
     if (password !== confirmPassword) {
         res.status(400).json({ error: 'Passwords do not match' });
@@ -118,6 +119,8 @@ app.post('/signup', async (req, res) => {
                 displayName,
             },
         });
+        console.log('Created user:', user);
+
         res.status(201).json(user);
     } catch (error) {
         if (error.code === 'P2002' && error.meta?.target?.includes('email')) {

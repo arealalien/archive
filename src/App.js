@@ -11,6 +11,7 @@ import Creators from "./Creators"
 import Upload from "./Upload"
 import Pictures from "./Pictures";
 import Video from "./Video";
+import Settings from "./Settings";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/upload" element={<Upload/>}/>
           <Route path="/pictures" element={<Pictures/>}/>
           <Route path="/video" element={<Video/>}/>
+          <Route path="/settings" element={<Settings/>}/>
       </Routes>
   );
 }

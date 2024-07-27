@@ -19,6 +19,7 @@ function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log({ email, password, confirmPassword, name, displayName }); // Log form data
         try {
             await signup( email, password, confirmPassword, name, displayName );
         } catch (error) {

@@ -19,12 +19,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const signup = async (email, password, confirmPassword, name) => {
+    const signup = async (email, password, confirmPassword, name, displayName) => {
         if (password !== confirmPassword) {
             throw new Error('Passwords do not match');
         }
         try {
-            const response = await axios.post('http://localhost:5000/signup', { email, password, confirmPassword, name });
+            const response = await axios.post('http://localhost:5000/signup', { email, password, confirmPassword, name, displayName });
             await login(name, password);
             navigate('/login');
         } catch (error) {

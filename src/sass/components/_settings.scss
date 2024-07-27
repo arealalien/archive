@@ -1,0 +1,66 @@
+.settings {
+  margin: 15em 0 0 0 !important;
+  width: 100%;
+  @include flex-col();
+
+  &-inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3em;
+    overflow: hidden;
+
+    &-left {
+      position: relative;
+      padding: 2em;
+      background-color: hslac($black, 0);
+      border: 1px solid hslac($white, .1);
+      border-radius: 3em;
+      backdrop-filter: blur(5rem) brightness(90%);
+      @include flex-col();
+
+      &-list {
+        gap: .5em;
+        @include flex-col-left();
+
+        .active {
+          background-color: hslac($black, 0);
+          border: 1px solid hslac($white, .1);
+          backdrop-filter: blur(2.5rem) brightness(70%);
+        }
+        &-item {
+          padding: 1.5em 2em;
+          border: 1px solid hslac($white, 0);
+          border-radius: 3em;
+          gap: 1em;
+          cursor: pointer;
+          @include flex-left();
+
+          &-name {
+            font-size: $paragraph-medium;
+          }
+          svg {
+            width: 2.25em;
+            g {
+              g {
+                stroke: hslac($white, 1);
+              }
+            }
+          }
+        }
+      }
+    }
+    &-right {
+      padding: 2em;
+      width: 100%;
+      @include flex-col-start-center();
+
+      &-top {
+        width: 100%;
+        &-title {
+          font-size: $heading-medium;
+          font-weight: 800;
+        }
+      }
+    }
+  }
+}
