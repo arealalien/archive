@@ -341,6 +341,8 @@ function Settings() {
             <DocumentTitle title="Archive"/>
             <Navbar searchbar="yes"/>
             <section className="settings">
+                <img className="settings-background view-width"
+                     src={(process.env.PUBLIC_URL + "/" + user?.banner)} alt=""/>
                 <div className="settings-inner view-width">
                     <img className="settings-inner-background"
                          src={(process.env.PUBLIC_URL + "/" + user?.banner)} alt=""/>
