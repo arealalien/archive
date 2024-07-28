@@ -16,7 +16,7 @@
       border: 1px solid hslac($white, .1);
       border-radius: 3em;
       backdrop-filter: blur(5rem) brightness(90%);
-      @include flex-col();
+      @include flex-col-start-center();
 
       &-list {
         gap: .5em;
@@ -28,8 +28,10 @@
           backdrop-filter: blur(2.5rem) brightness(70%);
         }
         &-item {
-          padding: 1.5em 2em;
+          padding: 1.5em 2.5em 1.5em 2em;
+          color: hslac($white, 1);
           border: 1px solid hslac($white, 0);
+          text-decoration: none;
           border-radius: 3em;
           gap: 1em;
           cursor: pointer;
@@ -52,8 +54,13 @@
     &-right {
       padding: 2em;
       width: 100%;
+      gap: 5em;
       @include flex-col-start-center();
 
+      &-divider {
+        width: 100%; height: 1px;
+        background-color: hslac($white, .1);
+      }
       &-top {
         width: 100%;
         &-title {
@@ -61,6 +68,177 @@
           font-weight: 800;
         }
       }
+      &-center {
+        width: 100%;
+        gap: 2em;
+        @include flex-col-left();
+
+        &-block {
+          width: 100%;
+          display: grid;
+          grid-template-columns: auto 1fr;
+          place-items: flex-start;
+          gap: 6em;
+          &-left {
+            width: 100%;
+            gap: .5em;
+            @include flex-col-left-ns();
+
+            &-title {
+              font-size: $paragraph-medium;
+              font-weight: 500;
+            }
+            &-subtitle {
+              color: hslac($white, .7);
+              font-size: $paragraph;
+              font-weight: 300;
+            }
+          }
+          &-right {
+            width: 100%;
+            gap: 1em;
+            @include flex-col-left-ns();
+
+            &-input {
+              width: 100%;
+              position: relative;
+              &-url {
+                top: 1px; left: 1px;
+                padding: 0 2em;
+                height: calc(100% - 2px);
+                position: absolute;
+                background-color: hslac($black, .35);
+                border-top-left-radius: 5em;
+                border-bottom-left-radius: 5em;
+                z-index: 5;
+                @include flex-center();
+
+                p {
+                  color: hslac($white, .5);
+                }
+              }
+              .url-input {
+                padding: 1em 1.5em 1em 10.5em;
+              }
+              &-inner {
+                padding: 1em 1.5em;
+                width: 100%;
+                font-family: $font-main;
+                color: hslac($white, 1);
+                font-size: $paragraph-large;
+                font-weight: 300;
+                background-color: hslac($white, .1);
+                border: 1px solid hslac($white, .1);
+                border-radius: 5em;
+                backdrop-filter: blur(1.5rem);
+              }
+            }
+          }
+        }
+        &-picture {
+          height: clamp(15em, 15vw, 25em);
+          aspect-ratio: 1 / 1;
+          position: relative;
+          @include flex-center();
+
+          &-edit {
+            top: -1em; right: -1em;
+            width: 7em; height: 7em;
+            position: absolute;
+            background-color: hslac($black, 0);
+            border: 1px solid hslac($white, .5);
+            border-radius: 50%;
+            backdrop-filter: blur(1.25rem) brightness(90%);
+            cursor: pointer;
+            z-index: 10;
+            @include flex-center();
+
+            &-shadow {
+              top: 1em;
+              width: 100%; height: 100%;
+              position: absolute;
+              background-color: hslac($black, .25);
+              transform: scale(.9, .9);
+              filter: blur(1.5rem);
+              z-index: -1;
+            }
+            svg {
+              width: 2.5em; height: 2.5em;
+              g {
+                g {
+                  stroke: hslac($white, 1);
+                }
+              }
+            }
+          }
+          &-container {
+            width: 100%; height: 100%;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            @include flex-center();
+
+            &-image {
+              min-width: 100%; min-height: 100%;
+              max-width: 105%;
+              position: absolute;
+              object-fit: cover;
+            }
+          }
+        }
+        &-header {
+          height: clamp(15em, 15vw, 25em);
+          aspect-ratio: 2.75 / 1;
+          position: relative;
+          @include flex-center();
+
+          &-edit {
+            top: -1em; right: -1em;
+            width: 7.5em; height: 7.5em;
+            position: absolute;
+            background-color: hslac($black, 0);
+            border: 1px solid hslac($white, .5);
+            border-radius: 50%;
+            backdrop-filter: blur(1.25rem) brightness(90%);
+            cursor: pointer;
+            z-index: 10;
+            @include flex-center();
+
+            &-shadow {
+              top: 1em;
+              width: 100%; height: 100%;
+              position: absolute;
+              background-color: hslac($black, .25);
+              transform: scale(.9, .9);
+              filter: blur(1.5rem);
+              z-index: -1;
+            }
+            svg {
+              width: 2.5em; height: 2.5em;
+              g {
+                g {
+                  stroke: hslac($white, 1);
+                }
+              }
+            }
+          }
+          &-container {
+            width: 100%; height: 100%;
+            position: relative;
+            border-radius: 4em;
+            overflow: hidden;
+            @include flex-center();
+
+            &-image {
+              min-width: 100%; min-height: 100%;
+              max-width: 105%;
+              position: absolute;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+
     }
   }
 }

@@ -357,7 +357,7 @@ const Navbar = ({ profile }) => {
                                         </g>
                                     </svg>
                                 </NavLink>
-                                <NavLink to="/editprofile" className="navbar-inner-right-profile-menu-top-text-link">Edit
+                                <NavLink to="/settings/profile" className="navbar-inner-right-profile-menu-top-text-link">Edit
                                     profile</NavLink>
                             </div>
                             <NavLink to={`/channel/` + user?.name} className="blackbutton">
@@ -504,7 +504,7 @@ const Navbar = ({ profile }) => {
                                     </svg>
                                     <span>Your Studio</span>
                                 </li>
-                                <NavLink to="/settings" className="navbar-inner-right-profile-menu-bottom-list-item">
+                                <NavLink to="/settings/profile" className="navbar-inner-right-profile-menu-bottom-list-item">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">

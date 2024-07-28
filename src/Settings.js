@@ -1,5 +1,6 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import { AuthContext } from './contexts/AuthContext';
+import { NavLink } from 'react-router-dom';
 import './css/main.css';
 
 // Components
@@ -7,15 +8,151 @@ import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
+import FileUpload from "./components/profile/FileUpload";
 
-function Settings() {
+function Settings({ page }) {
+    const [profilePictureUrl, setProfilePictureUrl] = useState('');
+    const [bannerUrl, setBannerUrl] = useState('');
     const { user } = useContext(AuthContext);
 
-    let banner;
+    const profilePictureUploadRef = useRef(null);
+    const bannerUploadRef = useRef(null);
 
-    if (user) {
-        banner = `${process.env.PUBLIC_URL}/${user.banner}`;
-    }
+    const handleProfilePictureUpload = (filePath) => {
+        setProfilePictureUrl(`http://localhost:5000/${filePath}`);
+    };
+
+    const handleBannerUpload = (filePath) => {
+        setBannerUrl(`http://localhost:5000/${filePath}`);
+    };
+
+    const renderSettingsContent = () => {
+        switch(page) {
+            case 'profile':
+                return (
+                    <div className="settings-inner-right">
+                        <div className="settings-inner-right-top">
+                            <h1 className="settings-inner-right-top-title">Profile Settings</h1>
+                        </div>
+                        <div className="settings-inner-right-divider"></div>
+                        <div className="settings-inner-right-center">
+                            <div className="settings-inner-right-center-picture">
+                                <div className="settings-inner-right-center-picture-edit"
+                                     onClick={() => profilePictureUploadRef.current.triggerFileInput()}>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <title>Edit</title>
+                                        <g id="edit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                                           stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="edit-inner" transform="translate(3.500000, 3.500000)"
+                                               stroke="#000000" stroke-width="1.5">
+                                                <line x1="9.8352" y1="16.0078" x2="16.2122" y2="16.0078" id="Stroke-1"/>
+                                                <path
+                                                    d="M12.5578,1.3589 L12.5578,1.3589 C11.2138,0.3509 9.3078,0.6229 8.2998,1.9659 C8.2998,1.9659 3.2868,8.6439 1.5478,10.9609 C-0.1912,13.2789 1.4538,16.1509 1.4538,16.1509 C1.4538,16.1509 4.6978,16.8969 6.4118,14.6119 C8.1268,12.3279 13.1638,5.6169 13.1638,5.6169 C14.1718,4.2739 13.9008,2.3669 12.5578,1.3589 Z"
+                                                    id="Stroke-3"/>
+                                                <line x1="7.0041" y1="3.7114" x2="11.8681" y2="7.3624" id="Stroke-5"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <div className="settings-inner-right-center-picture-edit-shadow"></div>
+                                </div>
+                                <div className="settings-inner-right-center-picture-container">
+                                    <img className="settings-inner-right-center-picture-container-image"
+                                         src={profilePictureUrl || (process.env.PUBLIC_URL + "/" + user?.profilePicture)}
+                                         alt=""/>
+                                </div>
+                            </div>
+                            <FileUpload ref={profilePictureUploadRef}
+                                        uploadUrl={`http://localhost:5000/upload/profile-picture`}
+                                        onSuccess={handleProfilePictureUpload}
+                                        fileKey="profilePicture"/>
+                            <div className="settings-inner-right-center-header">
+                                <div className="settings-inner-right-center-header-edit"
+                                     onClick={() => bannerUploadRef.current.triggerFileInput()}>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <title>Edit</title>
+                                        <g id="edit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                                           stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="edit-inner" transform="translate(3.500000, 3.500000)"
+                                               stroke="#000000" stroke-width="1.5">
+                                                <line x1="9.8352" y1="16.0078" x2="16.2122" y2="16.0078" id="Stroke-1"/>
+                                                <path
+                                                    d="M12.5578,1.3589 L12.5578,1.3589 C11.2138,0.3509 9.3078,0.6229 8.2998,1.9659 C8.2998,1.9659 3.2868,8.6439 1.5478,10.9609 C-0.1912,13.2789 1.4538,16.1509 1.4538,16.1509 C1.4538,16.1509 4.6978,16.8969 6.4118,14.6119 C8.1268,12.3279 13.1638,5.6169 13.1638,5.6169 C14.1718,4.2739 13.9008,2.3669 12.5578,1.3589 Z"
+                                                    id="Stroke-3"/>
+                                                <line x1="7.0041" y1="3.7114" x2="11.8681" y2="7.3624" id="Stroke-5"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <div className="settings-inner-right-center-header-edit-shadow"></div>
+                                </div>
+                                <div className="settings-inner-right-center-header-container">
+                                    <img className="editprofile-inner-details-header-container-image"
+                                         src={bannerUrl || (process.env.PUBLIC_URL + "/" + user?.banner)} alt=""/>
+                                </div>
+                            </div>
+                            <FileUpload ref={bannerUploadRef}
+                                        uploadUrl={`http://localhost:5000/upload/banner`}
+                                        onSuccess={handleBannerUpload}
+                                        fileKey="banner"/>
+                        </div>
+                    </div>
+                );
+            case 'account':
+                return (
+                    <div className="settings-inner-right">
+                        <div className="settings-inner-right-top">
+                            <h1 className="settings-inner-right-top-title">Account Settings</h1>
+                        </div>
+                        <div className="settings-inner-right-divider"></div>
+                        <div className="settings-inner-right-center">
+                            <div className="settings-inner-right-center-block">
+                                <div className="settings-inner-right-center-block-left">
+                                    <h2 className="settings-inner-right-center-block-left-title">Public profile</h2>
+                                    <p className="settings-inner-right-center-block-left-subtitle">This will be displayed on your profile</p>
+                                </div>
+                                <div className="settings-inner-right-center-block-right">
+                                    <div className="settings-inner-right-center-block-right-input">
+                                        <input className="settings-inner-right-center-block-right-input-inner"
+                                               id="displayname" type="text" placeholder={user.displayName}
+                                               value={user.displayName} name="displayname"
+                                               aria-label=""/>
+                                    </div>
+                                    <div className="settings-inner-right-center-block-right-input">
+                                        <div className="settings-inner-right-center-block-right-input-url">
+                                            <p>localhost:3000/</p>
+                                        </div>
+                                        <input className="settings-inner-right-center-block-right-input-inner url-input" id="name"
+                                               type="text" placeholder={user.name}
+                                               value={user.name} name="name"
+                                               aria-label=""/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 'content':
+                return (
+                    <div className="settings-inner-right">
+                        <div className="settings-inner-right-top">
+                            <h1 className="settings-inner-right-top-title">Content Settings</h1>
+                        </div>
+                        <div className="settings-inner-right-center">
+
+                        </div>
+                    </div>
+                );
+            default:
+                return (
+                    <div className="settings-inner-right">
+                    <div className="settings-inner-right-top">
+                            <h1 className="settings-inner-right-top-title">Settings</h1>
+                        </div>
+                    </div>
+                );
+        }
+    };
 
     return (
         <>
@@ -25,7 +162,7 @@ function Settings() {
                 <div className="settings-inner view-width">
                     <div className="settings-inner-left">
                         <ul className="settings-inner-left-list">
-                            <li className="settings-inner-left-list-item active">
+                            <NavLink to="/settings/profile" className="settings-inner-left-list-item">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                     <title>Star</title>
@@ -40,8 +177,8 @@ function Settings() {
                                     </g>
                                 </svg>
                                 <p className="settings-inner-left-list-item-name">Profile settings</p>
-                            </li>
-                            <li className="settings-inner-left-list-item">
+                            </NavLink>
+                            <NavLink to="/settings/account" className="settings-inner-left-list-item">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px"
                                      viewBox="0 0 24 24" version="1.1">
@@ -60,8 +197,8 @@ function Settings() {
                                     </g>
                                 </svg>
                                 <p className="settings-inner-left-list-item-name">Account settings</p>
-                            </li>
-                            <li className="settings-inner-left-list-item">
+                            </NavLink>
+                            <NavLink to="/settings/content" className="settings-inner-left-list-item">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="24px" height="24px"
                                      viewBox="0 0 24 24" version="1.1">
@@ -81,14 +218,10 @@ function Settings() {
                                     </g>
                                 </svg>
                                 <p className="settings-inner-left-list-item-name">Content</p>
-                            </li>
+                            </NavLink>
                         </ul>
                     </div>
-                    <div className="settings-inner-right">
-                        <div className="settings-inner-right-top">
-                            <h1 className="settings-inner-right-top-title">Profile Settings</h1>
-                        </div>
-                    </div>
+                    {renderSettingsContent()}
                 </div>
             </section>
             <PageShadow/>

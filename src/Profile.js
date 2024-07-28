@@ -227,7 +227,7 @@ function Profile() {
                             </div>
                             <div className="profile-inner-header-info-right">
                                 {user.name === user2.name ? (
-                                    <NavLink to="/editprofile">
+                                    <NavLink to="/settings/profile">
                                         <button className="mainbutton">
                                             Edit profile
                                         </button>
