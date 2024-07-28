@@ -63,9 +63,19 @@
       }
       &-top {
         width: 100%;
+        @include flex-space-bet();
+
         &-title {
           font-size: $heading-medium;
           font-weight: 800;
+        }
+        &-buttons {
+          gap: 1em;
+          @include flex-center();
+
+          .mainbutton, .blackbutton {
+            font-size: $paragraph-medium;
+          }
         }
       }
       &-center {
@@ -73,6 +83,15 @@
         gap: 2em;
         @include flex-col-left();
 
+        &-buttons {
+          width: 100%;
+          gap: 1em;
+          @include flex-right();
+
+          .mainbutton, .blackbutton {
+            font-size: $paragraph-medium;
+          }
+        }
         &-block {
           width: 100%;
           display: grid;
@@ -99,12 +118,53 @@
               font-size: $paragraph;
               font-weight: 300;
             }
+            .mainbutton {
+              margin: 1em 0 0 0;
+              font-size: $paragraph;
+              font-weight: 500;
+              color: hslac($black, 1);
+              background-color: hslac($yellow, 1);
+            }
+            .mainbutton[disabled]{
+              opacity: .5;
+              cursor: not-allowed;
+            }
           }
           &-right {
             width: 100%;
             gap: 1em;
             @include flex-col-left-ns();
 
+            &-line {
+              margin: 0 0 2em 0;
+              width: 100%;
+              gap: 1em;
+              @include flex-col-left-ns();
+              &-title {
+                color: hslac($white, .7);
+                span {
+                  color: hslac($white, 1);
+                }
+              }
+              &-progressbar {
+                width: 100%;
+                position: relative;
+                background-color: hslac($black, 0);
+                border: 1px solid hslac($white, .1);
+                border-radius: 5em;
+                backdrop-filter: blur(.5rem) brightness(70%);
+                overflow: hidden;
+                @include flex-left();
+
+                &-progress {
+                  margin: 3px;
+                  width: 43%; height: 5px;
+                  position: relative;
+                  background-color: hslac($white, 1);
+                  border-radius: 5em;
+                }
+              }
+            }
             &-input {
               width: 100%;
               position: relative;
@@ -115,14 +175,15 @@
                 padding: 0 2em;
                 height: calc(100% - 2px);
                 position: absolute;
-                background-color: hslac($black, .35);
+                background-color: hslac($white, .05);
+                border-right: 1px solid hslac($white, .05);
                 border-top-left-radius: 5em;
                 border-bottom-left-radius: 5em;
                 z-index: 5;
                 @include flex-center();
 
                 p {
-                  color: hslac($white, .5);
+                  color: hslac($white, .7);
                 }
               }
               .url-input {
@@ -146,7 +207,7 @@
                 color: hslac($white, 1);
                 font-size: $paragraph-large;
                 font-weight: 300;
-                background-color: hslac($white, .1);
+                background-color: hslac($black, .1);
                 border: 1px solid hslac($white, .1);
                 border-radius: 5em;
                 backdrop-filter: blur(1.5rem);

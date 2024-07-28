@@ -103,6 +103,12 @@ function Settings({ page }) {
                     <div className="settings-inner-right">
                         <div className="settings-inner-right-top">
                             <h1 className="settings-inner-right-top-title">Account Settings</h1>
+                            <div className="settings-inner-right-top-buttons">
+                                <button className="blackbutton">Cancel
+                                    <div className="backbutton-shadow"></div>
+                                </button>
+                                <button className="mainbutton" type="submit">Save</button>
+                            </div>
                         </div>
                         <div className="settings-inner-right-divider"></div>
                         <div className="settings-inner-right-center">
@@ -250,15 +256,46 @@ function Settings({ page }) {
                                         </svg>
                                     </h2>
                                     <p className="settings-inner-right-center-block-left-subtitle">How to get this cool
-                                        badge
-                                        on your profile?</p>
-                                    <p className="settings-inner-right-center-block-left-subtitle">minimum of 100 000
-                                        total views</p>
-                                    <p className="settings-inner-right-center-block-left-subtitle">must have at least 5
-                                        subscribers</p>
+                                        badge on your profile?</p>
+                                    <p className="settings-inner-right-center-block-left-subtitle">Make sure you meet
+                                        the requirements!</p>
+                                    <button className="mainbutton" disabled>Apply now!</button>
                                 </div>
                                 <div className="settings-inner-right-center-block-right">
+                                    <div className="settings-inner-right-center-block-right-line">
+                                        <p className="settings-inner-right-center-block-right-line-title">Must have
+                                            atleast <span>1000</span> watch hours</p>
+                                        <div className="settings-inner-right-center-block-right-line-progressbar">
+                                            <div style={{width: 100 + '%'}}
+                                                 className="settings-inner-right-center-block-right-line-progressbar-progress"></div>
+                                        </div>
+                                    </div>
+                                    <div className="settings-inner-right-center-block-right-line">
+                                        <p className="settings-inner-right-center-block-right-line-title">Minimum
+                                            of <span>100 000</span> total video views</p>
+                                        <div className="settings-inner-right-center-block-right-line-progressbar">
+                                            <div style={{width: 43 + '%'}}
+                                                 className="settings-inner-right-center-block-right-line-progressbar-progress"></div>
+                                        </div>
+                                    </div>
+                                    <div className="settings-inner-right-center-block-right-line">
+                                        <p className="settings-inner-right-center-block-right-line-title">Must have at
+                                            least <span>5</span> subscribers</p>
+                                        <div className="settings-inner-right-center-block-right-line-progressbar">
+                                            <div style={{width: 80 + '%'}}
+                                                 className="settings-inner-right-center-block-right-line-progressbar-progress"></div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="settings-inner-right-divider"></div>
+                        <div className="settings-inner-right-center">
+                            <div className="settings-inner-right-center-buttons">
+                                <button className="blackbutton">Cancel
+                                    <div className="backbutton-shadow"></div>
+                                </button>
+                                <button className="mainbutton" type="submit">Save</button>
                             </div>
                         </div>
                     </div>
