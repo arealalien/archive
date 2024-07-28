@@ -102,6 +102,8 @@
             &-input {
               width: 100%;
               position: relative;
+              @include flex-center();
+
               &-url {
                 top: 1px; left: 1px;
                 padding: 0 2em;
@@ -120,8 +122,19 @@
               .url-input {
                 padding: 1em 1.5em 1em 10.5em;
               }
+              svg {
+                left: 2.25em;
+                width: 2.25em;
+                position: absolute;
+                z-index: 5;
+                g {
+                  g {
+                    stroke: hslac($white, 1);
+                  }
+                }
+              }
               &-inner {
-                padding: 1em 1.5em;
+                padding: 1em 1.5em 1em 3.5em;
                 width: 100%;
                 font-family: $font-main;
                 color: hslac($white, 1);
