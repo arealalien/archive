@@ -5,17 +5,26 @@
 
   &-inner {
     display: grid;
+    position: relative;
     grid-template-columns: auto 1fr;
+    border-radius: 3em;
     gap: 3em;
     overflow: hidden;
 
+    &-background {
+      height: 100%;
+      position: absolute;
+      object-fit: cover;
+      filter: blur(15em) brightness(30%);
+      z-index: -1;
+    }
     &-left {
       position: relative;
       padding: 2em;
       background-color: hslac($black, 0);
       border: 1px solid hslac($white, .1);
       border-radius: 3em;
-      backdrop-filter: blur(5rem) brightness(90%);
+      backdrop-filter: blur(5rem) brightness(40%);
       @include flex-col-start-center();
 
       &-list {
@@ -52,7 +61,7 @@
       }
     }
     &-right {
-      padding: 2em;
+      padding: 4em 2em 2em 2em;
       width: 100%;
       gap: 5em;
       @include flex-col-start-center();
@@ -160,7 +169,7 @@
                   margin: 3px;
                   width: 43%; height: 5px;
                   position: relative;
-                  background-color: hslac($white, 1);
+                  background-color: hslac($white, .7);
                   border-radius: 5em;
                 }
               }
@@ -175,10 +184,11 @@
                 padding: 0 2em;
                 height: calc(100% - 2px);
                 position: absolute;
-                background-color: hslac($white, .05);
+                background-color: hslac($white, 0);
                 border-right: 1px solid hslac($white, .05);
                 border-top-left-radius: 5em;
                 border-bottom-left-radius: 5em;
+                backdrop-filter: invert(5%);
                 z-index: 5;
                 @include flex-center();
 
@@ -207,10 +217,10 @@
                 color: hslac($white, 1);
                 font-size: $paragraph-large;
                 font-weight: 300;
-                background-color: hslac($black, .1);
+                background-color: hslac($black, 0);
                 border: 1px solid hslac($white, .1);
                 border-radius: 5em;
-                backdrop-filter: blur(1.5rem);
+                backdrop-filter: blur(1.5rem) brightness(80%);
               }
             }
           }

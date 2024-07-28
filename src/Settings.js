@@ -151,7 +151,8 @@ function Settings() {
                                         </svg>
                                         <input className="settings-inner-right-center-block-right-input-inner"
                                                id="displayname" type="text" placeholder="Displayname"
-                                               value={displayName} onChange={(e) => setDisplayName(e.target.value)} name="displayname"
+                                               value={displayName} onChange={(e) => setDisplayName(e.target.value)}
+                                               name="displayname"
                                                aria-label=""/>
                                     </div>
                                     <div className="settings-inner-right-center-block-right-input">
@@ -227,7 +228,8 @@ function Settings() {
                                         </svg>
                                         <input className="settings-inner-right-center-block-right-input-inner"
                                                id="password" type="password" placeholder="New Password"
-                                               value={password} onChange={(e) => setPassword(e.target.value)} name="password"
+                                               value={password} onChange={(e) => setPassword(e.target.value)}
+                                               name="password"
                                                aria-label=""/>
                                     </div>
                                 </div>
@@ -340,6 +342,8 @@ function Settings() {
             <Navbar searchbar="yes"/>
             <section className="settings">
                 <div className="settings-inner view-width">
+                    <img className="settings-inner-background"
+                         src={(process.env.PUBLIC_URL + "/" + user?.banner)} alt=""/>
                     <div className="settings-inner-left">
                         <ul className="settings-inner-left-list">
                             <NavLink to="/settings/profile" className="settings-inner-left-list-item">
