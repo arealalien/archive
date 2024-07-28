@@ -29,7 +29,7 @@ function App() {
           <Route path="/upload" element={<Upload/>}/>
           <Route path="/pictures" element={<Pictures/>}/>
           <Route path="/video" element={<Video/>}/>
-          <Route path="/settings" element={<Settings/>}/>
+          <Route path="/settings" element={<Settings page="account"/>}/>
           <Route path="/settings/profile" element={<Settings page="profile"/>}/>
           <Route path="/settings/account" element={<Settings page="account"/>}/>
           <Route path="/settings/content" element={<Settings page="content"/>}/>

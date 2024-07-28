@@ -87,6 +87,12 @@
             &-title {
               font-size: $paragraph-medium;
               font-weight: 500;
+              gap: .5em;
+              @include flex-center();
+
+              svg {
+                width: 1.25em;
+              }
             }
             &-subtitle {
               color: hslac($white, .7);
