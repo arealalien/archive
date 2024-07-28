@@ -1,6 +1,6 @@
 import React, {useContext, useRef, useState} from 'react';
 import { AuthContext } from './contexts/AuthContext';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import './css/main.css';
 
 // Components
@@ -10,13 +10,25 @@ import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 import FileUpload from "./components/profile/FileUpload";
 
-function Settings({ page }) {
+function Settings() {
+    const { user } = useContext(AuthContext);
+    const { page } = useParams();
+
     const [profilePictureUrl, setProfilePictureUrl] = useState('');
     const [bannerUrl, setBannerUrl] = useState('');
-    const { user } = useContext(AuthContext);
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState(user ? user.name : '');
+    const [displayName, setDisplayName] = useState(user ? user.displayName : '');
+    const [email, setEmail] = useState(user ? user.email : '');
 
     const profilePictureUploadRef = useRef(null);
     const bannerUploadRef = useRef(null);
+
+    if (!user) {
+        return <section className="loading">
+            <div className="loading-box"><p className="loading-box-text">Loading</p></div>
+        </section>;
+    }
 
     const handleProfilePictureUpload = (filePath) => {
         setProfilePictureUrl(`http://localhost:5000/${filePath}`);
@@ -139,7 +151,7 @@ function Settings({ page }) {
                                         </svg>
                                         <input className="settings-inner-right-center-block-right-input-inner"
                                                id="displayname" type="text" placeholder="Displayname"
-                                               value={user.displayName} name="displayname"
+                                               value={displayName} onChange={(e) => setDisplayName(e.target.value)} name="displayname"
                                                aria-label=""/>
                                     </div>
                                     <div className="settings-inner-right-center-block-right-input">
@@ -149,7 +161,7 @@ function Settings({ page }) {
                                         <input className="settings-inner-right-center-block-right-input-inner url-input"
                                                id="name"
                                                type="text" placeholder="@username"
-                                               value={user.name} name="name"
+                                               value={name} onChange={(e) => setName(e.target.value)} name="name"
                                                aria-label=""/>
                                     </div>
                                 </div>
@@ -184,7 +196,7 @@ function Settings({ page }) {
                                         </svg>
                                         <input className="settings-inner-right-center-block-right-input-inner"
                                                id="email" type="email" placeholder="Email"
-                                               value={user.email} name="email"
+                                               value={email} onChange={(e) => setEmail(e.target.value)} name="email"
                                                aria-label=""/>
                                     </div>
                                     <div className="settings-inner-right-center-block-right-input">
@@ -214,8 +226,8 @@ function Settings({ page }) {
                                             </g>
                                         </svg>
                                         <input className="settings-inner-right-center-block-right-input-inner"
-                                               id="password" type="text" placeholder="New Password"
-                                               value="" name="password"
+                                               id="password" type="password" placeholder="New Password"
+                                               value={password} onChange={(e) => setPassword(e.target.value)} name="password"
                                                aria-label=""/>
                                     </div>
                                 </div>

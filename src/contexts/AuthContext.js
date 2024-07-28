@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await axios.post('http://localhost:5000/signup', { email, password, confirmPassword, name, displayName });
             await login(name, password);
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             throw new Error(error.response?.data?.error || 'Signup failed');
         }
