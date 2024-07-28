@@ -109,7 +109,8 @@ function Settings({ page }) {
                             <div className="settings-inner-right-center-block">
                                 <div className="settings-inner-right-center-block-left">
                                     <h2 className="settings-inner-right-center-block-left-title">Public profile</h2>
-                                    <p className="settings-inner-right-center-block-left-subtitle">This will be displayed on your profile</p>
+                                    <p className="settings-inner-right-center-block-left-subtitle">This will be
+                                        displayed on your profile</p>
                                 </div>
                                 <div className="settings-inner-right-center-block-right">
                                     <div className="settings-inner-right-center-block-right-input">
@@ -122,9 +123,28 @@ function Settings({ page }) {
                                         <div className="settings-inner-right-center-block-right-input-url">
                                             <p>localhost:3000/</p>
                                         </div>
-                                        <input className="settings-inner-right-center-block-right-input-inner url-input" id="name"
+                                        <input className="settings-inner-right-center-block-right-input-inner url-input"
+                                               id="name"
                                                type="text" placeholder={user.name}
                                                value={user.name} name="name"
+                                               aria-label=""/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="settings-inner-right-divider"></div>
+                        <div className="settings-inner-right-center">
+                            <div className="settings-inner-right-center-block">
+                                <div className="settings-inner-right-center-block-left">
+                                    <h2 className="settings-inner-right-center-block-left-title">Private details</h2>
+                                    <p className="settings-inner-right-center-block-left-subtitle">This will not be
+                                        displayed on your profile</p>
+                                </div>
+                                <div className="settings-inner-right-center-block-right">
+                                    <div className="settings-inner-right-center-block-right-input">
+                                        <input className="settings-inner-right-center-block-right-input-inner"
+                                               id="password" type="text" placeholder="Password"
+                                               value="" name="password"
                                                aria-label=""/>
                                     </div>
                                 </div>
@@ -146,7 +166,7 @@ function Settings({ page }) {
             default:
                 return (
                     <div className="settings-inner-right">
-                    <div className="settings-inner-right-top">
+                        <div className="settings-inner-right-top">
                             <h1 className="settings-inner-right-top-title">Settings</h1>
                         </div>
                     </div>
