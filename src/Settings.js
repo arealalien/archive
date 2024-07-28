@@ -38,6 +38,10 @@ function Settings() {
         setBannerUrl(`http://localhost:5000/${filePath}`);
     };
 
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     const renderSettingsContent = () => {
         switch(page) {
             case 'profile':
@@ -200,7 +204,7 @@ function Settings() {
                                                value={email} onChange={(e) => setEmail(e.target.value)} name="email"
                                                aria-label=""/>
                                     </div>
-                                    <div className="settings-inner-right-center-block-right-input">
+                                    <div className="settings-inner-right-center-block-right-input settings-password">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="24px" height="24px"
                                              viewBox="0 0 24 24" version="1.1">
@@ -227,7 +231,7 @@ function Settings() {
                                             </g>
                                         </svg>
                                         <input className="settings-inner-right-center-block-right-input-inner"
-                                               id="password" type="password" placeholder="New Password"
+                                               id="password" type="password" placeholder="Password"
                                                value={password} onChange={(e) => setPassword(e.target.value)}
                                                name="password"
                                                aria-label=""/>
@@ -338,7 +342,7 @@ function Settings() {
 
     return (
         <>
-            <DocumentTitle title="Archive"/>
+            <DocumentTitle title={`Archive - ` + capitalizeFirstLetter(page) + ` Settings`}/>
             <Navbar searchbar="yes"/>
             <section className="settings">
                 <img className="settings-background view-width"
