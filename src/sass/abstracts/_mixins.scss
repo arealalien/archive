@@ -19,6 +19,11 @@
   justify-content: flex-end;
   align-items: flex-end;
 }
+@mixin flex-left-start-end {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
 @mixin flex-right {
   display: flex;
   justify-content: flex-end;

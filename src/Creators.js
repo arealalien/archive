@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { NavLink } from "react-router-dom";
 import './css/main.css';
 
 // Components
@@ -41,7 +42,7 @@ function Creators() {
             <section className="creators">
                 <div className="creators-inner view-width">
                     {creators.map((creator, index) => (
-                        <div className="creators-inner-creator" key={index}>
+                        <NavLink to={`/channel/${creator.name}`} className="creators-inner-creator" key={index}>
                             <div className="creators-inner-creator-inner">
                                 {creator.profilePicture && (
                                     <img className="creators-inner-creator-inner-picture"
@@ -55,7 +56,7 @@ function Creators() {
                                 <img className="creators-inner-creator-background"
                                      src={`http://localhost:5000/${creator.banner}`} alt={`${creator.name}'s banner`}/>
                             )}
-                        </div>
+                        </NavLink>
                     ))}
                 </div>
             </section>

@@ -11,12 +11,13 @@
       width: 100%;
       position: relative;
       border-radius: 2em;
+      text-decoration: none;
       overflow: hidden;
-      @include flex-left();
+      @include flex-left-start-end();
 
       &-inner {
         margin: 1em;
-        position: relative;
+        position: absolute;
         gap: 1em;
         z-index: 5;
         @include flex-center();
@@ -24,8 +25,10 @@
         &-name {
           padding: 0 1em 0 0;
           position: relative;
+          color: hslac($white, 1);
           font-size: $paragraph-large;
           font-weight: 800;
+          text-decoration: none;
           z-index: 5;
         }
         &-picture {
@@ -43,7 +46,7 @@
       }
       &-background {
         width: 100%;
-        position: absolute;
+        position: relative;
       }
     }
   }

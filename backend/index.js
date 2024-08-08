@@ -75,18 +75,18 @@ const videoUpload = multer({
 const thumbnailStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const userId = req.userId;
-        const videoId = req.body.videoUrl; // Fetch videoId from the request body
-        if (!videoId) {
+        const videoUrl = req.body.videoUrl; // Fetch videoId from the request body
+        if (!videoUrl) {
             return cb(new Error('videoId is missing'));
         }
-        const thumbnailFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
+        const thumbnailFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoUrl);
         if (!fs.existsSync(thumbnailFolder)) {
             fs.mkdirSync(thumbnailFolder, { recursive: true });
         }
         cb(null, thumbnailFolder);
     },
     filename: (req, file, cb) => {
-        cb(null, 'thumbnail.jpg');
+        cb(null, 'thumbnail-original.jpg'); // Save the original as well
     }
 });
 
@@ -265,11 +265,25 @@ app.post('/upload/video', validateToken, videoUpload.single('video'), async (req
 
 app.post('/upload/thumbnail', validateToken, thumbnailUpload.single('image'), async (req, res) => {
     const imageFile = req.file;
-    const videoId = req.body.videoUrl; // Fetch videoId from the request body
-    const thumbnailPath = path.join('users', req.userId.toString(), 'videos', videoId, 'thumbnail.jpg');
+    const videoUrl = req.body.videoUrl;
+    const userDir = path.join(__dirname, '..', 'public', 'users', req.userId.toString(), 'videos', videoUrl);
+    const originalFilePath = imageFile.path;
+    const jpegFilePath = path.join(userDir, 'thumbnail.jpg');
 
     try {
-        res.json({ message: 'Thumbnail uploaded successfully!' });
+        if (!imageFile) {
+            throw new Error('No thumbnail file uploaded');
+        }
+
+        // Convert to JPEG using sharp
+        await sharp(originalFilePath)
+            .jpeg()
+            .toFile(jpegFilePath);
+
+        // Ensure the file is no longer being used before unlinking
+        unlinkFile(originalFilePath);
+
+        res.status(200).json({ message: 'Thumbnail uploaded successfully!', filePath: jpegFilePath });
     } catch (error) {
         console.error('Error processing thumbnail:', error);
         res.status(500).json({ error: 'Failed to process thumbnail', details: error.message });
