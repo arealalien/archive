@@ -47,7 +47,7 @@
       width: 100%;
       position: relative;
       gap: 1.6em;
-      @include flex-col();
+      @include flex-col-start-center();
 
       &:hover {
         .videos-inner-item-video-overlay {
