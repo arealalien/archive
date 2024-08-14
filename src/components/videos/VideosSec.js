@@ -75,13 +75,29 @@ const VideosSec = ({ videoCreator, search }) => {
         <>
             {videos.map((video, index) => (
                 <div className="videos-inner-item" key={index}>
-                    <div className="videos-inner-item-top-info">
-                        <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-top-info-user">
-                            <div className="videos-inner-item-top-info-user-picture">
-                                <img className="videos-inner-item-top-info-user-picture-image"
-                                     src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""/>
+                    <div className="videos-inner-item-video">
+                        <div className="videos-inner-item-video-info">
+                            <div className="videos-inner-item-video-info-time">
+                                <p>{video.duration}</p>
+                                <div className="videos-inner-item-video-info-time-shadow"></div>
                             </div>
-                            <p className="videos-inner-item-top-info-user-username">
+                        </div>
+                        <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
+                                 className="videos-inner-item-video-overlay"></NavLink>
+                        <img className="videos-inner-item-video-background"
+                             src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"}
+                             alt=""/>
+                    </div>
+                    <div className="videos-inner-item-info">
+                        <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-bottom-info-left">
+                            <img className="videos-inner-item-info-left-image"
+                                 src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""/>
+                        </NavLink>
+                        <div className="videos-inner-item-info-right">
+                            <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
+                                     className="videos-inner-item-info-right-title">{video.title}</NavLink>
+                            <NavLink to={`/channel/${video.creator.name}`}
+                                     className="videos-inner-item-info-right-name">
                                 <span>{video.creator.displayName}</span>
                                 <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                     <g>
@@ -109,20 +125,14 @@ const VideosSec = ({ videoCreator, search }) => {
                                         </g>
                                     </g>
                                 </svg>
-                            </p>
-                            <div className="videos-inner-item-top-info-user-shadow"></div>
-                        </NavLink>
-                        <div className="videos-inner-item-top-info-time">
-                            <p>{video.duration}</p>
-                            <div className="videos-inner-item-top-info-time-shadow"></div>
+                            </NavLink>
+                            <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
+                                     className="videos-inner-item-info-right-info">Seen {formatViews(video.views)} times &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</NavLink>
                         </div>
                     </div>
-                    <div className="videos-inner-item-bottom-info">
-                        <p className="videos-inner-item-bottom-info-title">{video.title}</p>
-                        <p className="videos-inner-item-bottom-info-info">Seen {formatViews(video.views)} times &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</p>
-                    </div>
-                    <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-overlay"></NavLink>
-                    <img className="videos-inner-item-background" src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"} alt=""/>
+                    <img className="videos-inner-item-background"
+                         src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"}
+                         alt=""/>
                 </div>
             ))}
         </>

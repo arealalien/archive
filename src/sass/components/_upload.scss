@@ -261,3 +261,7 @@
   border-color: hslac($white, .1);
   filter: brightness(20%);
 }
+.upload-progress {
+  width: 100%;
+  position: fixed !important;
+}

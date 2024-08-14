@@ -283,11 +283,11 @@ const UploadForm = () => {
                             <div className="upload-inner-second-bottom-progress view-width">
                                 <div className="upload-inner-second-bottom-progress-inner">
                                     <div className="upload-inner-second-bottom-progress-left">
-                                        <p>50%</p>
+                                        <p className="upload-inner-second-bottom-progress-left-number">0%</p>
                                     </div>
                                     <div className="upload-inner-second-bottom-progress-center">
                                         <div className="upload-inner-second-bottom-progress-center-bar">
-                                            <div className="upload-inner-second-bottom-progress-center-bar-inner"></div>
+                                            <div className="upload-inner-second-bottom-progress-center-bar-inner" style={{ width: 0 }}></div>
                                         </div>
                                     </div>
                                     <div className="upload-inner-second-bottom-progress-right">

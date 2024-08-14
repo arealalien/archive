@@ -13,6 +13,7 @@
 
 # Storage
 /public/users
+/public/images/gallery
 
 # misc
 .DS_Store

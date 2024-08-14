@@ -10,7 +10,8 @@
   }
 
   .videos-inner-4 {
-    gap: 2em;
+    row-gap: 4em;
+    column-gap: 2em;
     grid-template-columns: repeat(4, 1fr);
     @media (max-width: $layout-breakpoint-xmedium) {
       grid-template-columns: repeat(3, 1fr);
@@ -44,163 +45,170 @@
 
     &-item {
       width: 100%;
-      aspect-ratio: 16 / 9;
       position: relative;
-      background-color: hslac($black, 1);
-      border-radius: 2em;
-      overflow: hidden;
-      cursor: pointer;
-      @include flex-center();
+      gap: 1.6em;
+      @include flex-col();
 
       &:hover {
-        .videos-inner-item-overlay {
-          opacity: .4;
-        }
-        .videos-inner-item-bottom-info {
+        .videos-inner-item-video-overlay {
           opacity: 0;
         }
+        .videos-inner-item-video-info-time {
+          opacity: 0;
+        }
+        .videos-inner-item-background {
+          transform: scale(.9, .9);
+          opacity: .8;
+        }
       }
-      &-top-info {
-        left: 0; top: 0;
-        padding: 1em;
+      &-background {
+        top: .5em;
         width: 100%;
         position: absolute;
-        z-index: 100;
-        @include flex-space-bet-start();
+        transform: scale(.88, .88);
+        filter: blur(5rem);
+        opacity: .4;
+        transition: all .25s cubic-bezier($transition-main, 1);
+        z-index: -1;
+      }
+      &-video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        position: relative;
+        background-color: hslac($black, 1);
+        border-radius: 2em;
+        overflow: hidden;
+        cursor: pointer;
+        @include flex-center();
 
-        &-user {
-          padding: .4em;
-          position: relative;
-          background-color: hslac($black, 0);
-          backdrop-filter: blur(1.5rem) brightness(70%);
-          border-radius: 5em;
-          text-decoration: none;
-          gap: .75em;
-          transition: all .25s cubic-bezier($transition-smooth, 1);
-          @include flex-center();
+        &-info {
+          left: 0; bottom: 0;
+          padding: 1em;
+          width: 100%;
+          position: absolute;
+          z-index: 100;
+          @include flex-right();
 
-          &-picture {
-            width: 3em; height: 3em;
+          &-time {
+            padding: 1em 1.4em;
             position: relative;
-            border-radius: 50%;
-            overflow: hidden;
+            background-color: hslac($black, 0);
+            backdrop-filter: blur(1.5rem) brightness(70%);
+            border-radius: 5em;
+            opacity: 1;
+            transition: all .25s cubic-bezier($transition-smooth, 1);
             @include flex-center();
 
-            &-image {
-              min-width: 100%; min-height: 100%;
-              max-width: 105%;
+            p {
+              color: hslac($white, .7);
+              font-size: $paragraph;
+            }
+            &-shadow {
+              top: .5em;
+              width: 100%; height: 100%;
               position: absolute;
-              object-fit: cover;
+              background-color: hslac($black, .15);
+              transform: scale(.8, .8);
+              filter: blur(1rem);
+              z-index: -1;
             }
           }
-          &-username {
-            margin: 0 .75em 0 0;
-            gap: .25em;
+        }
+        &-overlay {
+          width: 100%; height: 100%;
+          position: absolute;
+          background: linear-gradient(7deg, hslac($black, .54) 0, hslac($black, 0) 100%);
+          transition: all .25s cubic-bezier($transition-smooth, 1);
+          z-index: 3;
+        }
+        &-background {
+          width: 100%;
+          position: absolute;
+          object-fit: cover;
+        }
+      }
+      &-info {
+        bottom: 0;
+        width: 100%;
+        display: grid;
+        position: relative;
+        grid-template-columns: auto 1fr;
+        place-items: flex-start;
+        gap: 1.2em;
+        transition: all .25s cubic-bezier($transition-smooth, 1);
+        z-index: 5;
+
+        &-left {
+          &-image {
+            width: 4em;
+            border-radius: 50%;
+          }
+        }
+        &-right {
+          @include flex-col-left();
+
+          &-title {
+            margin: 0 0 .4em 0;
+            max-width: 100%;
+            max-height: calc(calc($paragraph-large * 2) + .5rem);
+            line-height: $paragraph-large;
+            color: hslac($white, 1);
+            text-decoration: none;
+            font-size: $paragraph-large;
+            font-weight: 600;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            white-space: normal;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          &-name {
+            margin: 0 0 .1em 0;
+            gap: .5em;
+            text-decoration: none;
             @include flex-center();
 
+            &:hover {
+              span {
+                color: hslac($white, 1);
+              }
+            }
             span {
               max-width: 100%;
               max-height: calc($paragraph-large + .5rem);
               line-height: $paragraph-large;
               color: hslac($white, .7);
               font-size: $paragraph;
-              font-weight: 500;
+              font-weight: 300;
               display: -webkit-box;
               -webkit-box-orient: vertical;
               -webkit-line-clamp: 1;
               white-space: normal;
               text-overflow: ellipsis;
               overflow: hidden;
+              transition: all .25s cubic-bezier($transition-smooth, 1);
             }
             svg {
-              width: $paragraph-large;
+              height: $paragraph-large;
             }
           }
-          &-shadow {
-            top: .5em;
-            width: 100%; height: 100%;
-            position: absolute;
-            background-color: hslac($black, .15);
-            transform: scale(.8, .8);
-            filter: blur(1rem);
-            z-index: -1;
-          }
-        }
-        &-time {
-          padding: 1em 1.4em;
-          position: relative;
-          background-color: hslac($black, 0);
-          backdrop-filter: blur(1.5rem) brightness(70%);
-          border-radius: 5em;
-          opacity: 1;
-          transition: all .25s cubic-bezier($transition-smooth, 1);
-          @include flex-center();
-
-          p {
+          &-info {
+            max-width: 100%;
+            max-height: calc($paragraph-large + .5rem);
+            line-height: $paragraph-large;
             color: hslac($white, .7);
+            text-decoration: none;
             font-size: $paragraph;
-          }
-          &-shadow {
-            top: .5em;
-            width: 100%; height: 100%;
-            position: absolute;
-            background-color: hslac($black, .15);
-            transform: scale(.8, .8);
-            filter: blur(1rem);
-            z-index: -1;
+            font-weight: 300;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            white-space: normal;
+            text-overflow: ellipsis;
+            overflow: hidden;
           }
         }
-      }
-      &-bottom-info {
-        bottom: 0;
-        padding: 1em 1.75em;
-        width: 100%;
-        position: absolute;
-        background-color: hslac($black, 0);
-        gap: .5em;
-        transition: all .25s cubic-bezier($transition-smooth, 1);
-        z-index: 5;
-        @include flex-col-left();
-
-        &-title {
-          max-width: 100%;
-          max-height: calc($paragraph-large + .5rem);
-          line-height: $paragraph-large;
-          font-size: $paragraph-large;
-          font-weight: 600;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
-          white-space: normal;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-        &-info {
-          max-width: 100%;
-          max-height: calc($paragraph-large + .5rem);
-          line-height: $paragraph-large;
-          color: hslac($white, .7);
-          font-size: $paragraph;
-          font-weight: 300;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
-          white-space: normal;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-      }
-      &-overlay {
-        width: 100%; height: 100%;
-        position: absolute;
-        background: linear-gradient(7deg, hslac($black, .84) 0, hslac($black, 0) 100%);
-        transition: all .25s cubic-bezier($transition-smooth, 1);
-        z-index: 3;
-      }
-      &-background {
-        width: 100%;
-        position: absolute;
-        object-fit: cover;
       }
     }
   }

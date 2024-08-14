@@ -75,9 +75,10 @@ const videoUpload = multer({
 const thumbnailStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const userId = req.userId;
-        const videoUrl = req.body.videoUrl; // Fetch videoId from the request body
+        const videoUrl = req.body.videoUrl;
+        console.log(req.videoUrl);
         if (!videoUrl) {
-            return cb(new Error('videoId is missing'));
+            return cb(new Error(videoUrl + 'videoId is missing'));
         }
         const thumbnailFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoUrl);
         if (!fs.existsSync(thumbnailFolder)) {
@@ -270,6 +271,7 @@ app.post('/upload/thumbnail', validateToken, thumbnailUpload.single('image'), as
     const originalFilePath = imageFile.path;
     const jpegFilePath = path.join(userDir, 'thumbnail.jpg');
 
+    console.log(videoUrl);
     try {
         if (!imageFile) {
             throw new Error('No thumbnail file uploaded');
