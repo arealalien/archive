@@ -1,5 +1,5 @@
 .settings {
-  margin: 15em 0 0 0 !important;
+  margin: 3em 0 0 0;
   position: relative;
   width: 100%;
   @include flex-col();
@@ -9,7 +9,7 @@
     position: absolute;
     filter: blur(15em);
     opacity: .15;
-    z-index: -1;
+    z-index: 1;
   }
   &-inner {
     display: grid;
@@ -18,7 +18,7 @@
     border-radius: 3em;
     gap: 3em;
     overflow: hidden;
-
+    z-index: 5;
     &-background {
       height: 100%;
       position: absolute;

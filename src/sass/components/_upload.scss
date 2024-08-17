@@ -1,13 +1,14 @@
 .upload {
-  width: 100%; min-height: 100vh;
+  width: 100%;
   @include flex-center();
   @media (max-width: $layout-breakpoint-small) {
     height: auto;
   }
 
   &-inner {
-    margin: 10em 0;
-    height: 80%;
+    margin: 3em 0;
+    min-height: calc(100vh - $navbar-height - 6em);
+    position: relative;
     background-color: hslac($black, 1);
     border: 1px solid hslac($white, .1);
     border-radius: 4em;
@@ -186,9 +187,8 @@
         @include flex-center();
 
         &-progress {
-          bottom: 4.6em;
-          padding: 0 2.5em;
-          position: fixed;
+          bottom: 2em;
+          position: absolute;
           z-index: 523;
           @include flex-center();
 

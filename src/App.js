@@ -6,7 +6,6 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import Search from "./Search";
 import Profile from "./Profile"
-import EditProfile from "./EditProfile"
 import Creators from "./Creators"
 import Upload from "./Upload"
 import Pictures from "./Pictures";
@@ -24,7 +23,6 @@ function App() {
           <Route path="/channel/:username/videos" element={<Profile page="videos"/>}/>/>
           <Route path="/channel/:username/pictures" element={<Profile page="pictures"/>}/>/>
           <Route path="/channel/:username/playlists" element={<Profile page="playlists"/>}/>/>
-          <Route path="/editprofile" element={<EditProfile/>}/>
           <Route path="/creators" element={<Creators/>}/>/>
           <Route path="/upload" element={<Upload/>}/>
           <Route path="/pictures" element={<Pictures/>}/>

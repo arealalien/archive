@@ -1,13 +1,12 @@
 body {
-  width: 100%;
+  width: 100%; height: 100vh;
   color: hslac($white, 1);
   font-family: $font-main;
-  background: hslac($background, 1);
-  overflow-x: hidden;
+  background: hslac($black, 1);
+  overflow: hidden;
 }
 .view-width {
   width: $view-width !important;
-  max-width: $max-view-width;
 }
 .view-width-wide {
   width: $view-width !important;
@@ -18,6 +17,7 @@ body {
   position: fixed;
   background: linear-gradient(0, hslac($black, 1) 0, hslac($black, 0) 100%);
   pointer-events: none;
+  opacity: .5;
   z-index: 9999;
 }
 
@@ -91,6 +91,36 @@ body {
   }
 }
 
+.page {
+  padding: 0 1em;
+  width: 100%; height: calc(100vh - $navbar-height);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  border-radius: 2em;
+  gap: 1em;
+  overflow: hidden;
+  &-center {
+    position: relative;
+    background-color: hslac($background, 1);
+    border-top-left-radius: 2em;
+    border-top-right-radius: 2em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    scrollbar-width: none;
+
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: hslac($white, .3);
+    }
+    &::-webkit-scrollbar-thumb {
+      display: none;
+    }
+    > div:nth-child(3) {
+      padding: 3em 0 0 0;
+    }
+  }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -105,4 +135,28 @@ input:-webkit-autofill:active{
 ::selection {
   color: hslac($white, 1);
   background: hslac($primary, 1);
+}
+
+::-webkit-scrollbar {
+  width: 8px; height: 8px;
+}
+::-webkit-scrollbar-button {
+  width: 25px; height: 25px;
+}
+::-webkit-scrollbar-thumb {
+  background: hslac($white, 0);
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hslac($white, 1);
+}
+::-webkit-scrollbar-thumb:active {
+  background: hslac($white, 1);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 5em;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

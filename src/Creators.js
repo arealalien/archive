@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import ScrollBar from './components/ScrollBar';
 import { NavLink } from "react-router-dom";
 import './css/main.css';
 
@@ -7,9 +8,16 @@ import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
+import SideBarLeft from "./components/SideBarLeft";
+import SideBarRight from "./components/SideBarRight";
 
 function Creators() {
     const [creators, setCreators] = useState([]);
+    const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
+
+    const toggleSidebarMenu = () => {
+        setSidebarMenuVisible(prevState => !prevState);
+    };
 
     useEffect(() => {
         const fetchCreators = async () => {
@@ -38,28 +46,35 @@ function Creators() {
     return (
         <>
             <DocumentTitle title="Archive"/>
-            <Navbar searchbar="yes"/>
-            <section className="creators">
-                <div className="creators-inner view-width">
-                    {creators.map((creator, index) => (
-                        <NavLink to={`/channel/${creator.name}`} className="creators-inner-creator" key={index}>
-                            <div className="creators-inner-creator-inner">
-                                {creator.profilePicture && (
-                                    <img className="creators-inner-creator-inner-picture"
-                                         src={`http://localhost:5000/${creator.profilePicture}`}
-                                         alt={`${creator.name}'s profile`}/>
-                                )}
-                                <p className="creators-inner-creator-inner-name">{creator.displayName}</p>
-                            </div>
-                            <div className="creators-inner-creator-overlay"></div>
-                            {creator.banner && (
-                                <img className="creators-inner-creator-background"
-                                     src={`http://localhost:5000/${creator.banner}`} alt={`${creator.name}'s banner`}/>
-                            )}
-                        </NavLink>
-                    ))}
-                </div>
-            </section>
+            <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu} />
+            <div className="page">
+                <SideBarLeft/>
+                <ScrollBar className="page-center">
+                    <section className="creators">
+                        <div className="creators-inner view-width">
+                            {creators.map((creator, index) => (
+                                <NavLink to={`/channel/${creator.name}`} className="creators-inner-creator" key={index}>
+                                    <div className="creators-inner-creator-inner">
+                                        {creator.profilePicture && (
+                                            <img className="creators-inner-creator-inner-picture"
+                                                 src={`http://localhost:5000/${creator.profilePicture}`}
+                                                 alt={`${creator.name}'s profile`}/>
+                                        )}
+                                        <p className="creators-inner-creator-inner-name">{creator.displayName}</p>
+                                    </div>
+                                    <div className="creators-inner-creator-overlay"></div>
+                                    {creator.banner && (
+                                        <img className="creators-inner-creator-background"
+                                             src={`http://localhost:5000/${creator.banner}`}
+                                             alt={`${creator.name}'s banner`}/>
+                                    )}
+                                </NavLink>
+                            ))}
+                        </div>
+                    </section>
+                </ScrollBar>
+                <SideBarRight isMenuVisible={isSidebarMenuVisible}/>
+            </div>
             <PageShadow/>
             <Footer/>
         </>
