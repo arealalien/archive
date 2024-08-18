@@ -5,9 +5,6 @@
   background-color: hslac($black, 1);
   z-index: 10000;
   @include flex-center();
-  @media (max-width: $layout-breakpoint-medium) {
-    top: 3em;
-  }
 
   &-inner {
     margin: 2em 0; padding: 0 2em;
@@ -158,12 +155,6 @@
         position: relative;
         @include flex-left();
 
-        &-background {
-          width: 100%; height: 100%;
-          position: absolute;
-          filter: blur(10em) saturate(200%);
-          z-index: 3;
-        }
         &-left {
           padding: 1em;
           width: 100%;
@@ -289,29 +280,35 @@
       width: 100%;
       gap: 1em;
       @include flex-col();
+
+      .active {
+        backdrop-filter: blur(1.5rem) brightness(20%);
+      }
       &-item {
-        padding: 1em 1.75em;
+        padding: 1.75em 2.25em;
         width: 100%;
+        position: relative;
         text-decoration: none;
         background-color: hslac($black, 0);
-        border: 1px solid hslac($white, 0);
-        border-radius: 5em;
-        backdrop-filter: blur(1.5rem) brightness(50%);
+        border: 1px solid hslac($white, .1);
+        border-radius: 2em;
+        backdrop-filter: blur(1.5rem) brightness(70%);
         gap: 1em;
         transition: all .3s cubic-bezier($transition-main, 1);
-        @include flex-left();
+        @include flex-center();
 
         &:hover {
-          border: 1px solid hslac($white, .1);
-          backdrop-filter: blur(1.5rem) brightness(20%);
+          border: 1px solid hslac($white, .2);
+          backdrop-filter: blur(1.5rem) brightness(40%);
         }
         svg {
-          height: 3em;
+          height: 2em;
           g {
             stroke: hslac($white, .7);
           }
         }
         &-text {
+          width: 100%;
           color: hslac($white, .7);
           font-weight: 300;
         }
@@ -319,13 +316,17 @@
     }
   }
   &-divider {
-    padding: 1.5em;
+    padding: 2em 1.5em 0 1.5em;
     width: 100%;
     @include flex-col();
 
+    &-text {
+      width: calc(100% - 1.5em);
+      color: hslac($white, .7);
+    }
     &-line {
       width: calc(100% - 3em); height: 1px;
-      background-color: hslac($white, .1);
+      background-color: hslac($white, 0);
     }
   }
   &-playlists {
@@ -342,15 +343,15 @@
         display: grid;
         grid-template-columns: 5em 1fr;
         border-radius: 2.25em;
-        border: 1px solid hslac($white, 0);
-        backdrop-filter: blur(1.5rem) brightness(50%);
+        border: 1px solid hslac($white, .1);
+        backdrop-filter: blur(1.5rem) brightness(70%);
         text-decoration: none;
         gap: 1em;
         overflow: hidden;
         transition: all .3s cubic-bezier($transition-main, 1);
         &:hover {
-          border: 1px solid hslac($white, .1);
-          backdrop-filter: blur(1.5rem) brightness(20%);
+          border: 1px solid hslac($white, .2);
+          backdrop-filter: blur(1.5rem) brightness(40%);
         }
         &-left {
           width: 100%;
@@ -389,6 +390,7 @@
           @include flex-col-left-ns();
 
           &-title {
+            padding: 0 1.5em 0 0;
             max-width: 100%;
             max-height: calc($paragraph-large + .5rem);
             line-height: calc($paragraph-large + .25rem);

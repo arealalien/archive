@@ -116,7 +116,7 @@ function Video() {
                             <div className="video-inner-left">
                                 <VideoSec video={videoDetails}/>
                                 <section className="videos">
-                                    <div className="videos-inner videos-inner-3">
+                                    <div className="videos-inner videos-inner-4">
                                         <VideosSec/>
                                     </div>
                                 </section>

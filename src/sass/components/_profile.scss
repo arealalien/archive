@@ -4,18 +4,18 @@
   @include flex-center();
 
   &-inner {
-    gap: 10em;
+    gap: 6em;
     @include flex-col();
     @media (max-width: $layout-breakpoint-xsmall) {
       gap: 4em;
     }
 
     &-header {
-      margin: calc($navbar-height / 2) 0 0 0;
+      margin: 3em 0 0 0;
       width: 100%;
       position: relative;
       aspect-ratio: 2.75 / 1;
-      border-radius: 4em;
+      border-radius: 3em;
       overflow: hidden;
       @include flex-center();
       @media (max-width: $layout-breakpoint-medium) {
@@ -205,19 +205,16 @@
         }
       }
       &-right {
-        gap: 2em;
-        grid-template-columns: repeat(3, 1fr);
-        @media (max-width: $layout-breakpoint-xmedium) {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        @media (max-width: $layout-breakpoint-msmall) {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        @media (max-width: $layout-breakpoint-small) {
-          grid-template-columns: repeat(1, 1fr);
-        }
-        @media (max-width: $layout-breakpoint-xsmall) {
-          grid-template-columns: repeat(1, 1fr);
+        &-videos {
+          row-gap: 4em;
+          column-gap: 2em;
+          grid-template-columns: repeat(auto-fit, minmax(28em, 1fr));
+          @media (max-width: $layout-breakpoint-msmall) {
+            gap: 1em;
+          }
+          @media (max-width: $layout-breakpoint-xsmall) {
+            gap: 2em;
+          }
         }
       }
     }

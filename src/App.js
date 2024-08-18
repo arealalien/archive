@@ -20,9 +20,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/search" element={<Search/>}/>
           <Route path="/channel/:username" element={<Profile/>}/>/>
-          <Route path="/channel/:username/videos" element={<Profile page="videos"/>}/>/>
-          <Route path="/channel/:username/pictures" element={<Profile page="pictures"/>}/>/>
-          <Route path="/channel/:username/playlists" element={<Profile page="playlists"/>}/>/>
+          <Route path="/channel/:username/:page" element={<Profile/>}/>/>
           <Route path="/creators" element={<Creators/>}/>/>
           <Route path="/upload" element={<Upload/>}/>
           <Route path="/pictures" element={<Pictures/>}/>

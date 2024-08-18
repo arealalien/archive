@@ -43,7 +43,7 @@ const SideBarRight = ({
 
             if ((prevRightWidth.current <= 35 && newRightWidth > 35) ||
                 (prevRightWidth.current >= 35 && newRightWidth < 35) ||
-                (newRightWidth <= 33 || newRightWidth >= 37)) {
+                (newRightWidth <= 32 || newRightWidth >= 38)) {
                 setSidebarRightWidth(newRightWidth);
                 prevRightWidth.current = newRightWidth;
             }
@@ -89,8 +89,6 @@ const SideBarRight = ({
                         <div className="sidebar-right-menu" style={{display: isMenuVisible ? 'block' : 'none'}}>
                             <div className="sidebar-right-menu-inner">
                                 <div className="sidebar-right-menu-inner-top">
-                                    <img className="sidebar-right-menu-inner-top-background"
-                                         src={profileBannerUrl} alt=""/>
                                     <div className="sidebar-right-menu-inner-top-left">
                                         <NavLink to={`/channel/` + user?.name}
                                                  className="sidebar-right-menu-inner-top-left-inner">

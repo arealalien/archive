@@ -60,9 +60,9 @@ const SideBarLeft  = () => {
     };
 
     const getButtonStyle = () => {
-        if (sidebarWidth <= 8) return { padding: '1.3em 1em', borderRadius: '2em', justifyContent: 'center' };
-        if (sidebarWidth > 15) return { padding: '1em 1.75em', borderRadius: '5em', justifyContent: 'flex-start' };
-        return { padding: '1.3em 1em', borderRadius: '2em', justifyContent: 'center' };
+        if (sidebarWidth <= 8) return { padding: '1.75em 1em', borderRadius: '2em', justifyContent: 'center' };
+        if (sidebarWidth > 15) return { padding: '1.75em 2.25em', borderRadius: '2em', justifyContent: 'flex-start' };
+        return { padding: '1.75em 1em', borderRadius: '2em', justifyContent: 'center' };
     };
 
     const getPlaylistStyle = () => {
@@ -176,6 +176,7 @@ const SideBarLeft  = () => {
                         </div>
                     </div>
                     <div className="sidebar-left-divider">
+                        <p className="sidebar-left-divider-text" style={getDisplayStyle()}>Playlists</p>
                         <div className="sidebar-left-divider-line"></div>
                     </div>
                     <div className="sidebar-left-playlists" style={getMenu2Style()}>
