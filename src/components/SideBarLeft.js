@@ -60,9 +60,9 @@ const SideBarLeft  = () => {
     };
 
     const getButtonStyle = () => {
-        if (sidebarWidth <= 8) return { padding: '1.3em 1em', justifyContent: 'center' };
-        if (sidebarWidth > 15) return { padding: '1em 1.75em', justifyContent: 'flex-start' };
-        return { padding: '1.3em 1em', justifyContent: 'center' };
+        if (sidebarWidth <= 8) return { padding: '1.3em 1em', borderRadius: '2em', justifyContent: 'center' };
+        if (sidebarWidth > 15) return { padding: '1em 1.75em', borderRadius: '5em', justifyContent: 'flex-start' };
+        return { padding: '1.3em 1em', borderRadius: '2em', justifyContent: 'center' };
     };
 
     const getPlaylistStyle = () => {

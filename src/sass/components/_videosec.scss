@@ -86,7 +86,8 @@
               z-index: 3;
             }
             &-background {
-              height: 100%;
+              min-width: 100%; min-height: 100%;
+              max-height: 100%;
               filter: brightness(70%);
               mask-image: linear-gradient(hslac($black, 1), transparent);
               position: absolute;

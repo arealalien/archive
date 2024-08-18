@@ -1,4 +1,4 @@
-import React, { useContext, useState , useRef, useCallback } from "react";
+import React, { useContext, useState , useRef, useCallback, useEffect } from "react";
 import { AuthContext } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -15,13 +15,20 @@ const SideBarRight = ({
                           handleSubscribe
                       }) => {
 
-    const [sidebarRightWidth, setSidebarRightWidth] = useState(35);
+    const [sidebarRightWidth, setSidebarRightWidth] = useState(() => {
+        const savedRightWidth = localStorage.getItem('sidebarRightWidth');
+        return savedRightWidth ? parseFloat(savedRightWidth) : 35;
+    });
     const sidebarRightRef = useRef(null);
-    const isResizing = useRef(false);
-    const prevRightWidth = useRef(35);
+    const isResizingRight = useRef(false);
+    const prevRightWidth = useRef(sidebarRightWidth);
 
     const { user, signOut } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        localStorage.setItem('sidebarRightWidth', sidebarRightWidth);
+    }, [sidebarRightWidth]);
 
     const handleSignOut = () => {
         signOut();
@@ -29,19 +36,23 @@ const SideBarRight = ({
     };
 
     const handleMouseMoveRight = useCallback((e) => {
-        if (isResizing.current) {
+        if (isResizingRight.current) {
             e.preventDefault(); // Prevent text selection or other default actions
             const sidebarRightRect = sidebarRightRef.current.getBoundingClientRect();
-            const newRightWidth = Math.max(30, Math.min(50, ((e.clientX - sidebarRightRect.right) / window.innerWidth) * 190));
+            const newRightWidth = Math.max(25, Math.min(50, ((sidebarRightRect.right - e.clientX) / window.innerWidth) * 190));
 
-            setSidebarRightWidth(newRightWidth);
-            prevRightWidth.current = newRightWidth;
+            if ((prevRightWidth.current <= 35 && newRightWidth > 35) ||
+                (prevRightWidth.current >= 35 && newRightWidth < 35) ||
+                (newRightWidth <= 33 || newRightWidth >= 37)) {
+                setSidebarRightWidth(newRightWidth);
+                prevRightWidth.current = newRightWidth;
+            }
         }
     }, []);
 
     const handleMouseUpRight = useCallback(() => {
-        if (isResizing.current) {
-            isResizing.current = false;
+        if (isResizingRight.current) {
+            isResizingRight.current = false;
             document.removeEventListener('mousemove', handleMouseMoveRight);
             document.removeEventListener('mouseup', handleMouseUpRight);
         }
@@ -49,10 +60,17 @@ const SideBarRight = ({
 
     const handleMouseDownRight = useCallback((e) => {
         e.preventDefault(); // Prevent text selection or other default actions
-        isResizing.current = true;
+        isResizingRight.current = true;
         document.addEventListener('mousemove', handleMouseMoveRight);
         document.addEventListener('mouseup', handleMouseUpRight);
     }, [handleMouseMoveRight, handleMouseUpRight]);
+
+    useEffect(() => {
+        const savedRightWidth = localStorage.getItem('sidebarRightWidth');
+        if (savedRightWidth) {
+            setSidebarRightWidth(parseFloat(savedRightWidth));
+        }
+    }, []);
 
     let profilePictureUrl, profileBannerUrl;
 
@@ -71,6 +89,8 @@ const SideBarRight = ({
                         <div className="sidebar-right-menu" style={{display: isMenuVisible ? 'block' : 'none'}}>
                             <div className="sidebar-right-menu-inner">
                                 <div className="sidebar-right-menu-inner-top">
+                                    <img className="sidebar-right-menu-inner-top-background"
+                                         src={profileBannerUrl} alt=""/>
                                     <div className="sidebar-right-menu-inner-top-left">
                                         <NavLink to={`/channel/` + user?.name}
                                                  className="sidebar-right-menu-inner-top-left-inner">

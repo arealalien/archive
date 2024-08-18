@@ -63,7 +63,6 @@
           background-color: hslac($black, 0);
           border: 1px solid hslac($white, .1);
           border-radius: 5em;
-          backdrop-filter: blur(.5rem) brightness(70%);
           transition: all .3s cubic-bezier($transition-main, 1);
           z-index: 10005;
 
@@ -107,260 +106,6 @@
             object-fit: cover;
           }
         }
-        &-menu {
-          top: calc($navbar-height + 1em);
-          width: calc(100% - 4em);
-          padding: 2em 2em 2.5em 2em;
-          position: absolute;
-          background-color: hslac($black, 0);
-          border: 1px solid hslac($white, .1);
-          border-radius: 3rem;
-          backdrop-filter: blur(1.5rem) brightness(60%);
-          clip-path: circle(0 at 50% 0);
-          gap: 2em;
-          opacity: 1;
-          pointer-events: none;
-          z-index: 10007;
-          @include flex-col();
-
-          &-shadow {
-            top: 1em;
-            width: 100%; height: 100%;
-            position: absolute;
-            background-color: hslac($black, .35);
-            transform: scale(.98, .98);
-            filter: blur(1.5rem);
-            z-index: -1;
-          }
-          &-top {
-            width: 100%;
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            place-items: center;
-            gap: 1em;
-
-            &-image {
-              width: calc($navbar-height - 1em);
-              height: auto;
-            }
-            &-text {
-              width: 100%;
-              gap: .25em;
-              @include flex-col-left();
-
-              &-username {
-                text-decoration: none;
-                gap: .25em;
-                opacity: 1;
-                transition: all .25s cubic-bezier($transition-main, 1);
-                @include flex-left();
-
-                &:hover {
-                  opacity: .5;
-                }
-                span {
-                  width: 100%;
-                  color: hslac($white, 1);
-                  font-size: $paragraph-xlarge;
-                  white-space: normal;
-                  font-weight: 700;
-                  text-decoration: none;
-                }
-                svg {
-                  width: $paragraph-xlarge;
-                }
-              }
-              &-link {
-                color: hslac($white, .5);
-                font-size: $paragraph;
-                font-weight: 300;
-                text-decoration: none;
-                opacity: 1;
-                transition: all .25s cubic-bezier($transition-main, 1);
-                &:hover {
-                  opacity: .5;
-                }
-              }
-            }
-            .blackbutton {
-              font-weight: 300;
-            }
-            @media (max-width: $layout-breakpoint-xsmall) {
-              .blackbutton {
-                display: none;
-              }
-            }
-          }
-          &-center {
-            padding: 1em 0;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            place-items: flex-start;
-            align-items: center;
-            @media (max-width: $layout-breakpoint-xsmall) {
-              grid-template-columns: 1fr;
-              place-items: center;
-              gap: 2em;
-            }
-
-            &-left {
-              gap: 1em;
-              @include flex-left();
-
-              &-link {
-                height: 4.5em;
-                aspect-ratio: 1 / 1;
-                position: relative;
-                background-color: hslac($black, 0);
-                border: 1px solid hslac($white, 0);
-                border-radius: 50%;
-                backdrop-filter: blur(.5rem) invert(50%);
-                cursor: pointer;
-                transition: opacity .3s cubic-bezier($transition-main, 1), transform .3s cubic-bezier($transition-main, 1);
-                @include flex-center();
-
-                &-bigdot {
-                  bottom: -.35em;
-                  position: absolute;
-                  z-index: 10007;
-                  @include flex-center();
-
-                  span {
-                    padding: .5em 1em .25em .9em;
-                    font-size: $paragraph-small;
-                    background-color: hslac($primary, 1);
-                    border-radius: 5em;
-                  }
-                }
-                svg {
-                  width: calc($navbar-height - 4em);
-                  g {
-                    stroke: hslac($white, .7);
-                  }
-                }
-              }
-            }
-            &-right {
-              &-filter {
-                gap: 1em;
-                @include flex-left();
-
-                svg {
-                  width: 2em;
-                  g {
-                    g {
-                      stroke: hslac($white, 1);
-                    }
-                  }
-                }
-                span {
-                  color: hslac($white, 1);
-                }
-                &-switch {
-                  input[type="checkbox"] {
-                    -webkit-appearance: none;
-                    appearance: none;
-                    width: 4em; height: 2em;
-                    position: relative;
-                    background-color: hslac($black, 0);
-                    border: 1px solid hslac($white, .1);
-                    backdrop-filter: blur(.5rem) brightness(70%);
-                    outline: none;
-                    border-radius: 5em;
-                    cursor: pointer;
-                    transition: all .5s cubic-bezier($transition-main, 1);
-                  }
-                  input[type="checkbox"]::before {
-                    content: "";
-                    top: .3em; left: .3em;
-                    width: 1.25em; height: 1.25em;
-                    position: absolute;
-                    background-color: hslac($white, .1);
-                    border: 1px solid hslac($white, .1);
-                    border-radius: 50%;
-                    transition: all .5s cubic-bezier($transition-main, 1);
-                  }
-                  input[type="checkbox"]:checked::before {
-                    transform: translateX(1.9em);
-                    background-color: hslac($white, .7);
-                    border: 1px solid hslac($white, .1);
-                  }
-                  input[type="checkbox"]:checked {
-                    background-color: hslac($black, .35);
-                  }
-                }
-              }
-            }
-          }
-          &-bottom {
-            width: 100%;
-            gap: 1em;
-            @include flex-col();
-
-            .list-2 {
-              grid-template-columns: repeat(2, 1fr);
-              @media (max-width: $layout-breakpoint-xsmall) {
-                grid-template-columns: 1fr;
-              }
-            }
-            .list-1 {
-              grid-template-columns: 1fr;
-            }
-            &-list {
-              padding: 0;
-              width: 100%;
-              display: grid;
-              gap: 1em;
-
-              &-item {
-                padding: 1em 1.5em;
-                width: 100%;
-                font-size: $paragraph-medium;
-                font-weight: 500;
-                color: hslac($white, 1);
-                text-decoration: none;
-                background-color: hslac($black, 0);
-                border: 1px solid hslac($white, .1);
-                backdrop-filter: blur(1.5rem) invert(30%);
-                border-radius: 5rem;
-                gap: .75em;
-                cursor: pointer;
-                @include flex-left();
-
-                svg {
-                  width: 1.75em;
-                  g {
-                    g {
-                      stroke: hslac($white, 1);
-                    }
-                  }
-                }
-              }
-              &-item-last {
-                padding: 1em 1.5em;
-                width: 100%;
-                font-size: $paragraph-medium;
-                font-weight: 500;
-                background-color: hslac($primary, 1);
-                border: 1px solid hslac($primary, 1);
-                border-radius: 5rem;
-                gap: .75em;
-                cursor: pointer;
-                @include flex-left();
-
-                svg {
-                  width: 1.75em;
-                  g {
-                    g {
-                      stroke: hslac($white, 1);
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -392,7 +137,7 @@
 }
 .sidebar-right {
   max-width: 50em;
-  min-width: 30em;
+  min-width: 25em;
   @include flex-col-start-center();
 
   &-inner {
@@ -410,8 +155,15 @@
 
       &-top {
         width: 100%;
+        position: relative;
         @include flex-left();
 
+        &-background {
+          width: 100%; height: 100%;
+          position: absolute;
+          filter: blur(10em) saturate(200%);
+          z-index: 3;
+        }
         &-left {
           padding: 1em;
           width: 100%;
@@ -420,6 +172,7 @@
           text-decoration: none;
           gap: 1em;
           overflow: hidden;
+          z-index: 5;
           @include flex-col();
 
           &-container {
@@ -428,16 +181,15 @@
           }
           &-overlay {
             width: 100%; height: 100%;
-            filter: brightness(70%);
-            mask-image: linear-gradient(hsl(0, 0%, 0%) 0, hsl(0, 0%, 0%, 0) 100%);
+            background: linear-gradient(20deg, hsl(0, 0%, 0%, .6) 0, hsl(0, 0%, 0%, .2) 100%);
             position: absolute;
             object-fit: cover;
             z-index: 3;
           }
           &-background {
-            height: 100%;
+            min-width: 100%; min-height: 100%;
+            max-height: 110%;
             filter: brightness(70%);
-            mask-image: linear-gradient(hsl(0, 0%, 0%)0 , hsl(0, 0%, 0%, 0) 100%);
             position: absolute;
             object-fit: cover;
           }
@@ -479,6 +231,8 @@
       }
       &-center {
         width: 100%;
+        position: relative;
+        z-index: 5;
         &-grid {
           width: 100%;
           display: grid;
@@ -487,8 +241,10 @@
 
           .blackbutton, .mainbutton {
             padding: 1.25em 2em;
-            font-size: $paragraph-medium;
+            font-size: $paragraph;
+            gap: .75em;
             svg {
+              width: 1.8em;
               g {
                 g {
                   stroke: hslac($white, 1);
@@ -497,11 +253,9 @@
             }
           }
           .blackbutton {
-            gap: .5em;
             @include flex-left();
           }
           .mainbutton {
-            gap: .5em;
             @include flex-left();
           }
         }
@@ -541,15 +295,15 @@
         text-decoration: none;
         background-color: hslac($black, 0);
         border: 1px solid hslac($white, 0);
-        border-radius: 2em;
-        backdrop-filter: blur(1.5rem) brightness(70%);
+        border-radius: 5em;
+        backdrop-filter: blur(1.5rem) brightness(50%);
         gap: 1em;
         transition: all .3s cubic-bezier($transition-main, 1);
         @include flex-left();
 
         &:hover {
           border: 1px solid hslac($white, .1);
-          backdrop-filter: blur(1.5rem) brightness(50%);
+          backdrop-filter: blur(1.5rem) brightness(20%);
         }
         svg {
           height: 3em;
@@ -589,13 +343,14 @@
         grid-template-columns: 5em 1fr;
         border-radius: 2.25em;
         border: 1px solid hslac($white, 0);
-        backdrop-filter: blur(1.5rem) brightness(70%);
+        backdrop-filter: blur(1.5rem) brightness(50%);
         text-decoration: none;
         gap: 1em;
+        overflow: hidden;
         transition: all .3s cubic-bezier($transition-main, 1);
         &:hover {
           border: 1px solid hslac($white, .1);
-          backdrop-filter: blur(1.5rem) brightness(50%);
+          backdrop-filter: blur(1.5rem) brightness(20%);
         }
         &-left {
           width: 100%;
