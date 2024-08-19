@@ -38,6 +38,7 @@ router.get('/search', async (req, res) => {
                         displayName: true,
                         profilePicture: true,
                         banner: true,
+                        verified: true,
                     }
                 }
             }

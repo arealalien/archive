@@ -56,7 +56,7 @@ function SignUp() {
                                     </div>
                                     <div className="signup-inner-left-container-overlay"></div>
                                     <img className="signup-inner-left-container-background"
-                                         src={process.env.PUBLIC_URL + `/images/backgrounds/n1.jpg`}
+                                         src={process.env.PUBLIC_URL + `/images/gallery/106022323_155512862694939_1260663584614491790_n.jpg`}
                                          alt=""/>
                                 </div>
                             </div>

@@ -16,6 +16,7 @@ router.get('/user/:username', async (req, res) => {
                 displayName: true,
                 profilePicture: true,
                 banner: true,
+                verified: true,
             },
         });
         if (user) {

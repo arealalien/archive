@@ -42,6 +42,7 @@ router.get('/videos/:videoUrl', async (req, res) => {
                         displayName: true,
                         profilePicture: true,
                         banner: true,
+                        verified: true,
                         _count: {
                             select: { subscribers: true }
                         }
@@ -91,6 +92,7 @@ router.get('/videos', async (req, res) => {
                         displayName: true,
                         profilePicture: true,
                         banner: true,
+                        verified: true,
                     }
                 }
             }

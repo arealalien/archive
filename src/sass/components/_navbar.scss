@@ -209,6 +209,12 @@
                 color: hslac($white, 1);
                 font-size: $paragraph-large;
                 font-weight: 700;
+                gap: .25em;
+                @include flex-left();
+
+                svg {
+                  width: $paragraph-large;
+                }
               }
               &-subtitle {
                 color: hslac($white, .5);
@@ -273,6 +279,126 @@
       padding: 1.5em 0 0 0;
     }
   }
+  &-profilemenu {
+    padding: 1.5em 1.5em 3em 1.5em;
+    width: 100%;
+    &-list {
+      width: 100%;
+      position: relative;
+      border: 1px solid hslac($white, .1);
+      border-radius: 2em;
+      backdrop-filter: blur(1.5rem) brightness(70%);
+      @include flex-col();
+
+      &-top {
+        padding: 1.5em;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 5em 1fr;
+        text-decoration: none;
+        place-items: flex-start;
+        align-items: center;
+        gap: 1em;
+        overflow: hidden;
+        transition: all .3s cubic-bezier($transition-main, 1);
+        &:hover {
+          opacity: .5;
+        }
+        &-image {
+          width: 100%;
+          border-radius: 50%;
+        }
+        &-text {
+          gap: .05em;
+          @include flex-col-left-ns();
+
+          &-displayname {
+            color: hslac($white, 1);
+            font-size: $paragraph-large;
+            font-weight: 700;
+            gap: .25em;
+            @include flex-left();
+
+            svg {
+              width: $paragraph-large;
+            }
+          }
+          &-name {
+            color: hslac($white, .7);
+            font-size: $paragraph-small;
+          }
+        }
+      }
+      .active {
+
+      }
+      &-bottom {
+        margin: 0 0 2em 0;
+        padding: 0 0 0 6em;
+        width: 100%;
+        position: relative;
+        @include flex-col();
+
+        &-line {
+          top: 0; left: 3.75em;
+          width: 2px; height: calc(100% - 3.55em);
+          position: absolute;
+          background-color: hslac($white, 0);
+          border-radius: 5em;
+          &-curve {
+            width: 1.5em;
+            position: absolute;
+            border: 2px solid hslac($white, .1);
+            border-top: none;
+            border-right: none;
+            border-radius: 0 0 0 1em;
+          }
+          .curve1 {
+            top: -.3em;
+            height: 2.5em;
+          }
+          .curve2 {
+            top: 2.8em;
+            height: 3.4em;
+          }
+          .curve3 {
+            top: 6.8em;
+            height: 3.4em;
+          }
+          .curve4 {
+            top: 10.8em;
+            height: 3.4em;
+          }
+        }
+      }
+      &-item {
+        padding: 1em 0;
+        width: 100%;
+        position: relative;
+        text-decoration: none;
+        background-color: hslac($black, 0);
+        border-radius: 2em;
+        gap: 1em;
+        transition: all .3s cubic-bezier($transition-main, 1);
+        @include flex-center();
+
+        &:hover {
+          opacity: .5;
+        }
+        svg {
+          height: 2em;
+          g {
+            stroke: hslac($white, .7);
+          }
+        }
+        &-text {
+          width: 100%;
+          color: hslac($white, .7);
+          font-weight: 300;
+        }
+      }
+    }
+  }
   &-menu {
     padding: 1.5em;
     width: 100%;
@@ -282,6 +408,7 @@
       @include flex-col();
 
       .active {
+        border: 1px solid hslac($white, 1);
         backdrop-filter: blur(1.5rem) brightness(20%);
       }
       &-item {
@@ -390,7 +517,7 @@
           @include flex-col-left-ns();
 
           &-title {
-            padding: 0 1.5em 0 0;
+            padding: 0 .6em 0 0;
             max-width: 100%;
             max-height: calc($paragraph-large + .5rem);
             line-height: calc($paragraph-large + .25rem);

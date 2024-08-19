@@ -9,11 +9,14 @@ const ProfileSec  = ({ profileName, page }) => {
         switch(page) {
             case 'videos':
                 return (
-                    <div className="profile-inner-content-right videos-inner videos-inner-4">
-                        <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
-                            <VideosSec videoCreator={profileName}/>
+                    <>
+                        <div>videos</div>
+                        <div className="profile-inner-content-right videos-inner videos-inner-4">
+                            <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
+                                <VideosSec videoCreator={profileName}/>
+                            </div>
                         </div>
-                    </div>
+                    </>
                 );
             case 'pictures':
                 return (

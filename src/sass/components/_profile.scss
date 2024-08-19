@@ -148,62 +148,8 @@
     &-content {
       width: 100%;
       display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 8em;
-      @media (max-width: $layout-breakpoint-small) {
-        gap: 6em;
-      }
-      @media (max-width: $layout-breakpoint-xsmall) {
-        grid-template-columns: 1fr;
-        gap: 2em;
-      }
+      grid-template-columns: 1fr;
 
-      &-left {
-        &-list {
-          padding: 0;
-          list-style-type: none;
-          gap: 1.5em;
-          @include flex-col-left();
-          @media (max-width: $layout-breakpoint-xsmall) {
-            @include flex-left();
-            flex-direction: row;
-          }
-
-          &-item {
-            .active {
-              opacity: 1;
-            }
-            &-link {
-              color: hslac($white, 1);
-              text-decoration: none;
-              gap: 1em;
-              opacity: .5;
-              transition: all .25s cubic-bezier($transition-main, 1);
-              @include flex-left();
-
-              &:hover {
-                opacity: 1;
-              }
-              span {
-                color: hslac($white, 1);
-                font-size: $paragraph-xlarge;
-
-                @media (max-width: $layout-breakpoint-xsmall) {
-                  display: none;
-                }
-              }
-              svg {
-                width: 3em;
-                g {
-                  g {
-                    stroke: hslac($white, 1);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
       &-right {
         &-videos {
           row-gap: 4em;
