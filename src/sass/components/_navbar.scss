@@ -124,8 +124,9 @@
   }
 }
 .sidebarright {
+  padding: 0 0 0 1em;
   &-resize {
-    top: 0; left: -1em;
+    top: 0; left: 0;
     width: 1em; height: 100%;
     position: absolute;
     cursor: ew-resize;
@@ -261,8 +262,9 @@
   }
 }
 .sidebarleft {
+  padding: 0 1em 0 0;
   &-resize {
-    top: 0; right: -1em;
+    top: 0; right: 0;
     width: 1em; height: 100%;
     position: absolute;
     cursor: ew-resize;
@@ -294,7 +296,7 @@
         padding: 1.5em;
         width: 100%;
         display: grid;
-        grid-template-columns: 5em 1fr;
+        grid-template-columns: 4.5em 1fr;
         text-decoration: none;
         place-items: flex-start;
         align-items: center;
@@ -340,7 +342,7 @@
         @include flex-col();
 
         &-line {
-          top: 0; left: 3.75em;
+          top: 0; left: 3.6em;
           width: 2px; height: calc(100% - 3.55em);
           position: absolute;
           background-color: hslac($white, 0);
@@ -408,7 +410,7 @@
       @include flex-col();
 
       .active {
-        border: 1px solid hslac($white, 1);
+        border: 1px solid hslac($white, .3);
         backdrop-filter: blur(1.5rem) brightness(20%);
       }
       &-item {

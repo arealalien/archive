@@ -5,7 +5,7 @@
 
   &-inner {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(28em, max-content));;
     gap: 5em;
     &-creator {
       width: 100%;
@@ -36,6 +36,14 @@
           svg {
             width: $paragraph-large;
           }
+        }
+        &-username {
+          position: relative;
+          color: hslac($white, .5);
+          font-size: $paragraph;
+          font-weight: 500;
+          text-decoration: none;
+          z-index: 5;
         }
         &-picture {
           width: 5em;

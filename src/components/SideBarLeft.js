@@ -91,7 +91,7 @@ const SideBarLeft  = ({ profile }) => {
 
     const getProfileMenuTopStyle = () => {
         if (sidebarWidth <= 8) return { padding: '1em', gridTemplateColumns: '1fr' };
-        if (sidebarWidth > 15) return { padding: '1.5em', gridTemplateColumns: '5em 1fr' };
+        if (sidebarWidth > 15) return { padding: '1.5em', gridTemplateColumns: '4.5em 1fr' };
         return { padding: '1em', gridTemplateColumns: '1fr' }; // default
     };
 
@@ -106,6 +106,13 @@ const SideBarLeft  = ({ profile }) => {
         if (sidebarWidth > 15) return { padding: '1em 0' };
         return { padding: '1em 0' }; // default
     };
+
+    const getProfileMenuIconStyle = () => {
+        if (sidebarWidth <= 8) return { height: '2.25em' };
+        if (sidebarWidth > 15) return { height: '2em' };
+        return { height: '2.25em' }; // default
+    };
+
 
     useEffect(() => {
         const savedWidth = localStorage.getItem('sidebarWidth');
@@ -176,7 +183,7 @@ const SideBarLeft  = ({ profile }) => {
                                         <NavLink to={`/channel/` + profile.name}
                                                  className="sidebar-left-profilemenu-list-item" style={getProfileMenuItemStyle()}>
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1" style={getProfileMenuIconStyle()}>
                                                 <title>Star</title>
                                                 <g id="star" stroke="none" stroke-width="1" fill="none"
                                                    fill-rule="evenodd" stroke-linecap="round"
@@ -194,7 +201,7 @@ const SideBarLeft  = ({ profile }) => {
                                         <NavLink to={`/channel/` + profile.name + `/videos`}
                                                  className="sidebar-left-profilemenu-list-item" style={getProfileMenuItemStyle()}>
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1" style={getProfileMenuIconStyle()}>
                                             <title>Video</title>
                                                 <g id="video" stroke="none" stroke-width="1" fill="none"
                                                    fill-rule="evenodd" stroke-linecap="round"
@@ -215,7 +222,7 @@ const SideBarLeft  = ({ profile }) => {
                                         <NavLink to={`/channel/` + profile.name + `/pictures`}
                                                  className="sidebar-left-profilemenu-list-item" style={getProfileMenuItemStyle()}>
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1" style={getProfileMenuIconStyle()}>
                                                 <title>Image 2</title>
                                                 <g id="image-2" stroke="none" stroke-width="1" fill="none"
                                                    fill-rule="evenodd" stroke-linecap="round"
@@ -239,7 +246,7 @@ const SideBarLeft  = ({ profile }) => {
                                         <NavLink to={`/channel/` + profile.name + `/playlists`}
                                                  className="sidebar-left-profilemenu-list-item" style={getProfileMenuItemStyle()}>
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1" style={getProfileMenuIconStyle()}>
                                                 <title>Folder</title>
                                                 <g id="folder" stroke="none" stroke-width="1" fill="none"
                                                    fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
