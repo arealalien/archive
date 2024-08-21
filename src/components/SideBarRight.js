@@ -19,6 +19,7 @@ const SideBarRight = ({
         const savedRightWidth = localStorage.getItem('sidebarRightWidth');
         return savedRightWidth ? parseFloat(savedRightWidth) : 35;
     });
+    const [isMouseDown, setIsMouseDown] = useState(false);
     const sidebarRightRef = useRef(null);
     const isResizingRight = useRef(false);
     const prevRightWidth = useRef(sidebarRightWidth);
@@ -53,6 +54,7 @@ const SideBarRight = ({
     const handleMouseUpRight = useCallback(() => {
         if (isResizingRight.current) {
             isResizingRight.current = false;
+            setIsMouseDown(false);
             document.removeEventListener('mousemove', handleMouseMoveRight);
             document.removeEventListener('mouseup', handleMouseUpRight);
         }
@@ -61,9 +63,59 @@ const SideBarRight = ({
     const handleMouseDownRight = useCallback((e) => {
         e.preventDefault(); // Prevent text selection or other default actions
         isResizingRight.current = true;
+        setIsMouseDown(true);
         document.addEventListener('mousemove', handleMouseMoveRight);
         document.addEventListener('mouseup', handleMouseUpRight);
     }, [handleMouseMoveRight, handleMouseUpRight]);
+
+    const getResizeButtonStyle = () => {
+        if (isMouseDown) {
+            if (sidebarRightWidth <= 29) return {
+                opacity: '0',
+                animation: 'none'
+            };
+            if (sidebarRightWidth <= 30) return {
+                opacity: '.3',
+                animation: 'resize-button .6s linear infinite'
+            };
+            if (sidebarRightWidth <= 31) return {
+                opacity: '.6',
+                animation: 'resize-button .4s linear infinite'
+            };
+            if (sidebarRightWidth <= 32) return {
+                opacity: '1',
+                animation: 'resize-button .2s linear infinite'
+            };
+            if (sidebarRightWidth <= 34) return {
+                opacity: '1',
+                animation: 'none'
+            };
+            if (sidebarRightWidth <= 35) return {
+                opacity: '1',
+                animation: 'none'
+            };
+            if (sidebarRightWidth <= 36) return {
+                opacity: '1',
+                animation: 'none'
+            };
+            if (sidebarRightWidth <= 38) return {
+                opacity: '1',
+                animation: 'resize-button .2s linear infinite'
+            };
+            if (sidebarRightWidth <= 39) return {
+                opacity: '.6',
+                animation: 'resize-button .4s linear infinite'
+            };
+            if (sidebarRightWidth <= 40) return {
+                opacity: '.3',
+                animation: 'resize-button .6s linear infinite'
+            };
+            if (sidebarRightWidth <= 41) return {
+                opacity: '0',
+                animation: 'none'
+            };
+        }
+    };
 
     useEffect(() => {
         const savedRightWidth = localStorage.getItem('sidebarRightWidth');
@@ -81,7 +133,21 @@ const SideBarRight = ({
 
     return (
         <div className="sidebar sidebarright" style={{ display: isMenuVisible || isVideoVisible ? 'block' : 'none' }}>
-            <div id="sidebarright-resize" className="sidebarright-resize" onMouseDown={handleMouseDownRight}></div>
+            <div id="sidebarright-resize" className="sidebarright-resize" onMouseDown={handleMouseDownRight}>
+                <div className="sidebarright-resize-button" style={getResizeButtonStyle()}>
+                    <svg id="Xnix_Line_Magnet" data-name="Xnix/Line/Magnet"
+                         width="24"
+                         height="24" viewBox="0 0 24 24">
+                        <path id="Vector"
+                              d="M6,14A6,6,0,0,1,0,8V4.5a1,1,0,0,1,1-1H2a1,1,0,0,1,1,1V8A3,3,0,0,0,9,8V4.5a1,1,0,0,1,1-1h1a1,1,0,0,1,1,1V8A6,6,0,0,1,6,14Z"
+                              transform="translate(6 5)" fill="none" stroke="#000" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="1.5"/>
+                        <path id="Vector-2" data-name="Vector" d="M9,6h3M0,6H3M6,0,5,2H7L6,4" transform="translate(6 5)"
+                              fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="1.5"/>
+                    </svg>
+                </div>
+            </div>
             <div className="sidebar-inner sidebar-right" style={{width: `${sidebarRightWidth}em`}}
                  ref={sidebarRightRef}>
                 <ScrollBar className="sidebar-right-inner">

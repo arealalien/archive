@@ -108,6 +108,19 @@
   }
 }
 
+@keyframes resize-button {
+  0% { transform: translate(0, 0) rotate(0); }
+  10% { transform: translate(1px, 1px) rotate(2deg); }
+  20% { transform: translate(2px, 0) rotate(4deg); }
+  30% { transform: translate(1px, -1px) rotate(1deg); }
+  40% { transform: translate(2px, -2px) rotate(-2deg); }
+  50% { transform: translate(3px, -1px) rotate(-4deg); }
+  60% { transform: translate(2px, 0) rotate(-1deg); }
+  70% { transform: translate(1px, 1px) rotate(2deg); }
+  80% { transform: translate(0, 2px) rotate(3deg); }
+  90% { transform: translate(-1, 1px) rotate(1deg); }
+  100% { transform: translate(0, 0) rotate(0); }
+}
 .sidebar {
   width: 100%; height: calc(100vh - $navbar-height);
   position: relative;
@@ -131,6 +144,26 @@
     position: absolute;
     cursor: ew-resize;
     user-select: none;
+    &-button {
+      top: 50%; left: -4.5em;
+      padding: .65em .7em .65em .7em;
+      position: absolute;
+      background-color: hslac($black, 1);
+      border-radius: 1em;
+      opacity: 0;
+      z-index: 10000;
+      transition: opacity .3s cubic-bezier($transition-main, 1);
+      @include flex-center();
+
+      svg {
+        top: 0;
+        width: 2.5em;
+        transform: rotate(45deg);
+        path {
+          stroke: hslac($white, 1);
+        }
+      }
+    }
   }
 }
 .sidebar-right {
@@ -269,6 +302,26 @@
     position: absolute;
     cursor: ew-resize;
     user-select: none;
+    &-button {
+      top: 50%; right: -4.5em;
+      padding: .65em .7em .65em .7em;
+      position: absolute;
+      background-color: hslac($black, 1);
+      border-radius: 1em;
+      opacity: 0;
+      z-index: 10000;
+      transition: opacity .15s cubic-bezier($transition-main, 1);
+      @include flex-center();
+
+      svg {
+        top: 0;
+        width: 2.5em;
+        transform: rotate(-45deg);
+        path {
+          stroke: hslac($white, 1);
+        }
+      }
+    }
   }
 }
 .sidebar-left {

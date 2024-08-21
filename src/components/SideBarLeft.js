@@ -8,6 +8,7 @@ const SideBarLeft  = ({ profile }) => {
         const savedWidth = localStorage.getItem('sidebarWidth');
         return savedWidth ? parseFloat(savedWidth) : 35;
     });
+    const [isMouseDown, setIsMouseDown] = useState(false);
     const sidebarRef = useRef(null);
     const isResizing = useRef(false);
     const prevWidth = useRef(sidebarWidth);
@@ -35,6 +36,7 @@ const SideBarLeft  = ({ profile }) => {
     const handleMouseUp = useCallback(() => {
         if (isResizing.current) {
             isResizing.current = false;
+            setIsMouseDown(false);
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         }
@@ -43,9 +45,35 @@ const SideBarLeft  = ({ profile }) => {
     const handleMouseDown = useCallback((e) => {
         e.preventDefault(); // Prevent text selection or other default actions
         isResizing.current = true;
+        setIsMouseDown(true);
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
     }, [handleMouseMove, handleMouseUp]);
+
+    const getResizeButtonStyle = () => {
+        if (isMouseDown) {
+            if (sidebarWidth <= 15) return {
+                opacity: '1',
+                animation: 'none'
+            };
+            if (sidebarWidth <= 21) return {
+                opacity: '1',
+                animation: 'resize-button .2s linear infinite'
+            };
+            if (sidebarWidth <= 22) return {
+                opacity: '.6',
+                animation: 'resize-button .4s linear infinite'
+            };
+            if (sidebarWidth <= 23) return {
+                opacity: '.3',
+                animation: 'resize-button .6s linear infinite'
+            };
+            if (sidebarWidth <= 22) return {
+                opacity: '0',
+                animation: 'none'
+            };
+        }
+    };
 
     const getDisplayStyle = () => {
         if (sidebarWidth <= 8) return { display: 'none' };
@@ -129,14 +157,30 @@ const SideBarLeft  = ({ profile }) => {
 
     return (
         <div className="sidebar sidebarleft">
-            <div id="sidebarleft-resize" className="sidebarleft-resize" onMouseDown={handleMouseDown}></div>
-            <div className="sidebar-inner sidebar-left" style={{ width: `${sidebarWidth}em` }} ref={sidebarRef}>
+            <div id="sidebarleft-resize" className="sidebarleft-resize" onMouseDown={handleMouseDown}>
+                <div className="sidebarleft-resize-button" style={getResizeButtonStyle()}>
+                    <svg id="Xnix_Line_Magnet" data-name="Xnix/Line/Magnet"
+                         width="24"
+                         height="24" viewBox="0 0 24 24">
+                        <path id="Vector"
+                              d="M6,14A6,6,0,0,1,0,8V4.5a1,1,0,0,1,1-1H2a1,1,0,0,1,1,1V8A3,3,0,0,0,9,8V4.5a1,1,0,0,1,1-1h1a1,1,0,0,1,1,1V8A6,6,0,0,1,6,14Z"
+                              transform="translate(6 5)" fill="none" stroke="#000" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="1.5"/>
+                        <path id="Vector-2" data-name="Vector" d="M9,6h3M0,6H3M6,0,5,2H7L6,4" transform="translate(6 5)"
+                              fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="1.5"/>
+                    </svg>
+                </div>
+            </div>
+            <div className="sidebar-inner sidebar-left" style={{width: `${sidebarWidth}em`}} ref={sidebarRef}>
                 <ScrollBar className="sidebar-left-inner">
                     {profile ? (
                         <>
                             <div className="sidebar-left-profilemenu" style={getProfileMenuStyle()}>
                                 <div className="sidebar-left-profilemenu-list">
-                                    <NavLink to={`/channel/` + profile.name} className="sidebar-left-profilemenu-list-top" style={getProfileMenuTopStyle()}>
+                                    <NavLink to={`/channel/` + profile.name}
+                                             className="sidebar-left-profilemenu-list-top"
+                                             style={getProfileMenuTopStyle()}>
                                         <img className="sidebar-left-profilemenu-list-top-image" src={pictureUrl} alt="" />
                                         <div className="sidebar-left-profilemenu-list-top-text" style={getDisplayStyle()}>
                                             <p className="sidebar-left-profilemenu-list-top-text-displayname"><span>{profile.displayName}</span> {profile?.verified === 1 ? (
