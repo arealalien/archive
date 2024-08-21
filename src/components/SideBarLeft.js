@@ -37,6 +37,8 @@ const SideBarLeft  = ({ profile }) => {
         if (isResizing.current) {
             isResizing.current = false;
             setIsMouseDown(false);
+            document.querySelector(".page-center").style.opacity = 1;
+            document.querySelector(".sidebarright").style.opacity = 1;
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         }
@@ -46,6 +48,8 @@ const SideBarLeft  = ({ profile }) => {
         e.preventDefault(); // Prevent text selection or other default actions
         isResizing.current = true;
         setIsMouseDown(true);
+        document.querySelector(".page-center").style.opacity = .65;
+        document.querySelector(".sidebarright").style.opacity = .65;
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
     }, [handleMouseMove, handleMouseUp]);
@@ -62,11 +66,11 @@ const SideBarLeft  = ({ profile }) => {
             };
             if (sidebarWidth <= 22) return {
                 opacity: '.6',
-                animation: 'resize-button .4s linear infinite'
+                animation: 'resize-button 1.4s linear infinite'
             };
             if (sidebarWidth <= 23) return {
                 opacity: '.3',
-                animation: 'resize-button .6s linear infinite'
+                animation: 'resize-button 2.6s linear infinite'
             };
             if (sidebarWidth <= 22) return {
                 opacity: '0',

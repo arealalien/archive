@@ -18,9 +18,6 @@
       border-radius: 3em;
       overflow: hidden;
       @include flex-center();
-      @media (max-width: $layout-breakpoint-medium) {
-        margin: 11em 0 0 0;
-      }
       @media (max-width: $layout-breakpoint-small) {
         border-radius: 3em;
       }
@@ -28,115 +25,10 @@
         border-radius: 2em;
       }
 
-      &-info {
-        bottom: 0;
-        padding: 2em;
-        width: 80%; height: 100%;
-        position: absolute;
-        z-index: 5;
-        @include flex-space-bet-end();
-        @media (max-width: $layout-breakpoint-small) {
-          width: 100%;
-          padding: 1em;
-        }
-        @media (max-width: $layout-breakpoint-xsmall) {
-          padding: .75em;
-        }
-
-        &-left {
-          height: 100%;
-          position: relative;
-          @include flex-left-end();
-
-          &-container {
-            height: 40%;
-            aspect-ratio: 1 / 1;
-            position: relative;
-            border-radius: 50%;
-            overflow: hidden;
-            @include flex-center();
-            @media (max-width: $layout-breakpoint-xmedium) {
-              height: 50%;
-            }
-            @media (max-width: $layout-breakpoint-small) {
-              height: 60%;
-            }
-            @media (max-width: $layout-breakpoint-xsmall) {
-              height: 50%;
-            }
-
-            &-image {
-              min-width: 100%; min-height: 100%;
-              max-width: 105%;
-              position: absolute;
-              object-fit: cover;
-            }
-          }
-          &-text {
-            padding: 2em;
-            gap: .5em;
-            @include flex-col-left();
-            @media (max-width: $layout-breakpoint-xsmall) {
-              padding: 1em;
-            }
-
-            &-username {
-              gap: .75em;
-              @include flex-center();
-
-              span {
-                color: hslac($white, 1);
-                font-size: $heading-medium;
-                font-weight: 800;
-                @media (max-width: $layout-breakpoint-small) {
-                  font-size: $heading-small;
-                  font-weight: 700;
-                }
-              }
-              svg {
-                width: $heading-medium;
-                @media (max-width: $layout-breakpoint-small) {
-                  width: $heading-small;
-                }
-              }
-            }
-            &-subs {
-              color: hslac($white, .7);
-              font-weight: 300;
-
-              @media (max-width: $layout-breakpoint-small) {
-                font-size: $paragraph;
-                font-weight: 300;
-              }
-            }
-          }
-        }
-        &-right {
-          padding: 0 0 2em 0;
-          height: 100%;
-          @include flex-left-end();
-          @media (max-width: $layout-breakpoint-small) {
-            padding: 0 0 1em 0;
-          }
-
-          .blackbutton {
-            font-size: $paragraph-large;
-            @media (max-width: $layout-breakpoint-small) {
-              font-size: $paragraph-medium;
-            }
-          }
-          .mainbutton {
-            font-size: $paragraph-large;
-            @media (max-width: $layout-breakpoint-small) {
-              font-size: $paragraph-medium;
-            }
-          }
-        }
-      }
       &-overlay {
         width: 100%; height: 100%;
         position: absolute;
-        background: linear-gradient(7deg, hslac($black, .65) 0, hslac($black, 0) 100%);
+        background: linear-gradient(7deg, hslac($black, .25) 0, hslac($black, 0) 100%);
         z-index: 3;
       }
       &-background {
@@ -163,6 +55,97 @@
           }
         }
       }
+    }
+  }
+}
+.profile-menu-container {
+  padding: 1.5em;
+  position: relative;
+  gap: 2em;
+  @include flex-col();
+
+  &-details {
+    padding: 0 1em;
+    width: 100%;
+    gap: .15em;
+    @include flex-col-left-ns();
+
+    &-username {
+      gap: .3em;
+      @include flex-left();
+
+      span {
+        font-size: $heading-small;
+        font-weight: 700;
+      }
+      svg {
+        width: $heading-small;
+      }
+    }
+    &-subscribers {
+      color: hslac($white, .7);
+      font-size: $paragraph;
+      font-weight: 500;
+    }
+  }
+  &-inner {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 2em;
+    overflow: hidden;
+    z-index: 5;
+    @include flex-center();
+
+    &-button {
+      margin: 1em;
+      padding: 1em 1.5em;
+      top: 0; right: 0;
+      position: absolute;
+      border: 1px solid hslac($white, .1);
+      border-radius: 2em;
+      backdrop-filter: blur(1.5rem) brightness(150%);
+      z-index: 7;
+      cursor: pointer;
+      @include flex-center();
+
+      &-text {
+        color: hslac($white, .7);
+        font-size: $paragraph;
+      }
+      &-shadow {
+        width: 100%; height: 100%;
+        position: absolute;
+        background-color: hslac($black, .4);
+        border-radius: inherit;
+        filter: blur(2em);
+        transform: scale(.95, .9);
+        z-index: -1;
+      }
+    }
+    &-cta {
+      bottom: 0;
+      margin: 1em;
+      width: calc(100% - 2em);
+      position: absolute;
+      z-index: 7;
+    }
+    .mainbutton, .whitebutton {
+      font-size: $paragraph;
+      font-weight: 500;
+    }
+    .subscribed {
+      color: hslac($white, .7);
+    }
+    &-overlay {
+      width: 100%; height: 100%;
+      position: absolute;
+      background: linear-gradient(hslac($black, .1) 0, hslac($black, .2) 100%);
+      z-index: 6;
+    }
+    &-image {
+      width: 100%;
+      position: relative;
     }
   }
 }

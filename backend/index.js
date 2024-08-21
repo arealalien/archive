@@ -13,6 +13,7 @@ const subscribeRoutes = require('./routes/subscribe');
 const videoRoutes = require('./routes/video');
 const SearchRoutes = require('./routes/search');
 const CreatorsRoutes = require('./routes/creators');
+const PlaylistsRoutes = require('./routes/playlist');
 
 const prisma = new PrismaClient();
 const app = express();
@@ -121,6 +122,16 @@ app.post('/signup', async (req, res) => {
             },
         });
         console.log('Created user:', user);
+
+        const likedVideosPlaylist = await prisma.playlist.create({
+            data: {
+                name: 'Liked Videos',
+                creator: {
+                    connect: { id: user.id },
+                },
+            },
+        });
+        console.log('Created "Liked Videos" playlist:', likedVideosPlaylist);
 
         res.status(201).json(user);
     } catch (error) {
@@ -319,6 +330,7 @@ app.get('/videos', async (req, res) => {
 
 app.use(validateToken, SearchRoutes);
 app.use('/creators', CreatorsRoutes);
+app.use(validateToken, PlaylistsRoutes);
 
 app.get('/profile', validateToken, async (req, res) => {
     try {

@@ -2,6 +2,7 @@ import React from "react";
 
 // Components
 import VideosSec from "../videos/VideosSec";
+import PlaylistsSec from "../playlists/PlaylistsSec";
 
 const ProfileSec  = ({ profileName, page }) => {
 
@@ -28,11 +29,18 @@ const ProfileSec  = ({ profileName, page }) => {
                 );
             default:
                 return (
-                    <div className="profile-inner-content-right videos-inner videos-inner-4">
-                        <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
-                            <VideosSec videoCreator={profileName}/>
+                    <>
+                        <div className="profile-inner-content-right videos-inner videos-inner-4">
+                            <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
+                                <PlaylistsSec videoCreator={profileName}/>
+                            </div>
                         </div>
-                    </div>
+                        <div className="profile-inner-content-right videos-inner videos-inner-4">
+                            <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
+                                <VideosSec videoCreator={profileName}/>
+                            </div>
+                        </div>
+                    </>
                 );
         }
     };
