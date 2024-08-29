@@ -105,5 +105,62 @@ router.get('/videos', async (req, res) => {
     }
 });
 
+router.post('/videos/:videoUrl/like', async (req, res) => {
+    const { videoUrl } = req.params;
+    const { userId } = req.body;
+
+    try {
+        const video = await prisma.video.findUnique({
+            where: { videoUrl: `${videoUrl}` }
+        });
+
+        if (!video) {
+            return res.status(404).json({ error: 'Video not found' });
+        }
+
+        // Add the video to the user's liked videos
+        await prisma.user.update({
+            where: { id: userId },
+            data: {
+                likedVideos: {
+                    connect: { id: video.id }
+                }
+            }
+        });
+
+        // Find or create the "Liked Videos" playlist
+        let likedPlaylist = await prisma.playlist.upsert({
+            where: {
+                creatorId_name: {
+                    creatorId: userId,
+                    name: 'Liked Videos'
+                }
+            },
+            update: {},
+            create: {
+                name: 'Liked Videos',
+                creatorId: userId
+            }
+        });
+
+        await prisma.playlistVideo.upsert({
+            where: {
+                playlistId_videoId: {
+                    playlistId: likedPlaylist.id,
+                    videoId: video.id
+                }
+            },
+            update: {},
+            create: {
+                playlistId: likedPlaylist.id,
+                videoId: video.id
+            }
+        });
+
+        res.json({ message: 'Video liked and added to Liked Videos playlist' });
+    } catch (err) {
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
 
 module.exports = router;

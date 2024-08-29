@@ -6,7 +6,7 @@
   &-inner {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(28em, max-content));;
-    gap: 5em;
+    gap: 3em;
     &-creator {
       width: 100%;
       position: relative;

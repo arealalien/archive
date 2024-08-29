@@ -32,12 +32,12 @@ const ProfileSec  = ({ profileName, page }) => {
                     <>
                         <div className="profile-inner-content-right videos-inner videos-inner-4">
                             <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
-                                <PlaylistsSec videoCreator={profileName}/>
+                                <VideosSec videoCreator={profileName}/>
                             </div>
                         </div>
-                        <div className="profile-inner-content-right videos-inner videos-inner-4">
-                            <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
-                                <VideosSec videoCreator={profileName}/>
+                        <div className="profile-inner-content-right playlists-grid">
+                            <div className="profile-inner-content-right-playlists playlists-grid-inner">
+                                <PlaylistsSec videoCreator={profileName}/>
                             </div>
                         </div>
                     </>

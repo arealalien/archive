@@ -14,7 +14,8 @@ const SideBarRight = ({
                           profile,
                           subscriberCount,
                           isSubscribed,
-                          handleSubscribe
+                          handleSubscribe,
+                          handleLike
                       }) => {
 
     const [sidebarRightWidth, setSidebarRightWidth] = useState(() => {
@@ -208,9 +209,9 @@ const SideBarRight = ({
                                             </div>
                                         </NavLink>
                                         <div className="sidebar-right-menu-inner-top-left-container">
-                                            <NavLink to="/settings/profile" className="blackbutton">
+                                            <NavLink to="/settings/profile" className="whitebutton">
                                                 <span>Edit profile</span>
-                                                <div className="blackbutton-shadow"></div>
+                                                <div className="whitebutton-shadow"></div>
                                             </NavLink>
                                         </div>
                                         <div className="sidebar-right-menu-inner-top-left-overlay"></div>
@@ -398,7 +399,7 @@ const SideBarRight = ({
                                     <p className="video-inner-right-box-center-description">{videoDetails.description}</p>
                                 </div>
                                 <div className="video-inner-right-box-bottom">
-                                    <div className="video-inner-right-box-bottom-item">
+                                    <div className="video-inner-right-box-bottom-item" onClick={handleLike}>
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="24px" height="24px"
                                              viewBox="0 0 24 24" version="1.1">
@@ -508,7 +509,8 @@ const SideBarRight = ({
                                     <div className="profile-menu-container-inner-live-shadow"></div>
                                 </div>
                                 {user.name === profile.name ? (
-                                    <NavLink className="profile-menu-container-inner-cta subscribed whitebutton" to="/settings/profile">
+                                    <NavLink className="profile-menu-container-inner-cta subscribed whitebutton"
+                                             to="/settings/profile">
                                         Edit profile
                                         <div className="whitebutton-shadow"></div>
                                     </NavLink>
@@ -517,7 +519,7 @@ const SideBarRight = ({
                                         <button className="profile-menu-container-inner-cta subscribed whitebutton"
                                                 onClick={handleSubscribe}
                                                 disabled={isSubscribed}>
-                                        Subscribed
+                                            Subscribed
                                             <div className="whitebutton-shadow"></div>
                                         </button>
                                     ) : (
@@ -528,11 +530,12 @@ const SideBarRight = ({
                                         </button>
                                     )
                                 )}
+                                <div className="profile-menu-container-inner-overlay2"></div>
                                 <div className="profile-menu-container-inner-overlay"></div>
                                 <img className="profile-menu-container-inner-image" src={pProfilePictureUrl} alt=""/>
                             </div>
                             <div className="profile-menu-container-details">
-                                <h3 className="profile-menu-container-details-username">
+                            <h3 className="profile-menu-container-details-username">
                                     <span>{profile.displayName}</span>
                                     {profile?.verified === 1 ? (
                                         <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">

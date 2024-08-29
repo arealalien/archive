@@ -14,6 +14,7 @@
   &-inner {
     display: grid;
     position: relative;
+    background-color: hslac($black, .5);
     grid-template-columns: auto 1fr;
     border-radius: 3em;
     gap: 3em;
@@ -24,6 +25,7 @@
       position: absolute;
       object-fit: cover;
       filter: blur(15em) brightness(30%);
+      opacity: 0;
       z-index: -1;
     }
     &-left {

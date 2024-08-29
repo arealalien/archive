@@ -1,0 +1,60 @@
+.playlists-grid {
+  &-inner {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28em, max-content));
+    column-gap: 2em;
+    row-gap: 4em;
+    &-item {
+      padding: 1em;
+      display: grid;
+      grid-template-columns: 8em 1fr;
+      place-items: flex-start;
+      align-items: center;
+      gap: 1em;
+      border: 1px solid hslac($white, .1);
+      border-radius: 2em;
+      backdrop-filter: blur(1.5rem) brightness(70%);
+      &-left {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        border-radius: 2em;
+        overflow: hidden;
+        @include flex-center();
+
+        &-button {
+          width: 4em; height: 4em;
+          position: absolute;
+          border: 1px solid hslac($white, .1);
+          border-radius: 50%;
+          backdrop-filter: blur(1.5rem) brightness(150%);
+          z-index: 5;
+          @include flex-center();
+
+          svg {
+            width: 2em;
+            path {
+              stroke: hslac($white, .7);
+            }
+          }
+        }
+        &-overlay {
+          width: 100%; height: 100%;
+          position: absolute;
+          background-color: hslac($black ,.3);
+          z-index: 3;
+        }
+        &-image {
+          min-width: 100%; min-height: 100%;
+          max-width: 110%;
+          position: absolute;
+          object-fit: cover;
+        }
+      }
+      &-right {
+
+      }
+    }
+  }
+}

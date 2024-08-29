@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AuthContext } from './contexts/AuthContext';
 import axios from 'axios';
 import ColorThief from 'colorthief';
@@ -70,79 +70,34 @@ function Profile() {
 
             const updateBackgroundColor = () => {
                 const palette = colorThief.getPalette(imgElement);
+
+                // Choose the dark color from the palette
                 const darkColor = palette.reduce((prev, curr) => {
                     const prevLuminance = 0.2126 * prev[0] + 0.7152 * prev[1] + 0.0722 * prev[2];
                     const currLuminance = 0.2126 * curr[0] + 0.7152 * curr[1] + 0.0722 * curr[2];
                     return currLuminance < prevLuminance ? curr : prev;
                 }, palette[0]);
 
-                // Function to convert RGB to HSL
-                const rgbToHsl = (r, g, b) => {
-                    r /= 255;
-                    g /= 255;
-                    b /= 255;
-                    const max = Math.max(r, g, b);
-                    const min = Math.min(r, g, b);
-                    let h, s, l = (max + min) / 2;
+                // Calculate the luminance of the selected color
+                const luminance = 0.2126 * darkColor[0] + 0.7152 * darkColor[1] + 0.0722 * darkColor[2];
 
-                    if (max === min) {
-                        h = s = 0; // achromatic
-                    } else {
-                        const d = max - min;
-                        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-                        switch (max) {
-                            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-                            case g: h = (b - r) / d + 2; break;
-                            case b: h = (r - g) / d + 4; break;
-                            default: break;
-                        }
-                        h /= 6;
-                    }
+                // Determine the alpha value based on luminance
+                let alpha = 1;
+                if (luminance > 160) {
+                    alpha = 0.5;
+                } else if (luminance > 140) {
+                    alpha = 0.7;
+                } else if (luminance > 120) {
+                    alpha = 0.9;
+                }
 
-                    return [h, s, l];
-                };
+                // Apply the dark color directly as the background with the adjusted alpha
+                const colorString = `rgba(${darkColor.join(',')}, ${alpha})`;
+                const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, .15) 75em)`;
 
-                // Function to convert HSL back to RGB
-                const hslToRgb = (h, s, l) => {
-                    let r, g, b;
-
-                    if (s === 0) {
-                        r = g = b = l; // achromatic
-                    } else {
-                        const hue2rgb = (p, q, t) => {
-                            if (t < 0) t += 1;
-                            if (t > 1) t -= 1;
-                            if (t < 1 / 6) return p + (q - p) * 6 * t;
-                            if (t < 1 / 3) return q;
-                            if (t < 1 / 2) return p + (q - p) * (2 / 3 - t) * 6;
-                            return p;
-                        };
-
-                        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-                        const p = 2 * l - q;
-                        r = hue2rgb(p, q, h + 1 / 3);
-                        g = hue2rgb(p, q, h);
-                        b = hue2rgb(p, q, h - 1 / 3);
-                    }
-
-                    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-                };
-
-                // Convert darkColor to HSL
-                let [h, s, l] = rgbToHsl(darkColor[0], darkColor[1], darkColor[2]);
-
-                // Adjust luminance to make it darker
-                l = Math.max(0, l - 0.01);
-
-                // Adjust saturation to make it less saturated
-                s = Math.max(0, s - 0.05);
-
-                // Convert back to RGB
-                const adjustedColor = hslToRgb(h, s, l);
-
-                document.querySelector(".profile").style.background = `linear-gradient(180deg, rgb(${adjustedColor.join(',')}) 0, rgba(${adjustedColor.join(',')}, .15) 75em)`;
-                document.querySelector(".sidebar-left").style.background = `linear-gradient(180deg, rgb(${adjustedColor.join(',')}) 0, rgba(${adjustedColor.join(',')}, .15) 75em)`;
-                document.querySelector(".sidebar-right").style.background = `linear-gradient(180deg, rgb(${adjustedColor.join(',')}) 0, rgba(${adjustedColor.join(',')}, .15) 75em)`;
+                document.querySelector(".profile").style.background = gradient;
+                document.querySelector(".sidebar-left").style.background = gradient;
+                document.querySelector(".sidebar-right").style.background = gradient;
             };
 
             imgElement.addEventListener('load', updateBackgroundColor);

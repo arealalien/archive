@@ -1,7 +1,8 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useRef, useState, useEffect} from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { NavLink, useParams } from 'react-router-dom';
 import ScrollBar from './components/ScrollBar';
+import ColorThief from 'colorthief';
 import './css/main.css';
 
 // Components
@@ -24,6 +25,58 @@ function Settings() {
     const [displayName, setDisplayName] = useState(user ? user.displayName : '');
     const [email, setEmail] = useState(user ? user.email : '');
     const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
+
+    const bannerRef = useRef(null);
+
+    useEffect(() => {
+        if (bannerRef.current) {
+            const imgElement = bannerRef.current;
+            if (!user) return;
+            const colorThief = new ColorThief();
+
+            const updateBackgroundColor = () => {
+                const palette = colorThief.getPalette(imgElement);
+
+                // Choose the dark color from the palette
+                const darkColor = palette.reduce((prev, curr) => {
+                    const prevLuminance = 0.2126 * prev[0] + 0.7152 * prev[1] + 0.0722 * prev[2];
+                    const currLuminance = 0.2126 * curr[0] + 0.7152 * curr[1] + 0.0722 * curr[2];
+                    return currLuminance < prevLuminance ? curr : prev;
+                }, palette[0]);
+
+                // Calculate the luminance of the selected color
+                const luminance = 0.2126 * darkColor[0] + 0.7152 * darkColor[1] + 0.0722 * darkColor[2];
+
+                // Determine the alpha value based on luminance
+                let alpha = 1;
+                if (luminance > 160) {
+                    alpha = 0.5;
+                } else if (luminance > 140) {
+                    alpha = 0.7;
+                } else if (luminance > 120) {
+                    alpha = 0.9;
+                }
+
+                // Apply the dark color directly as the background with the adjusted alpha
+                const colorString = `rgba(${darkColor.join(',')}, ${alpha})`;
+                const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, .15) 75em)`;
+
+                document.querySelector(".page-center").style.background = `linear-gradient(180deg, rgba(${darkColor.join(',')}, .3) 0, rgba(${darkColor.join(',')}, .02) 75em)`;
+                document.querySelector(".sidebar-left").style.background = gradient;
+                document.querySelector(".sidebar-right").style.background = gradient;
+            };
+
+            imgElement.addEventListener('load', updateBackgroundColor);
+
+            if (imgElement.complete) {
+                updateBackgroundColor();
+            }
+
+            return () => {
+                imgElement.removeEventListener('load', updateBackgroundColor);
+            };
+        }
+    }, [user]);
 
     const toggleSidebarMenu = () => {
         setSidebarMenuVisible(prevState => !prevState);
@@ -361,7 +414,7 @@ function Settings() {
                              src={(process.env.PUBLIC_URL + "/" + user?.banner)} alt=""/>
                         <div className="settings-inner view-width">
                             <img className="settings-inner-background"
-                                 src={(process.env.PUBLIC_URL + "/" + user?.banner)} alt=""/>
+                                 src={(process.env.PUBLIC_URL + "/" + user?.banner)} alt="" ref={bannerRef}/>
                             <div className="settings-inner-left">
                                 <ul className="settings-inner-left-list">
                                     <NavLink to="/settings/profile" className="settings-inner-left-list-item">

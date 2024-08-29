@@ -377,6 +377,7 @@
               position: absolute;
               background: hslac($white, 1);
               border-radius: 5em 0 0 5em;
+              pointer-events: none;
             }
             &-input {
               -webkit-appearance :none;

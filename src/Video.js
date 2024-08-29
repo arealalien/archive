@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ScrollBar from './components/ScrollBar';
@@ -13,6 +13,7 @@ import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
+import {AuthContext} from "./contexts/AuthContext";
 
 function Video() {
     const location = useLocation();
@@ -26,6 +27,8 @@ function Video() {
     const toggleSidebarMenu = () => {
         setSidebarMenuVisible(prevState => !prevState);
     };
+
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchVideoData = async () => {
@@ -99,6 +102,24 @@ function Video() {
         }
     };
 
+    const handleLike = async () => {
+        try {
+            const response = await axios.post(`http://localhost:5000/videos/${videoDetails.videoUrl}/like`, {
+                userId: user.id // Pass the user ID
+            });
+
+            if (response.data.message === 'Video liked and added to Liked Videos playlist') {
+                setVideoDetails(prevDetails => ({
+                    ...prevDetails,
+                    likes: prevDetails.likes + 1
+                }));
+            }
+        } catch (err) {
+            console.error('Failed to like the video:', err);
+            setError('Failed to like the video');
+        }
+    };
+
     const profilePictureUrl = `http://localhost:5000/${videoDetails.creator.profilePicture}`;
     const bannerUrl = `http://localhost:5000/${videoDetails.creator.banner}`;
 
@@ -132,6 +153,7 @@ function Video() {
                     subscriberCount={subscriberCount}
                     isSubscribed={isSubscribed}
                     handleSubscribe={handleSubscribe}
+                    handleLike={handleLike}
                 />
             </div>
             <PageShadow/>

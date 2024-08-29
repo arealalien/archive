@@ -135,6 +135,7 @@ const UploadForm = () => {
             imageFormData.append('videoUrl', videoUrl.split('.')[0]); // Pass the videoUrl to the thumbnail upload
 
             await axios.post('http://localhost:5000/upload/thumbnail', imageFormData, {
+                videoUrl: videoUrl,
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`, // Add the Authorization header
