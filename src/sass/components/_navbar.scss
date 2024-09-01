@@ -31,9 +31,32 @@
     &-center {
       height: 100%;
       position: relative;
+      gap: 1em;
       z-index: 10005;
       @include flex-center();
 
+      &-item {
+        height: 100%;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        text-decoration: none;
+        background-color: hslac($black, 0);
+        border: 1px solid hslac($white, .1);
+        border-radius: 50%;
+        gap: 1em;
+        transition: all .3s cubic-bezier($transition-main, 1);
+        @include flex-center();
+
+        &:hover {
+          border: 1px solid hslac($white, .3);
+        }
+        svg {
+          height: 2em;
+          g {
+            stroke: hslac($white, .7);
+          }
+        }
+      }
       &-searchbar {
         width: 50em;
         height: 100%;
@@ -69,6 +92,9 @@
           &:focus {
             border: 1px solid hslac($white, .3);
             outline: none;
+          }
+          &:hover {
+            border: 1px solid hslac($white, .3);
           }
         }
       }
@@ -462,49 +488,6 @@
       }
     }
   }
-  &-menu {
-    padding: 1.5em;
-    width: 100%;
-    &-list {
-      width: 100%;
-      gap: 1em;
-      @include flex-col();
-
-      .active {
-        border: 1px solid hslac($white, .3);
-        backdrop-filter: blur(1.5rem) brightness(20%);
-      }
-      &-item {
-        padding: 1.75em 2.25em;
-        width: 100%;
-        position: relative;
-        text-decoration: none;
-        background-color: hslac($black, 0);
-        border: 1px solid hslac($white, .1);
-        border-radius: 2em;
-        backdrop-filter: blur(1.5rem) brightness(70%);
-        gap: 1em;
-        transition: all .3s cubic-bezier($transition-main, 1);
-        @include flex-center();
-
-        &:hover {
-          border: 1px solid hslac($white, .2);
-          backdrop-filter: blur(1.5rem) brightness(40%);
-        }
-        svg {
-          height: 2em;
-          g {
-            stroke: hslac($white, .7);
-          }
-        }
-        &-text {
-          width: 100%;
-          color: hslac($white, .7);
-          font-weight: 300;
-        }
-      }
-    }
-  }
   &-divider {
     padding: 2em 1.5em 0 1.5em;
     @include flex-center();
@@ -577,8 +560,7 @@
           @include flex-center();
 
           &-image {
-            min-width: 100%; min-height: 100%;
-            max-width: 110%;
+            width: 100%; height: 100%;
             position: absolute;
             object-fit: cover;
           }

@@ -5,13 +5,13 @@ import './css/main.css';
 // Components
 import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
-import PicturesSec from "./components/pictures/PicturesSec";
+import VideosSec from "./components/videos/VideosSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
 
-function Pictures() {
+function Discovery() {
     const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
 
     const toggleSidebarMenu = () => {
@@ -20,12 +20,17 @@ function Pictures() {
 
     return (
         <>
-            <DocumentTitle title="Archive - Pcitures"/>
+            <DocumentTitle title="Discovery - Archive"/>
             <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
                 <SideBarLeft/>
                 <ScrollBar className="page-center">
-                    <PicturesSec/>
+                    <section className="videos">
+                        <div className="videos-inner videos-inner-4 view-width">
+                            <VideosSec/>
+                        </div>
+                    </section>
+                    <Footer/>
                 </ScrollBar>
                 <SideBarRight isMenuVisible={isSidebarMenuVisible} />
             </div>
@@ -34,4 +39,4 @@ function Pictures() {
     );
 }
 
-export default Pictures;
+export default Discovery;

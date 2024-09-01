@@ -10,6 +10,7 @@ import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
+import VideosSec from "./components/videos/VideosSec";
 
 function Playlist() {
     const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
@@ -74,7 +75,7 @@ function Playlist() {
 
                 // Apply the vibrant color directly as the background with the adjusted alpha
                 const colorString = `rgba(${vibrantColor.join(',')}, ${alpha})`;
-                const gradient = `linear-gradient(180deg, rgba(${vibrantColor.join(',')}, ${alpha - .15}) 0, rgba(${vibrantColor.join(',')}, 0) 35em)`;
+                const gradient = `linear-gradient(180deg, rgba(${vibrantColor.join(',')}, ${alpha - .1}) 0, rgba(${vibrantColor.join(',')}, 0) 35em)`;
 
                 document.querySelector(".playlist-header").style.background = colorString;
                 document.querySelector(".playlist-content").style.background = gradient;
@@ -108,7 +109,7 @@ function Playlist() {
                             <div className="playlist-header-top">
                                 <div className="playlist-header-top-left">
                                     <div className="playlist-header-top-left-container">
-                                        <img ref={PlaylistCoverRef} className="playlist-header-top-left-container-image" src={process.env.PUBLIC_URL + `/images/gallery/173558115_790424168538166_2849205650520624862_n.jpg`} alt="" />
+                                        <img ref={PlaylistCoverRef} className="playlist-header-top-left-container-image" src={process.env.PUBLIC_URL + `/images/gallery/347504210_2210436199143577_4984331646709175478_n.jpg`} alt="" />
                                     </div>
                                 </div>
                                 <div className="playlist-header-top-right">
@@ -117,7 +118,7 @@ function Playlist() {
                                     <div className="playlist-header-top-right-details">
                                         <div className="playlist-header-top-right-details-left">
                                             <div className="playlist-header-top-right-details-left-container">
-                                                <img ref={PlaylistCoverRef}
+                                                <img
                                                      className="playlist-header-top-right-details-left-container-image"
                                                      src={process.env.PUBLIC_URL + `/images/gallery/173558115_790424168538166_2849205650520624862_n.jpg`}
                                                      alt=""/>
@@ -166,7 +167,13 @@ function Playlist() {
 
                             </div>
                         </header>
-                        <div className="playlist-content"></div>
+                        <div className="playlist-content">
+                            <section className="videos">
+                                <div className="videos-inner videos-inner-4 view-width">
+                                    <VideosSec/>
+                                </div>
+                            </section>
+                        </div>
                     </section>
                     <Footer/>
                 </ScrollBar>
