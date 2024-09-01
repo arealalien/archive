@@ -114,7 +114,7 @@ function Playlist() {
                                 </div>
                                 <div className="playlist-header-top-right">
                                     <p className="playlist-header-top-right-toptitle">Public playlist</p>
-                                    <h1 className="playlist-header-top-right-title">🪷 Top 200 volume 2024 🪷</h1>
+                                    <h1 className="playlist-header-top-right-title">📖 Tangled sheets, magazines on the floor, beeing teenager again 📖</h1>
                                     <div className="playlist-header-top-right-details">
                                         <div className="playlist-header-top-right-details-left">
                                             <div className="playlist-header-top-right-details-left-container">
