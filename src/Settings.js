@@ -62,7 +62,6 @@ function Settings() {
                 const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, .15) 75em)`;
 
                 document.querySelector(".page-center").style.background = `linear-gradient(180deg, rgba(${darkColor.join(',')}, .3) 0, rgba(${darkColor.join(',')}, .02) 75em)`;
-                document.querySelector(".sidebar-left").style.background = gradient;
                 document.querySelector(".sidebar-right").style.background = gradient;
             };
 

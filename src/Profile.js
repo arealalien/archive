@@ -96,7 +96,6 @@ function Profile() {
                 const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, .15) 75em)`;
 
                 document.querySelector(".profile").style.background = gradient;
-                document.querySelector(".sidebar-left").style.background = gradient;
                 document.querySelector(".sidebar-right").style.background = gradient;
             };
 
@@ -163,7 +162,7 @@ function Profile() {
                                 />
                             </header>
                             <div className="profile-inner-content">
-                                <ProfileSec profileName={user2.name} page={page}/>
+                                <ProfileSec page={page}/>
                             </div>
                         </div>
                     </section>
