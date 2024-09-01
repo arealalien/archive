@@ -9,6 +9,7 @@ import Profile from "./Profile"
 import Creators from "./Creators"
 import Upload from "./Upload"
 import Pictures from "./Pictures";
+import Playlist from "./Playlist";
 import Video from "./Video";
 import Settings from "./Settings";
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/creators" element={<Creators/>}/>/>
           <Route path="/upload" element={<Upload/>}/>
           <Route path="/pictures" element={<Pictures/>}/>
+          <Route path="/playlist" element={<Playlist/>}/>
           <Route path="/video" element={<Video/>}/>
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/settings/:page" element={<Settings/>} />

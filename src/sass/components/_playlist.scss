@@ -1,0 +1,114 @@
+.playlist {
+  width: 100%;
+  @include flex-col();
+
+  &-header {
+    padding: 3em;
+    width: 100%;
+    &-top {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 35em 1fr;
+      gap: 1.5em;
+      &-left {
+        width: 100%;
+        &-container {
+          width: 100%;
+          aspect-ratio: 1 / 1;
+          position: relative;
+          border-radius: 2em;
+          overflow: hidden;
+          @include flex-center();
+
+          &-image {
+            min-width: 100%; min-height: 100%;
+            max-width: 110%;
+            position: absolute;
+            object-fit: cover;
+          }
+        }
+      }
+      &-right {
+        padding: 0 0 2em 0;
+        height: 100%;
+        gap: 1em;
+        @include flex-col-left-ne();
+
+        &-title {
+          padding: 0 .6em 0 0;
+          max-width: 100%;
+          max-height: calc($heading-medium + .5rem);
+          line-height: calc($heading-medium + .25rem);
+          color: hslac($white, 1);
+          font-size: $heading-medium;
+          font-weight: 800;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          white-space: normal;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          z-index: 4;
+        }
+        &-toptitle {
+          color: hslac($white, .7);
+        }
+        &-details {
+          gap: .5em;
+          @include flex-left();
+
+          &-left {
+            gap: .5em;
+            @include flex-left();
+
+            &-container {
+              width: 2.5em;
+              aspect-ratio: 1 / 1;
+              position: relative;
+              border-radius: 50%;
+              overflow: hidden;
+              @include flex-center();
+
+              &-image {
+                min-width: 100%; min-height: 100%;
+                max-width: 110%;
+                position: absolute;
+                object-fit: cover;
+              }
+            }
+            &-username {
+              color: hslac($white, .7);
+              font-size: $paragraph-medium;
+              font-weight: 600;
+              gap: .25em;
+              @include flex-left();
+
+              svg {
+                width: $paragraph-medium;
+              }
+            }
+          }
+          &-right {
+            gap: .5em;
+            @include flex-left();
+
+            &-subtitle {
+              color: hslac($white, .3);
+            }
+            &-thicktitle {
+              color: hslac($white, .3);
+              font-weight: 800;
+            }
+          }
+        }
+      }
+    }
+    &-bottom {
+      width: 100%;
+    }
+  }
+  &-content {
+    width: 100%;
+    min-height: 100vh;
+  }
+}

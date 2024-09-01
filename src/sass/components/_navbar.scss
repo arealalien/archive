@@ -507,16 +507,40 @@
   }
   &-divider {
     padding: 2em 1.5em 0 1.5em;
-    width: 100%;
-    @include flex-col();
+    @include flex-center();
 
-    &-text {
-      width: calc(100% - 1.5em);
-      color: hslac($white, .7);
-    }
-    &-line {
-      width: calc(100% - 3em); height: 1px;
-      background-color: hslac($white, 0);
+    &-inner {
+      padding: 1.5em 2em;
+      width: 100%;
+      background-color: hslac($black, 1);
+      border-radius: 2em;
+      @include flex-space-bet();
+      &-left {
+        gap: 1em;
+        @include flex-left();
+
+        svg {
+          g {
+            g {
+              stroke: hslac($white, .7);
+            }
+          }
+        }
+        &-text {
+          width: calc(100% - 1.5em);
+          color: hslac($white, .7);
+        }
+      }
+      &-right {
+        cursor: pointer;
+        svg {
+          g {
+            g {
+              stroke: hslac($white, .7);
+            }
+          }
+        }
+      }
     }
   }
   &-playlists {
@@ -528,46 +552,30 @@
       @include flex-col-start-center();
 
       &-item {
-        padding: 1em;
+        padding: .8em;
         width: 100%;
         display: grid;
-        grid-template-columns: 5em 1fr;
-        border-radius: 2.25em;
-        border: 1px solid hslac($white, .1);
-        backdrop-filter: blur(1.5rem) brightness(70%);
+        position: relative;
+        grid-template-columns: 5.5em 1fr;
+        border-radius: 2em;
+        place-items: center;
+        background-color: hslac($black, 1);
+        border: 1px solid hslac($white, 0);
         text-decoration: none;
         gap: 1em;
         overflow: hidden;
         transition: all .3s cubic-bezier($transition-main, 1);
         &:hover {
           border: 1px solid hslac($white, .2);
-          backdrop-filter: blur(1.5rem) brightness(40%);
         }
         &-left {
           width: 100%;
           aspect-ratio: 1 / 1;
           position: relative;
-          border-radius: 1.5em;
+          border-radius: 1.25em;
           overflow: hidden;
           @include flex-center();
 
-          &-button {
-            width: 3em; height: 3em;
-            position: absolute;
-            border: 1px solid hslac($white, .1);
-            backdrop-filter: blur(1.5rem) brightness(70%);
-            border-radius: 50%;
-            z-index: 4;
-            @include flex-center();
-
-            svg {
-              width: 2em;
-
-              path {
-                stroke: hslac($white, .7);
-              }
-            }
-          }
           &-image {
             min-width: 100%; min-height: 100%;
             max-width: 110%;
@@ -584,7 +592,7 @@
             max-width: 100%;
             max-height: calc($paragraph-large + .5rem);
             line-height: calc($paragraph-large + .25rem);
-            color: hslac($white, .7);
+            color: hslac($white, 1);
             font-size: $paragraph-large;
             font-weight: 500;
             display: -webkit-box;
@@ -593,11 +601,13 @@
             white-space: normal;
             text-overflow: ellipsis;
             overflow: hidden;
+            z-index: 4;
           }
           &-subtitle {
             color: hslac($white, .3);
             font-size: $paragraph;
             font-weight: 300;
+            z-index: 4;
           }
         }
       }
