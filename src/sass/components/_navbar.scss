@@ -541,6 +541,118 @@
       }
     }
   }
+  &-island {
+    top: 0;
+    padding: 1.5em 1.5em 0 1.5em;
+    width: 100%;
+    position: sticky;
+    z-index: 10000;
+    @include flex-center();
+
+    &-inner {
+      padding: 1.5em;
+      width: 100%;
+      background-color: hslac($black, 1);
+      border-radius: 2em;
+      gap: 1em;
+      @include flex-col();
+
+      &-top {
+        width: 100%;
+        @include flex-space-bet();
+        &-left {
+          padding: 1em 1.5em;
+          background-color: hslac($background-gray, 1);
+          border-radius: 5em;
+          gap: 1em;
+          @include flex-left();
+
+          svg {
+            width: 2em; height: 2em;
+            g {
+              g {
+                stroke: hslac($white, .7);
+              }
+            }
+          }
+          &-text {
+            color: hslac($white, .7);
+            font-size: $paragraph-medium;
+            font-weight: 600;
+          }
+        }
+        &-right {
+          padding: 1em;
+          background-color: hslac($background-gray, 1);
+          border-radius: 50%;
+          cursor: pointer;
+          @include flex-center();
+
+          svg {
+            width: 2em; height: 2em;
+            g {
+              g {
+                stroke: hslac($white, .7);
+              }
+            }
+          }
+        }
+      }
+      &-bottom {
+        width: 100%;
+        gap: 1em;
+        @include flex-left();
+
+        &-scrollable {
+          width: 100%;
+          position: relative;
+          gap: 1em;
+          overflow: hidden;
+          @include flex-left();
+
+          &-overlay {
+            width: 100%; height: 100%;
+            position: absolute;
+            background: linear-gradient(90deg, hslac($black, 0) 0, hslac($black, 0) 40%, hslac($black, 1) 100%);
+            z-index: 10007;
+          }
+        }
+        &-xbutton {
+          padding: 1em;
+          background-color: hslac($background-gray, 1);
+          border-radius: 50%;
+          cursor: pointer;
+          @include flex-center();
+
+          svg {
+            width: 2em; height: 2em;
+            g {
+              g {
+                stroke: hslac($white, .7);
+              }
+            }
+          }
+        }
+        &-button {
+          padding: 1.25em 1.75em;
+          background-color: hslac($background-gray, 1);
+          border-radius: 5em;
+          white-space: nowrap;
+          cursor: pointer;
+          &-title {
+            font-size: $paragraph-medium;
+            font-weight: 600;
+          }
+        }
+        .active {
+          background-color: hslac($white, 1);
+          .sidebar-left-island-inner-bottom-button-title {
+            color: hslac($black, 1);
+          }
+        }
+      }
+    }
+  }
   &-playlists {
     padding: 1.5em 1.5em 6em 1.5em;
     width: 100%;

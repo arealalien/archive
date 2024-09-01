@@ -41,16 +41,6 @@
           opacity: .8;
         }
       }
-      &-background {
-        top: .5em;
-        width: 100%;
-        position: absolute;
-        transform: scale(.88, .88);
-        filter: blur(5rem);
-        opacity: .4;
-        transition: all .25s cubic-bezier($transition-main, 1);
-        z-index: 1;
-      }
       &-video {
         width: 100%;
         aspect-ratio: 16 / 9;

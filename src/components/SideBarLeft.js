@@ -93,22 +93,34 @@ const SideBarLeft  = ({ profile }) => {
         return { display: 'none' }; // default
     };
 
+    const getRetardDisplayStyle = () => {
+        if (sidebarWidth <= 8) return { display: 'none' };
+        if (sidebarWidth > 25) return { display: 'block' };
+        return { display: 'none' }; // default
+    };
+
     const getButtonStyle = () => {
-        if (sidebarWidth <= 8) return { padding: '1.75em 1em', borderRadius: '2em', justifyContent: 'center' };
-        if (sidebarWidth > 15) return { padding: '1.75em 2.25em', borderRadius: '2em', justifyContent: 'flex-start' };
-        return { padding: '1.75em 1em', borderRadius: '2em', justifyContent: 'center' };
+        if (sidebarWidth <= 8) return { padding: '1em' };
+        if (sidebarWidth > 25) return { padding: '1em 1.5em' };
+        return { padding: '1em' };
+    };
+
+    const getButtonWrapperStyle = () => {
+        if (sidebarWidth <= 8) return { padding: '.5em', display: 'none' };
+        if (sidebarWidth > 15) return { padding: '1.5em', display: 'flex' };
+        return { padding: '.5em', display: 'none' };
+    };
+
+    const getIslandStyle = () => {
+        if (sidebarWidth <= 8) return { padding: '1em 1em 0 1em' };
+        if (sidebarWidth > 15) return { padding: '1.5em 1.5em 0 1.5em' };
+        return { padding: '1em 1em 0 1em' };
     };
 
     const getPlaylistStyle = () => {
         if (sidebarWidth <= 8) return { gridTemplateColumns: '1fr', padding: '.6em', borderRadius: '1.75em' };
         if (sidebarWidth > 15) return { gridTemplateColumns: '5.5em 1fr', padding: '.8em', borderRadius: '2em' };
         return { gridTemplateColumns: '1fr', padding: '.6em', borderRadius: '1.75em' };
-    };
-
-    const getMenuStyle = () => {
-        if (sidebarWidth <= 8) return { padding: '1em' };
-        if (sidebarWidth > 15) return { padding: '1.5em' };
-        return { padding: '1em' }; // default
     };
 
     const getNoteStyle = () => {
@@ -355,56 +367,92 @@ const SideBarLeft  = ({ profile }) => {
 
                         </>
                     )}
-                    <div className="sidebar-left-divider">
-                        <div className="sidebar-left-divider-inner">
-                            <div className="sidebar-left-divider-inner-left">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <title>Folder</title>
-                                    <g id="folder" stroke="none" stroke-width="1" fill="none"
-                                       fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                        <g id="folder-inner" transform="translate(2.500000, 2.500000)"
-                                           stroke="#000000"
-                                           stroke-width="1.5">
-                                            <line x1="4.8057" y1="12.0742685" x2="14.3987" y2="12.0742685"
-                                                  id="Stroke-1"/>
-                                            <path
-                                                d="M-1.13686838e-13,5.29836453 C-1.13686838e-13,2.85645977 1.25,0.75931691 3.622,0.272650243 C5.993,-0.214968804 7.795,-0.0463973758 9.292,0.761221672 C10.79,1.56884072 10.361,2.76122167 11.9,3.63645977 C13.44,4.51265024 15.917,3.19645977 17.535,4.94217405 C19.229,6.7697931 19.2200005,9.57550739 19.2200005,11.3640788 C19.2200005,18.1602693 15.413,18.6993169 9.61,18.6993169 C3.807,18.6993169 -1.13686838e-13,18.2288407 -1.13686838e-13,11.3640788 L-1.13686838e-13,5.29836453 Z"
-                                                id="Stroke-2"/>
+                    <div className="sidebar-left-island" style={getIslandStyle()}>
+                        <div className="sidebar-left-island-inner" style={getButtonWrapperStyle()}>
+                            <div className="sidebar-left-island-inner-top">
+                                <div className="sidebar-left-island-inner-top-left" style={getButtonStyle()}>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <title>Folder</title>
+                                        <g id="folder" stroke="none" stroke-width="1" fill="none"
+                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="folder-inner" transform="translate(2.500000, 2.500000)"
+                                               stroke="#000000"
+                                               stroke-width="1.5">
+                                                <line x1="4.8057" y1="12.0742685" x2="14.3987" y2="12.0742685"
+                                                      id="Stroke-1"/>
+                                                <path
+                                                    d="M-1.13686838e-13,5.29836453 C-1.13686838e-13,2.85645977 1.25,0.75931691 3.622,0.272650243 C5.993,-0.214968804 7.795,-0.0463973758 9.292,0.761221672 C10.79,1.56884072 10.361,2.76122167 11.9,3.63645977 C13.44,4.51265024 15.917,3.19645977 17.535,4.94217405 C19.229,6.7697931 19.2200005,9.57550739 19.2200005,11.3640788 C19.2200005,18.1602693 15.413,18.6993169 9.61,18.6993169 C3.807,18.6993169 -1.13686838e-13,18.2288407 -1.13686838e-13,11.3640788 L-1.13686838e-13,5.29836453 Z"
+                                                    id="Stroke-2"/>
+                                            </g>
                                         </g>
-                                    </g>
-                                </svg>
-                                <p className="sidebar-left-divider-inner-left-text"
-                                   style={getDisplayStyle()}>Playlists</p>
+                                    </svg>
+                                    <p className="sidebar-left-island-inner-top-left-text"
+                                       style={getRetardDisplayStyle()}>Playlists</p>
+                                </div>
+                                <div className="sidebar-left-island-inner-top-right" style={getDisplayStyle2()}>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="24px" height="24px"
+                                         viewBox="0 0 24 24" version="1.1">
+                                        <title>Plus</title>
+                                        <g id="plus" stroke="none" stroke-width="1" fill="none"
+                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="plus-inner" transform="translate(2.300000, 2.300000)"
+                                               stroke="#000000"
+                                               stroke-width="1.5">
+                                                <line x1="9.73684179" y1="6.162632" x2="9.73684179"
+                                                      y2="13.3110531"
+                                                      id="Stroke-1"/>
+                                                <line x1="13.3146315" y1="9.73684179" x2="6.158842"
+                                                      y2="9.73684179"
+                                                      id="Stroke-2"/>
+                                                <path
+                                                    d="M-3.55271368e-14,9.73684211 C-3.55271368e-14,2.43473684 2.43473684,2.13162821e-14 9.73684211,2.13162821e-14 C17.0389474,2.13162821e-14 19.4736842,2.43473684 19.4736842,9.73684211 C19.4736842,17.0389474 17.0389474,19.4736842 9.73684211,19.4736842 C2.43473684,19.4736842 -3.55271368e-14,17.0389474 -3.55271368e-14,9.73684211 Z"
+                                                    id="Stroke-3"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
                             </div>
-                            <div className="sidebar-left-divider-inner-right">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     width="24px" height="24px"
-                                     viewBox="0 0 24 24" version="1.1">
-                                    <title>Plus</title>
-                                    <g id="plus" stroke="none" stroke-width="1" fill="none"
-                                       fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                        <g id="plus-inner" transform="translate(2.300000, 2.300000)"
-                                           stroke="#000000"
-                                           stroke-width="1.5">
-                                            <line x1="9.73684179" y1="6.162632" x2="9.73684179"
-                                                  y2="13.3110531"
-                                                  id="Stroke-1"/>
-                                            <line x1="13.3146315" y1="9.73684179" x2="6.158842"
-                                                  y2="9.73684179"
-                                                  id="Stroke-2"/>
-                                            <path
-                                                d="M-3.55271368e-14,9.73684211 C-3.55271368e-14,2.43473684 2.43473684,2.13162821e-14 9.73684211,2.13162821e-14 C17.0389474,2.13162821e-14 19.4736842,2.43473684 19.4736842,9.73684211 C19.4736842,17.0389474 17.0389474,19.4736842 9.73684211,19.4736842 C2.43473684,19.4736842 -3.55271368e-14,17.0389474 -3.55271368e-14,9.73684211 Z"
-                                                id="Stroke-3"/>
+                            <div className="sidebar-left-island-inner-bottom" style={getDisplayStyle2()}>
+                                <div className="sidebar-left-island-inner-bottom-xbutton">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <title>Close Square</title>
+                                        <g id="close-square" stroke="none" stroke-width="1" fill="none"
+                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                            <g id="close-square-inner" transform="translate(2.000000, 2.000000)"
+                                               stroke="#000000" stroke-width="1.5">
+                                                <line x1="12.3941" y1="7.5948" x2="7.6021" y2="12.3868" id="Stroke-1"/>
+                                                <line x1="12.3999" y1="12.3931" x2="7.5999" y2="7.5931" id="Stroke-2"/>
+                                                <path
+                                                    d="M0.75,10.0001 C0.75,16.9371 3.063,19.2501 10,19.2501 C16.937,19.2501 19.25,16.9371 19.25,10.0001 C19.25,3.0631 16.937,0.7501 10,0.7501 C3.063,0.7501 0.75,3.0631 0.75,10.0001 Z"
+                                                    id="Stroke-3"/>
+                                            </g>
                                         </g>
-                                    </g>
-                                </svg>
+                                    </svg>
+                                </div>
+                                <div className="sidebar-left-island-inner-bottom-scrollable">
+                                    <div className="sidebar-left-island-inner-bottom-scrollable-overlay"></div>
+                                    <div className="sidebar-left-island-inner-bottom-button active">
+                                        <p className="sidebar-left-island-inner-bottom-button-title">Playlists</p>
+                                    </div>
+                                    <div className="sidebar-left-island-inner-bottom-button">
+                                        <p className="sidebar-left-island-inner-bottom-button-title">By you</p>
+                                    </div>
+                                    <div className="sidebar-left-island-inner-bottom-button">
+                                        <p className="sidebar-left-island-inner-bottom-button-title">Saved</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="sidebar-left-playlists" style={getMenu2Style()}>
                         <div className="sidebar-left-playlists-list">
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "1")} onMouseLeave={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item"
+                                     style={getPlaylistStyle()}
+                                     onMouseEnter={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "1")}
+                                     onMouseLeave={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/0476d014bcfd4716611c1c59f8f7611b.jpg`}
@@ -412,11 +460,15 @@ const SideBarLeft  = ({ profile }) => {
                                 </div>
                                 <div className="sidebar-left-playlists-list-item-right"
                                      style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">🪷 Top 200 volume 2024 🪷</h3>
+                                    <h3 className="sidebar-left-playlists-list-item-right-title">🪷 Top 200 volume 2024
+                                        🪷</h3>
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "1")} onMouseLeave={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item"
+                                     style={getPlaylistStyle()}
+                                     onMouseEnter={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "1")}
+                                     onMouseLeave={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/173558115_790424168538166_2849205650520624862_n.jpg`}
@@ -424,11 +476,15 @@ const SideBarLeft  = ({ profile }) => {
                                 </div>
                                 <div className="sidebar-left-playlists-list-item-right"
                                      style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">🐸 Top 200 volume 2023 🐸</h3>
+                                    <h3 className="sidebar-left-playlists-list-item-right-title">🐸 Top 200 volume 2023
+                                        🐸</h3>
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "1")} onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item"
+                                     style={getPlaylistStyle()}
+                                     onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "1")}
+                                     onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/135060407_240088560971081_6826181255437109694_n.jpg`}
@@ -441,7 +497,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Shoort", "1")} onMouseLeave={() => handleNoteNameChange("Shoort", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Shoort", "1")} onMouseLeave={() => handleNoteNameChange("Shoort", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/317227331_166200936047228_5967614100849288512_n.jpg`}
@@ -453,7 +509,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Playlist Name", "1")} onMouseLeave={() => handleNoteNameChange("Playlist Name", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Playlist Name", "1")} onMouseLeave={() => handleNoteNameChange("Playlist Name", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/347504210_2210436199143577_4984331646709175478_n.jpg`}
@@ -466,7 +522,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("A Longer Playlist Nameee", "1")} onMouseLeave={() => handleNoteNameChange("A Longer Playlist Nameee", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("A Longer Playlist Nameee", "1")} onMouseLeave={() => handleNoteNameChange("A Longer Playlist Nameee", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/155839804_115429443928743_8673419221365525306_n.jpg`}
@@ -480,7 +536,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "1")} onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "1")} onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/118809709_249357199583197_8804687060382916519_n.jpg`}
@@ -493,7 +549,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Shoort", "1")} onMouseLeave={() => handleNoteNameChange("Shoort", "0")}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Shoort", "1")} onMouseLeave={() => handleNoteNameChange("Shoort", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/100507160_277101373474665_8527359069873583537_n.jpg`}
@@ -502,6 +558,42 @@ const SideBarLeft  = ({ profile }) => {
                                 <div className="sidebar-left-playlists-list-item-right"
                                      style={getDisplayStyle2()}>
                                     <h3 className="sidebar-left-playlists-list-item-right-title">Shoort</h3>
+                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
+                                </div>
+                            </NavLink>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Mhmmmm 🩰", "1")} onMouseLeave={() => handleNoteNameChange("Mhmmmm 🩰", "0")}>
+                                <div className="sidebar-left-playlists-list-item-left">
+                                    <img className="sidebar-left-playlists-list-item-left-image"
+                                         src={process.env.PUBLIC_URL + `/images/gallery/Ym1H5ip.jpg`}
+                                         alt=""/>
+                                </div>
+                                <div className="sidebar-left-playlists-list-item-right"
+                                     style={getDisplayStyle2()}>
+                                    <h3 className="sidebar-left-playlists-list-item-right-title">Mhmmmm 🩰</h3>
+                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
+                                </div>
+                            </NavLink>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Hmmm kinda shoort", "1")} onMouseLeave={() => handleNoteNameChange("Hmmm kinda shoort", "0")}>
+                                <div className="sidebar-left-playlists-list-item-left">
+                                    <img className="sidebar-left-playlists-list-item-left-image"
+                                         src={process.env.PUBLIC_URL + `/images/gallery/tumblr_orrsz3IAuf1vot3zgo1_500.jpg`}
+                                         alt=""/>
+                                </div>
+                                <div className="sidebar-left-playlists-list-item-right"
+                                     style={getDisplayStyle2()}>
+                                    <h3 className="sidebar-left-playlists-list-item-right-title">Hmmm kinda shoort</h3>
+                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
+                                </div>
+                            </NavLink>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Longer than short", "1")} onMouseLeave={() => handleNoteNameChange("Longer than short", "0")}>
+                                <div className="sidebar-left-playlists-list-item-left">
+                                    <img className="sidebar-left-playlists-list-item-left-image"
+                                         src={process.env.PUBLIC_URL + `/images/gallery/347717546_576210121266890_1431385856945323170_n.jpg`}
+                                         alt=""/>
+                                </div>
+                                <div className="sidebar-left-playlists-list-item-right"
+                                     style={getDisplayStyle2()}>
+                                    <h3 className="sidebar-left-playlists-list-item-right-title">Longer than short</h3>
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>

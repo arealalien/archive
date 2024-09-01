@@ -211,9 +211,6 @@ const VideosSec = ({ videoCreator, search }) => {
                                      className="videos-inner-item-info-right-info">Seen {formatViews(video.views)} times &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</NavLink>
                         </div>
                     </div>
-                    <img className="videos-inner-item-background"
-                         src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"}
-                         alt=""/>
                 </div>
             ))}
         </>
