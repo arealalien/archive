@@ -93,7 +93,7 @@ function Profile() {
 
                 // Apply the dark color directly as the background with the adjusted alpha
                 const colorString = `rgba(${darkColor.join(',')}, ${alpha})`;
-                const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, .15) 75em)`;
+                const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, 0) 75em)`;
 
                 document.querySelector(".profile").style.background = gradient;
                 document.querySelector(".sidebar-right").style.background = gradient;
@@ -162,7 +162,7 @@ function Profile() {
                                 />
                             </header>
                             <div className="profile-inner-content">
-                                <ProfileSec page={page}/>
+                                <ProfileSec page={page} profileName={user2.name} />
                             </div>
                         </div>
                     </section>
