@@ -10,6 +10,8 @@ const SideBarLeft  = ({ profile }) => {
     });
     const [isMouseDown, setIsMouseDown] = useState(false);
     const sidebarRef = useRef(null);
+    const noteRef = useRef(null);
+    const noteNameRef = useRef(null);
     const isResizing = useRef(false);
     const prevWidth = useRef(sidebarWidth);
 
@@ -109,6 +111,12 @@ const SideBarLeft  = ({ profile }) => {
         return { padding: '1em' }; // default
     };
 
+    const getNoteStyle = () => {
+        if (sidebarWidth <= 8) return { display: 'block' };
+        if (sidebarWidth > 15) return { display: 'none' };
+        return { display: 'block' }; // default
+    };
+
     const getMenu2Style = () => {
         if (sidebarWidth <= 8) return { padding: '1em 1em 6em 1em' };
         if (sidebarWidth > 15) return { padding: '1.5em 1.5em 6em 1.5em' };
@@ -153,6 +161,28 @@ const SideBarLeft  = ({ profile }) => {
         }
     }, []);
 
+    const handleMouseMoveNote = useCallback((e) => {
+        if (noteRef.current) {
+            noteRef.current.style.transform = `translate(${e.pageX}px, ${e.pageY}px)`;
+        }
+    }, []);
+
+    const handleNoteNameChange = useCallback((title, opacity) => {
+        if (noteNameRef.current) {
+            noteNameRef.current.textContent = title;
+        }
+        if (noteRef.current) {
+            noteRef.current.style.opacity = opacity;
+        }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('mousemove', handleMouseMoveNote);
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMoveNote);
+        };
+    }, [handleMouseMoveNote]);
+
     let pictureUrl;
 
     if (profile) {
@@ -175,6 +205,9 @@ const SideBarLeft  = ({ profile }) => {
                               stroke-width="1.5"/>
                     </svg>
                 </div>
+                <div className="sidebarleft-note" ref={noteRef} style={getNoteStyle()}>
+                    <p className="sidebarleft-note-title" ref={noteNameRef}></p>
+                </div>
             </div>
             <div className="sidebar-inner sidebar-left" style={{width: `${sidebarWidth}em`}} ref={sidebarRef}>
                 <ScrollBar className="sidebar-left-inner">
@@ -185,9 +218,11 @@ const SideBarLeft  = ({ profile }) => {
                                     <NavLink to={`/channel/` + profile.name}
                                              className="sidebar-left-profilemenu-list-top"
                                              style={getProfileMenuTopStyle()}>
-                                        <img className="sidebar-left-profilemenu-list-top-image" src={pictureUrl} alt="" />
-                                        <div className="sidebar-left-profilemenu-list-top-text" style={getDisplayStyle()}>
-                                            <p className="sidebar-left-profilemenu-list-top-text-displayname"><span>{profile.displayName}</span> {profile?.verified === 1 ? (
+                                        <img className="sidebar-left-profilemenu-list-top-image" src={pictureUrl}
+                                             alt=""/>
+                                        <div className="sidebar-left-profilemenu-list-top-text"
+                                             style={getDisplayStyle()}>
+                                        <p className="sidebar-left-profilemenu-list-top-text-displayname"><span>{profile.displayName}</span> {profile?.verified === 1 ? (
                                                 <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true" style={getDisplayStyle()}>
                                                     <g>
                                                         <linearGradient gradientUnits="userSpaceOnUse" id="c" x1="4.411"
@@ -369,7 +404,7 @@ const SideBarLeft  = ({ profile }) => {
                     </div>
                     <div className="sidebar-left-playlists" style={getMenu2Style()}>
                         <div className="sidebar-left-playlists-list">
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "1")} onMouseLeave={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/0476d014bcfd4716611c1c59f8f7611b.jpg`}
@@ -381,7 +416,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "1")} onMouseLeave={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/173558115_790424168538166_2849205650520624862_n.jpg`}
@@ -393,7 +428,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "1")} onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/135060407_240088560971081_6826181255437109694_n.jpg`}
@@ -406,7 +441,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Shoort", "1")} onMouseLeave={() => handleNoteNameChange("Shoort", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/317227331_166200936047228_5967614100849288512_n.jpg`}
@@ -418,7 +453,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Playlist Name", "1")} onMouseLeave={() => handleNoteNameChange("Playlist Name", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/347504210_2210436199143577_4984331646709175478_n.jpg`}
@@ -431,7 +466,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("A Longer Playlist Nameee", "1")} onMouseLeave={() => handleNoteNameChange("A Longer Playlist Nameee", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/155839804_115429443928743_8673419221365525306_n.jpg`}
@@ -445,7 +480,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "1")} onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/118809709_249357199583197_8804687060382916519_n.jpg`}
@@ -458,7 +493,7 @@ const SideBarLeft  = ({ profile }) => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}>
+                            <NavLink className="sidebar-left-playlists-list-item" style={getPlaylistStyle()} onMouseEnter={() => handleNoteNameChange("Shoort", "1")} onMouseLeave={() => handleNoteNameChange("Shoort", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/100507160_277101373474665_8527359069873583537_n.jpg`}

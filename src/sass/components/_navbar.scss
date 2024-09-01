@@ -357,6 +357,21 @@
       }
     }
   }
+  &-note {
+    top: 0; left: 0;
+    margin: 1em 0 0 2em;
+    padding: 1.5em 2em;
+    position: fixed;
+    background-color: hslac($black, 1);
+    border-radius: 1em;
+    pointer-events: none;
+    opacity: 0;
+    transition: all .3s cubic-bezier($transition-main, 1);
+    z-index: 10000;
+    &-title {
+      white-space: nowrap;
+    }
+  }
 }
 .sidebar-left {
   max-width: 40em;
@@ -546,7 +561,6 @@
         border: 1px solid hslac($white, 0);
         text-decoration: none;
         gap: 1em;
-        overflow: hidden;
         transition: all .3s cubic-bezier($transition-main, 1);
         &:hover {
           border: 1px solid hslac($white, .2);

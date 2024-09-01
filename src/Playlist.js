@@ -75,7 +75,7 @@ function Playlist() {
 
                 // Apply the vibrant color directly as the background with the adjusted alpha
                 const colorString = `rgba(${vibrantColor.join(',')}, ${alpha})`;
-                const gradient = `linear-gradient(180deg, rgba(${vibrantColor.join(',')}, ${alpha - .1}) 0, rgba(${vibrantColor.join(',')}, 0) 35em)`;
+                const gradient = `linear-gradient(180deg, rgba(${vibrantColor.join(',')}, ${alpha - .05}) 0, rgba(${vibrantColor.join(',')}, 0) 35em)`;
 
                 document.querySelector(".playlist-header").style.background = colorString;
                 document.querySelector(".playlist-content").style.background = gradient;
@@ -168,6 +168,9 @@ function Playlist() {
                             </div>
                         </header>
                         <div className="playlist-content">
+                            <div className="playlist-content-bar">
+
+                            </div>
                             <section className="videos">
                                 <div className="videos-inner videos-inner-4 view-width">
                                     <VideosSec/>
