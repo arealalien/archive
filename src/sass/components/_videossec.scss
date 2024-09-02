@@ -116,12 +116,10 @@
         transition: all .25s cubic-bezier($transition-smooth, 1);
         z-index: 5;
         &-line {
-          top: -2.1em; left: 2em;
-          padding: 4px;
-          width: calc(100% - 4em);
+          bottom: 0; left: 0;
+          width: 100%;
           position: absolute;
           border-radius: 5em;
-          backdrop-filter: blur(1.5rem) brightness(70%);
           opacity: 0;
           transition: all .25s cubic-bezier($transition-smooth, 1);
           z-index: 4;

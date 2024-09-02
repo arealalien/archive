@@ -71,7 +71,7 @@ const VideosSec = ({ videoCreator, search }) => {
         return Math.floor(views / 1000000000) + ' bill.';
     }
 
-    const handleMouseEnter = async (e) => {
+    const handleMouseEnter = (e) => {
         const videoContainer = e.target.closest('.videos-inner-item');
         if (!videoContainer) return;
 
@@ -80,40 +80,40 @@ const VideosSec = ({ videoCreator, search }) => {
         const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
         if (!video || !thumbnail || !progressBar) return;
 
-        // Hide thumbnail
         thumbnail.style.opacity = "0";
-        video.preload = "metadata";
+        video.preload = "metadata"; // Preload the video metadata
 
         const positions = [0.20, 0.40, 0.60, 0.80];
         let currentIndex = 0;
 
-        // Cancel any existing animation frame
         if (video.loopRequest) {
             cancelAnimationFrame(video.loopRequest);
             video.loopRequest = null;
         }
 
-        // Update video time to specific positions
         const updateTime = () => {
-            if (!video.loopRequest) return; // Stop if loopRequest has been cleared
-
             video.currentTime = video.duration * positions[currentIndex];
             currentIndex = (currentIndex + 1) % positions.length;
             const percent = (video.currentTime / video.duration) * 100;
             progressBar.style.width = `${percent}%`;
 
             video.loopRequest = requestAnimationFrame(() => {
-                setTimeout(updateTime, 3000); // 3-second interval
+                setTimeout(updateTime, 3000);
             });
         };
 
-        try {
-            // Ensure video is ready to play
-            await video.play();
-            // Start updating video time
-            updateTime();
-        } catch (err) {
-            console.error('Video failed to play:', err);
+        const onMetadataLoaded = () => {
+            video.play().then(() => {
+                updateTime();
+            }).catch(err => {
+                console.error('Video failed to play:', err);
+            });
+        };
+
+        if (video.readyState >= 1) {
+            onMetadataLoaded();
+        } else {
+            video.addEventListener('loadedmetadata', onMetadataLoaded, { once: true });
         }
     };
 
@@ -123,9 +123,9 @@ const VideosSec = ({ videoCreator, search }) => {
 
         const video = videoContainer.querySelector('.videos-inner-item-video-video');
         const thumbnail = videoContainer.querySelector('.videos-inner-item-video-background');
-        if (!video || !thumbnail) return;
+        const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
+        if (!video || !thumbnail || !progressBar) return;
 
-        // Stop the ongoing loop and reset
         if (video.loopRequest) {
             cancelAnimationFrame(video.loopRequest);
             video.loopRequest = null;
@@ -133,8 +133,10 @@ const VideosSec = ({ videoCreator, search }) => {
 
         video.pause();
         video.currentTime = 0;
-        thumbnail.style.opacity = "1"; // Show thumbnail
+        progressBar.style.width = "0%";
+        thumbnail.style.opacity = "1";
     };
+
 
 
     return (
@@ -149,6 +151,11 @@ const VideosSec = ({ videoCreator, search }) => {
                                 <div className="videos-inner-item-video-info-time-shadow"></div>
                             </div>
                         </div>
+                        <div className="videos-inner-item-info-line">
+                            <div className="videos-inner-item-info-line-progress">
+                                <div className="videos-inner-item-info-line-progress-glow"></div>
+                            </div>
+                        </div>
                         <div to={`/video?view=` + video.videoUrl.split('.')[0]}
                              className="videos-inner-item-video-overlay"></div>
                         <video
@@ -158,14 +165,11 @@ const VideosSec = ({ videoCreator, search }) => {
                             loop
                             preload="none"
                         />
-                        <img className="videos-inner-item-video-background" src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"} alt={video.title} />
+                        <img className="videos-inner-item-video-background"
+                             src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"}
+                             alt={video.title}/>
                     </NavLink>
                     <div className="videos-inner-item-info">
-                        <div className="videos-inner-item-info-line">
-                            <div className="videos-inner-item-info-line-progress">
-                                <div className="videos-inner-item-info-line-progress-glow"></div>
-                            </div>
-                        </div>
                         <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-bottom-info-left">
                             <img className="videos-inner-item-info-left-image"
                                  src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""/>

@@ -16,12 +16,6 @@ const SideBarLeft  = () => {
     const isResizing = useRef(false);
     const prevWidth = useRef(sidebarWidth);
 
-    const dragRef = useRef(null);
-    const dragContainerRef = useRef(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [initialX, setInitialX] = useState(0);
-    const [scrollStartX, setScrollStartX] = useState(0);
-
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
@@ -168,37 +162,6 @@ const SideBarLeft  = () => {
         };
     }, [handleMouseMoveNote]);
 
-    const handleDragMouseDown = useCallback((e) => {
-        if (dragRef.current) {
-            setIsDragging(true);
-            setInitialX(e.clientX);
-            setScrollStartX(dragRef.current.offsetLeft);
-        }
-    }, []);
-
-    const handleDragMouseMove = useCallback((e) => {
-        if (isDragging && dragRef.current && dragContainerRef.current) {
-            const scale = 0.5;
-            const deltaX = (e.clientX - initialX) * scale;
-            let newLeft = scrollStartX - deltaX;
-
-            const containerWidth = dragContainerRef.current.clientWidth;
-            const dragWidth = dragRef.current.clientWidth;
-
-            if (newLeft < 0) {
-                newLeft = 0;
-            } else if (newLeft > containerWidth - dragWidth) {
-                newLeft = containerWidth - dragWidth;
-            }
-
-            dragRef.current.style.transform = `translateX(${newLeft}px)`;
-        }
-    }, [isDragging, initialX, scrollStartX]);
-
-    const handleDragMouseUp = useCallback(() => {
-        setIsDragging(false);
-    }, []);
-
     return (
         <div className="sidebar sidebarleft">
             <div id="sidebarleft-resize" className="sidebarleft-resize" onMouseDown={handleMouseDown}>
@@ -270,32 +233,20 @@ const SideBarLeft  = () => {
                                 </div>
                             </div>
                             <div className="sidebar-left-island-inner-bottom" style={getDisplayStyle2()}>
-                                <div className="sidebar-left-island-inner-bottom-xbutton">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <title>Close Square</title>
-                                        <g id="close-square" stroke="none" stroke-width="1" fill="none"
-                                           fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                            <g id="close-square-inner" transform="translate(2.000000, 2.000000)"
-                                               stroke="#000000" stroke-width="1.5">
-                                                <line x1="12.3941" y1="7.5948" x2="7.6021" y2="12.3868" id="Stroke-1"/>
-                                                <line x1="12.3999" y1="12.3931" x2="7.5999" y2="7.5931" id="Stroke-2"/>
-                                                <path
-                                                    d="M0.75,10.0001 C0.75,16.9371 3.063,19.2501 10,19.2501 C16.937,19.2501 19.25,16.9371 19.25,10.0001 C19.25,3.0631 16.937,0.7501 10,0.7501 C3.063,0.7501 0.75,3.0631 0.75,10.0001 Z"
-                                                    id="Stroke-3"/>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div className="sidebar-left-island-inner-bottom-scrollable" ref={dragContainerRef}
-                                     onMouseMove={handleDragMouseMove}
-                                     onMouseUp={handleDragMouseUp}
-                                     onMouseLeave={handleDragMouseUp}>
+                                <div className="sidebar-left-island-inner-bottom-scrollable">
                                     <div className="sidebar-left-island-inner-bottom-scrollable-overlay"></div>
-                                    <div className="sidebar-left-island-inner-bottom-scrollable-drag" ref={dragRef}
-                                         onMouseDown={handleDragMouseDown}>
+                                    <div className="sidebar-left-island-inner-bottom-scrollable-drag">
                                         <div className="sidebar-left-island-inner-bottom-button active">
                                             <p className="sidebar-left-island-inner-bottom-button-title">Playlists</p>
+                                        </div>
+                                        <div className="sidebar-left-island-inner-bottom-button">
+                                            <p className="sidebar-left-island-inner-bottom-button-title">By you</p>
+                                        </div>
+                                        <div className="sidebar-left-island-inner-bottom-button">
+                                            <p className="sidebar-left-island-inner-bottom-button-title">Saved</p>
+                                        </div>
+                                        <div className="sidebar-left-island-inner-bottom-button">
+                                            <p className="sidebar-left-island-inner-bottom-button-title">By Archive</p>
                                         </div>
                                         <div className="sidebar-left-island-inner-bottom-button">
                                             <p className="sidebar-left-island-inner-bottom-button-title">By you</p>
