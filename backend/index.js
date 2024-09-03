@@ -46,61 +46,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const videoStorage = multer.diskStorage({
+const tempStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const userId = req.userId;
-        const videoId = uuidv4();
-        const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
-        if (!fs.existsSync(videoFolder)) {
-            fs.mkdirSync(videoFolder, { recursive: true });
+        const tempFolder = path.join(__dirname, '..', 'temp');
+        if (!fs.existsSync(tempFolder)) {
+            fs.mkdirSync(tempFolder, { recursive: true });
         }
-        req.videoId = videoId;
-        cb(null, videoFolder);
+        cb(null, tempFolder);
     },
     filename: (req, file, cb) => {
-        const fileName = `${req.videoId}${path.extname(file.originalname)}`;
-        cb(null, fileName);
+        cb(null, file.originalname);
     }
 });
 
-const videoUpload = multer({
-    storage: videoStorage,
-    fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(mp4|avi|mov)$/)) {
-            return cb(new Error('Only video files are allowed!'), false);
-        }
-        cb(null, true);
-    }
-});
-
-const thumbnailStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const userId = req.userId;
-        const videoUrl = req.body.videoUrl;
-        console.log(req.videoUrl);
-        if (!videoUrl) {
-            return cb(new Error(videoUrl + 'videoId is missing'));
-        }
-        const thumbnailFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoUrl);
-        if (!fs.existsSync(thumbnailFolder)) {
-            fs.mkdirSync(thumbnailFolder, { recursive: true });
-        }
-        cb(null, thumbnailFolder);
-    },
-    filename: (req, file, cb) => {
-        cb(null, 'thumbnail-original.jpg'); // Save the original as well
-    }
-});
-
-const thumbnailUpload = multer({
-    storage: thumbnailStorage,
-    fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-            return cb(new Error('Only image files are allowed!'), false);
-        }
-        cb(null, true);
-    }
-});
+const tempUpload = multer({ storage: tempStorage });
 
 app.post('/signup', async (req, res) => {
     const { email, password, confirmPassword, name, displayName } = req.body;
@@ -247,20 +206,32 @@ const handleFileUpload = async (req, res) => {
 app.post('/upload/profile-picture', validateToken, upload.single('profilePicture'), handleFileUpload);
 app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpload);
 
-app.post('/upload/video', validateToken, videoUpload.single('video'), async (req, res) => {
+app.post('/upload/video', validateToken, tempUpload.single('video'), async (req, res) => {
     const { title, description, duration } = req.body;
     const videoFile = req.file;
+    const videoId = uuidv4(); // Generate a unique video ID
+    const userId = req.userId;
 
     try {
         if (!videoFile) {
             throw new Error('No video file uploaded');
         }
 
-        const videoUrl = path.join(videoFile.filename);
+        const videoUrl = videoId + path.extname(videoFile.originalname);
+        const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
 
+        // Ensure the video folder exists
+        if (!fs.existsSync(videoFolder)) {
+            fs.mkdirSync(videoFolder, { recursive: true });
+        }
+
+        // Move video to the final destination
+        fs.renameSync(videoFile.path, path.join(videoFolder, videoUrl));
+
+        // Save video metadata to the database
         const video = await prisma.video.create({
             data: {
-                creatorId: req.userId,
+                creatorId: userId,
                 videoUrl,
                 title,
                 description,
@@ -268,33 +239,48 @@ app.post('/upload/video', validateToken, videoUpload.single('video'), async (req
                 duration: parseFloat(duration),
             },
         });
-        res.json({ message: 'Video uploaded successfully!', videoId: video.id, videoUrl }); // Include videoUrl
+
+        // Send videoId to use for thumbnail upload
+        res.json({ message: 'Video uploaded successfully!', videoId, videoUrl });
     } catch (error) {
         console.error('Error saving video metadata:', error);
         res.status(500).json({ error: 'Failed to save video metadata', details: error.message });
     }
 });
 
-app.post('/upload/thumbnail', validateToken, thumbnailUpload.single('image'), async (req, res) => {
-    const imageFile = req.file;
-    const videoUrl = req.body.videoUrl;
-    const userDir = path.join(__dirname, '..', 'public', 'users', req.userId.toString(), 'videos', videoUrl);
-    const originalFilePath = imageFile.path;
-    const jpegFilePath = path.join(userDir, 'thumbnail.jpg');
+app.post('/upload/thumbnail', validateToken, tempUpload.single('thumbnail'), async (req, res) => {
+    const thumbnailFile = req.file;
+    const { videoId } = req.body; // Get videoId from request body
+    const userId = req.userId;
 
-    console.log(videoUrl);
     try {
-        if (!imageFile) {
+        if (!thumbnailFile) {
             throw new Error('No thumbnail file uploaded');
         }
+
+        const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
+        if (!fs.existsSync(videoFolder)) {
+            throw new Error('Video folder does not exist');
+        }
+
+        const originalFilePath = thumbnailFile.path;
+        const jpegFilePath = path.join(videoFolder, 'thumbnail.jpg');
 
         // Convert to JPEG using sharp
         await sharp(originalFilePath)
             .jpeg()
             .toFile(jpegFilePath);
 
-        // Ensure the file is no longer being used before unlinking
-        unlinkFile(originalFilePath);
+        // Remove the original thumbnail file
+        const filePath = path.resolve(__dirname, '../', 'temp', 'thumbnail.jpg');
+
+        try {
+            fs.accessSync(filePath, fs.constants.F_OK);
+            fs.unlinkSync(filePath);
+            console.log('File removed successfully');
+        } catch (err) {
+            console.error('Error:', err);
+        }
 
         res.status(200).json({ message: 'Thumbnail uploaded successfully!', filePath: jpegFilePath });
     } catch (error) {

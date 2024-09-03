@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import { NumericFormat } from "react-number-format";
 import ScrollBar from './ScrollBar';
 
-
 const SideBarRight = ({
                           isMenuVisible,
                           isVideoVisible,

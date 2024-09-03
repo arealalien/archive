@@ -1,9 +1,11 @@
 import React, {useRef, useState} from "react";
+import { useNavigate } from 'react-router-dom';
 import FileUpload from './FileUpload';
 import ImageUpload from './ImageUpload';
 import axios from 'axios';
 
 const UploadForm = () => {
+    const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [videoFile, setVideoFile] = useState(null);
@@ -97,12 +99,24 @@ const UploadForm = () => {
         setSelectedThumbnail(thumbnail);
     };
 
+    const dataURLToBlob = (dataURL) => {
+        const [header, data] = dataURL.split(',');
+        const mime = header.split(':')[1].split(';')[0];
+        const binary = atob(data);
+        const array = [];
+        for (let i = 0; i < binary.length; i++) {
+            array.push(binary.charCodeAt(i));
+        }
+        return new Blob([new Uint8Array(array)], { type: mime });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const token = localStorage.getItem('token');
 
+            // Step 1: Upload video
             const videoFormData = new FormData();
             videoFormData.append('video', videoFile);
             videoFormData.append('title', title);
@@ -116,41 +130,47 @@ const UploadForm = () => {
                 },
             });
 
-            const { videoUrl } = videoResponse.data;
+            const { videoId } = videoResponse.data;
 
-            // Ensure videoUrl is not undefined
-            if (!videoUrl) {
-                throw new Error('Video URL is missing in the response');
+            // Ensure videoId is not undefined
+            if (!videoId) {
+                throw new Error('Video ID is missing in the response');
             }
 
-            // Upload thumbnail image
+            // Step 2: Upload thumbnail
             const imageFormData = new FormData();
             if (selectedThumbnail === customThumbnail) {
-                imageFormData.append('image', imageFile);
+                imageFormData.append('thumbnail', imageFile);
             } else {
-                const response = await fetch(selectedThumbnail);
-                const blob = await response.blob();
-                imageFormData.append('image', new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' }));
+                let blob;
+                if (selectedThumbnail.startsWith('data:image')) {
+                    blob = dataURLToBlob(selectedThumbnail);
+                } else {
+                    const response = await fetch(selectedThumbnail);
+                    blob = await response.blob();
+                }
+                imageFormData.append('thumbnail', new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' }));
             }
-            imageFormData.append('videoUrl', videoUrl.split('.')[0]); // Pass the videoUrl to the thumbnail upload
+            imageFormData.append('videoId', videoId); // Pass the videoId to the thumbnail upload
 
             await axios.post('http://localhost:5000/upload/thumbnail', imageFormData, {
-                videoUrl: videoUrl,
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`, // Add the Authorization header
+                    'Authorization': `Bearer ${token}`,
                 },
             });
 
-            alert('Video metadata and thumbnail saved successfully!');
+            alert('Video and thumbnail saved successfully!');
+            navigate('/');
             setTitle('');
             setDescription('');
             setVideoFile(null);
             setImageFile(null);
             setShowDetailsForm(false);
         } catch (error) {
-            console.error('Error saving video metadata:', error.response ? error.response.data : error.message); // More detailed error logging
-            alert('Failed to save video metadata and thumbnail.');
+            console.error('Error saving video and thumbnail:', error.response ? error.response.data : error.message);
+            alert('Failed to save video and thumbnail.');
+            navigate('/');
         }
     };
 
