@@ -12,8 +12,8 @@ const ProfileSec  = ({ profileName, page }) => {
                 return (
                     <>
                         <div>videos</div>
-                        <div className="profile-inner-content-right videos-inner videos-inner-4">
-                            <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
+                        <div className="profile-inner-content-right">
+                            <div className="profile-inner-content-right-videos videos-inner-4 videos-inner">
                                 <VideosSec videoCreator={profileName}/>
                             </div>
                         </div>
@@ -30,8 +30,8 @@ const ProfileSec  = ({ profileName, page }) => {
             default:
                 return (
                     <>
-                        <div className="profile-inner-content-right videos-inner videos-inner-4">
-                            <div className="profile-inner-content-right-videos videos-inner videos-inner-4">
+                        <div className="profile-inner-content-right">
+                            <div className="profile-inner-content-right-videos videos-inner-4 videos-inner">
                                 <VideosSec videoCreator={profileName}/>
                             </div>
                         </div>

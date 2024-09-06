@@ -44,16 +44,10 @@
       gap: 6em;
 
       &-right {
+        @include flex-col();
+
         &-videos {
-          row-gap: 4em;
-          column-gap: 2em;
-          grid-template-columns: repeat(auto-fit, minmax(28em, 1fr));
-          @media (max-width: $layout-breakpoint-msmall) {
-            gap: 1em;
-          }
-          @media (max-width: $layout-breakpoint-xsmall) {
-            gap: 2em;
-          }
+          width: 100%;
         }
       }
     }
