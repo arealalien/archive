@@ -26,7 +26,7 @@ const SideBarLeft  = () => {
         if (isResizing.current) {
             e.preventDefault(); // Prevent text selection or other default actions
             const sidebarRect = sidebarRef.current.getBoundingClientRect();
-            const newWidth = Math.max(8, Math.min(40, ((e.clientX - sidebarRect.left) / window.innerWidth) * 190));
+            const newWidth = Math.max(8, Math.min(45, ((e.clientX - sidebarRect.left) / window.innerWidth) * 190));
 
             // Check if newWidth crosses the thresholds
             if ((prevWidth.current >= 25 && newWidth < 25) || (prevWidth.current <= 8 && newWidth > 8) || (newWidth >= 25 || newWidth <= 8)) {
@@ -240,16 +240,7 @@ const SideBarLeft  = () => {
                                             <p className="sidebar-left-island-inner-bottom-button-title">Playlists</p>
                                         </div>
                                         <div className="sidebar-left-island-inner-bottom-button">
-                                            <p className="sidebar-left-island-inner-bottom-button-title">By you</p>
-                                        </div>
-                                        <div className="sidebar-left-island-inner-bottom-button">
-                                            <p className="sidebar-left-island-inner-bottom-button-title">Saved</p>
-                                        </div>
-                                        <div className="sidebar-left-island-inner-bottom-button">
-                                            <p className="sidebar-left-island-inner-bottom-button-title">By Archive</p>
-                                        </div>
-                                        <div className="sidebar-left-island-inner-bottom-button">
-                                            <p className="sidebar-left-island-inner-bottom-button-title">By you</p>
+                                            <p className="sidebar-left-island-inner-bottom-button-title">Subscriptions</p>
                                         </div>
                                         <div className="sidebar-left-island-inner-bottom-button">
                                             <p className="sidebar-left-island-inner-bottom-button-title">Saved</p>
@@ -280,11 +271,11 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item"
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item"
                                      style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
+                            <div className="sidebar-left-playlists-list-item-left">
                                     <img className="sidebar-left-playlists-list-item-left-image"
                                          src={process.env.PUBLIC_URL + `/images/gallery/173558115_790424168538166_2849205650520624862_n.jpg`}
                                          alt=""/>
@@ -296,7 +287,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item"
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item"
                                      style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "@username", "0")}>
@@ -312,7 +303,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Shoort", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Shoort", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
@@ -326,7 +317,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Playlist Name", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Playlist Name", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
@@ -340,7 +331,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("A Longer Playlist Nameee", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("A Longer Playlist Nameee", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
@@ -356,7 +347,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
@@ -371,7 +362,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Shoort", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Shoort", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
@@ -385,7 +376,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Mhmmmm 🩰", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Mhmmmm 🩰", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
@@ -399,7 +390,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Hmmm kinda shoort", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Hmmm kinda shoort", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">
@@ -413,7 +404,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
                                 </div>
                             </NavLink>
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("Longer than short", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("Longer than short", "@username", "0")}>
                                 <div className="sidebar-left-playlists-list-item-left">

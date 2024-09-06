@@ -25,6 +25,9 @@ function Discovery() {
             <div className="page">
                 <SideBarLeft/>
                 <ScrollBar className="page-center">
+                    <div>
+                        <p>Discovery - playlists</p>
+                    </div>
                     <section className="videos">
                         <div className="videos-inner videos-inner-4 view-width">
                             <VideosSec/>

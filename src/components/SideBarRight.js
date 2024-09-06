@@ -226,7 +226,7 @@ const SideBarRight = ({
                                 </div>
                                 <div className="sidebar-right-menu-inner-center">
                                     <div className="sidebar-right-menu-inner-center-grid">
-                                        <NavLink to="/upload" className="blackbutton">
+                                        <NavLink to="/upload" className="darkbutton">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px"
                                                  viewBox="0 0 24 24" version="1.1">
@@ -250,7 +250,7 @@ const SideBarRight = ({
                                             </svg>
                                             <span>Upload</span>
                                         </NavLink>
-                                        <NavLink to="/studio" className="blackbutton">
+                                        <NavLink to="/studio" className="darkbutton">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px"
                                                  viewBox="0 0 24 24" version="1.1">
@@ -271,7 +271,7 @@ const SideBarRight = ({
                                             </svg>
                                             <span>Your Studio</span>
                                         </NavLink>
-                                        <NavLink to="/settings/account" className="blackbutton">
+                                        <NavLink to="/settings/account" className="darkbutton">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px"
                                                  viewBox="0 0 24 24" version="1.1">

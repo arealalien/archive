@@ -40,15 +40,15 @@
         aspect-ratio: 1 / 1;
         position: relative;
         text-decoration: none;
-        background-color: hslac($black, 0);
-        border: 1px solid hslac($white, .1);
+        background-color: hslac($background-lightgray, 1);
+        border: 1px solid hslac($white, 0);
         border-radius: 50%;
         gap: 1em;
         transition: all .3s cubic-bezier($transition-main, 1);
         @include flex-center();
 
         &:hover {
-          border: 1px solid hslac($white, .3);
+          border: 1px solid hslac($white, .1);
         }
         svg {
           height: 2em;
@@ -80,8 +80,8 @@
           color: hslac($white, 1);
           font-size: $paragraph-large;
           font-weight: 300;
-          background-color: hslac($black, 0);
-          border: 1px solid hslac($white, .1);
+          background-color: hslac($background-lightgray, 1);
+          border: 1px solid hslac($white, 0);
           border-radius: 5em;
           transition: all .3s cubic-bezier($transition-main, 1);
           z-index: 10005;
@@ -90,11 +90,11 @@
             color: hslac($white, .5);
           }
           &:focus {
-            border: 1px solid hslac($white, .3);
+            border: 1px solid hslac($white, .1);
             outline: none;
           }
           &:hover {
-            border: 1px solid hslac($white, .3);
+            border: 1px solid hslac($white, .1);
           }
         }
       }
@@ -361,8 +361,7 @@
           }
           &-overlay {
             width: 100%; height: 100%;
-            background: linear-gradient(20deg, hsl(0, 0%, 0%, .3) 0, hsl(0, 0%, 0%, .1) 100%);
-            filter: brightness(80%);
+            background: linear-gradient(20deg, hslac($black, .3) 0, hslac($black, .1) 100%);
             position: absolute;
             object-fit: cover;
             z-index: 3;
@@ -370,8 +369,7 @@
           &-background {
             width: 100%; height: 100%;
             position: absolute;
-            filter: blur(10em);
-            transform: scale(2, 2);
+            filter: brightness(50%);
             object-fit: cover;
           }
           &-inner {
@@ -426,7 +424,7 @@
           grid-template-columns: repeat(1, 1fr);
           gap: 1em;
 
-          .blackbutton, .mainbutton {
+          .darkbutton, .mainbutton {
             padding: 1.25em 2em;
             font-size: $paragraph;
             gap: .75em;
@@ -439,7 +437,7 @@
               }
             }
           }
-          .blackbutton {
+          .darkbutton {
             @include flex-left();
           }
           .mainbutton {
@@ -507,7 +505,7 @@
   }
 }
 .sidebar-left {
-  max-width: 40em;
+  max-width: 45em;
   min-width: 5em;
   @include flex-col-start-center();
 
@@ -579,7 +577,7 @@
         @include flex-space-bet();
         &-left {
           padding: 1em 1.5em;
-          background-color: hslac($background-gray, 1);
+          background-color: hslac($background-gray, 0);
           border-radius: 5em;
           gap: 1em;
           @include flex-left();
@@ -687,6 +685,10 @@
       gap: 1em;
       @include flex-col-start-center();
 
+      .active {
+        background-color: hslac($background-lightgray, 1);
+        border: 1px solid hslac($white, .1);
+      }
       &-item {
         padding: .8em;
         width: 100%;
@@ -701,7 +703,7 @@
         gap: 1em;
         transition: all .3s cubic-bezier($transition-main, 1);
         &:hover {
-          border: 1px solid hslac($white, .2);
+          border: 1px solid hslac($white, .1);
         }
         &-left {
           width: 100%;
