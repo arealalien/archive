@@ -284,6 +284,10 @@ const VideoSec  = () => {
             if (e.key === "f" || e.key === "F") {
                 toggleFullScreen();
             }
+            if(e.key === " ") {
+                e.preventDefault();
+                togglePlayPause();
+            }
         };
 
         window.addEventListener("keydown", handleKeyDown);

@@ -283,7 +283,7 @@
     @include flex-center();
 
     &-inner {
-      padding: 1em 2.5em 2em 2em;
+      padding: 1em 3em 2em 2.5em;
       width: 100%;
       position: relative;
       gap: .5em;
@@ -331,6 +331,7 @@
           padding: .5em;
           background-color: hslac($black, 0);
           border: 1px solid hslac($white, .1);
+          backdrop-filter: blur(2em) brightness(80%);
           border-radius: 50%;
           transition: all .3s cubic-bezier($transition-main, 1);
           svg {
@@ -464,7 +465,7 @@
         @include flex-center();
 
         &-thumbnail {
-          top: -10em;
+          top: -11em;
           position: absolute;
           pointer-events: none;
           opacity: 0;
@@ -484,7 +485,7 @@
               top: .75em;
               width: 100%; height: 100%;
               position: absolute;
-              background-color: hslac($black, .55);
+              background-color: hslac($black, .15);
               transform: scale(.98, .98);
               filter: blur(2rem);
               z-index: 15;

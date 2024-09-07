@@ -160,7 +160,7 @@ const UploadForm = () => {
                 },
             });
 
-           navigate('/');
+            navigate('/');
             setTitle('');
             setDescription('');
             setVideoFile(null);
