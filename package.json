@@ -17,6 +17,7 @@
     "react-player": "^2.16.0",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "screenfull": "^6.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

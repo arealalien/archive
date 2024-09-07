@@ -135,6 +135,9 @@ body {
   grid-template-columns: auto 1fr auto;
   border-radius: 2em;
   overflow: hidden;
+  @media (max-width: $layout-breakpoint-small) {
+    grid-template-columns: 1fr;
+  }
   &-center {
     position: relative;
     background-color: hslac($background-gray, 1);

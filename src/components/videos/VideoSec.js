@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
 import ReactPlayer from "react-player";
+import screenfull from "screenfull";
 
 class Processor {
     constructor(videoElement, canvas) {
@@ -34,6 +35,7 @@ const VideoSec  = () => {
     const [videoDetails, setVideoDetails] = useState(null);
     const [error, setError] = useState('');
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isScrubbing, setIsScrubbing] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(() => {
@@ -201,17 +203,20 @@ const VideoSec  = () => {
     }, [volume]);
 
     const handleProgress = (state) => {
-        const currentTime = state.playedSeconds;
-        setCurrentTime(currentTime);
-        setPlayed(state.played);
+        if (!isScrubbing) {
+            setCurrentTime(state.playedSeconds);
+            setPlayed(state.played);
+        }
     };
 
     const handleDuration = (duration) => {
         setDuration(duration);
     };
 
+    // Scrubbing (seeking) events:
     const handleSeekMouseDown = () => {
-        setIsPlaying(false); // Pause video while seeking
+        setIsScrubbing(true);
+        setIsPlaying(false);
     };
 
     const handleSeekChange = (event) => {
@@ -221,19 +226,30 @@ const VideoSec  = () => {
     };
 
     const handleSeekMouseUp = (e) => {
-        const newPosition = parseFloat(e.target.value);
-        playerRef.current.seekTo(newPosition);
+        setIsScrubbing(false);
         setIsPlaying(true);
     };
 
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullScreen(screenfull.isFullscreen);
+        };
+
+        if (screenfull.isEnabled) {
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+        }
+
+        return () => {
+            if (screenfull.isEnabled) {
+                document.removeEventListener('fullscreenchange', handleFullscreenChange);
+            }
+        };
+    }, []);
+
     const toggleFullScreen = () => {
-        const videoContainer = playerRef.current.wrapper;
-        if (!document.fullscreenElement) {
-            videoContainer.requestFullscreen();
-            setIsFullScreen(true);
-        } else {
-            document.exitFullscreen();
-            setIsFullScreen(false);
+        if (screenfull.isEnabled) {
+            const videoContainer = playerRef.current.wrapper;
+            screenfull.toggle(videoContainer);
         }
     };
 
