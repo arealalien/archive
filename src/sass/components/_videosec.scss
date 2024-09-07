@@ -618,3 +618,134 @@
 #canvas.fullscreen {
   display: none;
 }
+
+.background-video {
+  top: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: absolute;
+  filter: blur(15rem);
+  transform: scale(1.5, 1.5);
+  opacity: .5;
+}
+.videoplayer {
+  width: 100%; height: 100%;
+  border-radius: 2em;
+  overflow: hidden;
+
+  .video-js .vjs-control-bar {
+    padding: 0 2.5em 0 2.25em;
+    height: 6em !important;
+    gap: 1em;
+    display: grid;
+    grid-template-columns: auto auto auto auto 1fr auto auto auto;
+    background: linear-gradient(0, hslac($black, .75) 0, hslac($black, 0) 100%) !important;
+  }
+  .vjs-time-divider {
+    display: flex !important;
+    span {
+      line-height: 3.6;
+    }
+  }
+  .vjs-slider {
+    background: hslac($white, .1) !important;
+    border-radius: 5em;
+    &:focus {
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+  }
+  .vjs-play-progress {
+    background: hslac($primary, 1) !important;
+    border-radius: 5em;
+    &:before {
+      color: hslac($primary, 1) !important;
+    }
+  }
+  .vjs-load-progress {
+    background: hslac($white, .1) !important;
+  }
+  .vjs-load-progress div {
+    background: hslac($white, .1) !important;
+  }
+  .vjs-volume-panel {
+    transition: width .15s cubic-bezier($transition-smooth, 1) !important;
+  }
+  .vjs-volume-panel .vjs-volume-control.vjs-volume-horizontal {
+    transition: visibility .15s cubic-bezier($transition-smooth, 1), opacity .15s cubic-bezier($transition-smooth, 1), height .15s cubic-bezier($transition-smooth, 1), width .15s cubic-bezier($transition-smooth, 1), left .15s cubic-bezier($transition-smooth, 1), top .15s cubic-bezier($transition-smooth, 1) !important;
+  }
+  .vjs-volume-level {
+    border-radius: 5em;
+  }
+  .vjs-control {
+    padding: 0 !important;
+    height: 5em !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    &:focus {
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+  }
+  .vjs-progress-control {
+    left: 1.5em; top: -2em;
+    height: 2em !important;
+    width: calc(100% - 3em) !important;
+    position: absolute !important;
+  }
+  .vjs-slider-bar .vjs-time-tooltip {
+    display: none !important;
+  }
+  .vjs-time-tooltip {
+    top: -3em !important;
+    background-color: hslac($black, 0) !important;
+  }
+  .vjs-icon-placeholder:before {
+    line-height: 2 !important;
+  }
+  .vjs-playback-rate-value {
+    line-height: 3.3 !important;
+  }
+  .vjs-menu {
+    left: -.8em !important;
+    margin-bottom: 2.5em !important;
+    width: auto !important;
+  }
+  .vjs-menu-content {
+    width: auto !important;
+    background-color: hslac($black, 0) !important;
+    backdrop-filter: blur(2em) brightness(80%);
+    border-radius: 1em;
+  }
+  .vjs-menu-item {
+    padding: .5em 1em !important;
+    &:hover {
+      background-color: hslac($black, .15) !important;
+    }
+  }
+  .vjs-menu li.vjs-selected, .vjs-menu li.vjs-selected:focus, .vjs-menu li.vjs-selected:hover, .js-focus-visible .vjs-menu li.vjs-selected:hover {
+    background-color: hslac($white, 1) !important;
+    color: hslac($black, .7) !important;
+  }
+  .vjs-loading-spinner {
+    border: 0.3em solid hslac($black, .1) !important;
+    &:before {
+      border-top-color: hslac($white, 0) !important;
+      animation: vjs-spinner-spin 1.1s cubic-bezier($transition-main 0.8) infinite, vjs-spinner-fade 1.1s linear infinite !important;
+    }
+    &:after {
+      border-top-color: hslac($white, .5) !important;
+      animation: vjs-spinner-spin 1.1s cubic-bezier($transition-main 0.8) infinite, vjs-spinner-fade 1.1s linear infinite !important;
+    }
+  }
+  .vjs-big-play-button {
+    width: 1.5em !important; height: 1.5em !important;
+    display: none !important;
+    border: 1px solid hslac($white, .1) !important;
+    background-color: hslac($black, 0) !important;
+    backdrop-filter: blur(2em) brightness(80%);
+    border-radius: 1em !important;
+    transition: all 0.4s;
+  }
+}
