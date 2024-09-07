@@ -279,15 +279,13 @@ app.post('/upload/thumbnail', validateToken, tempUpload.single('thumbnail'), asy
 
         // Asynchronously remove the original thumbnail file from temp storage
         console.log('Attempting to remove file:', originalFilePath);
-        setTimeout(() => {
-            fs.unlink(originalFilePath, (err) => {
-                if (err) {
-                    console.error('Error removing file:', err);
-                } else {
-                    console.log('File removed successfully');
-                }
-            });
-        }, 100);
+        fs.unlink(originalFilePath, (err) => {
+            if (err) {
+                console.error('Error removing file:', err);
+            } else {
+                console.log('File removed successfully');
+            }
+        });
 
         res.status(200).json({ message: 'Thumbnail uploaded successfully!', filePath: jpegFilePath });
     } catch (error) {
