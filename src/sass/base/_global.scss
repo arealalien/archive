@@ -130,7 +130,7 @@ body {
 
 .page {
   padding: 0 1em;
-  width: 100%; height: calc(100vh - $navbar-height);
+  width: 100%; height: calc(100vh - calc($navbar-height + 2em)) !important;
   display: grid;
   grid-template-columns: auto 1fr auto;
   border-radius: 2em;
@@ -139,6 +139,7 @@ body {
     grid-template-columns: 1fr;
   }
   &-center {
+    height: calc(100vh - calc($navbar-height + 2em)) !important;
     position: relative;
     background-color: hslac($background-gray, 1);
     border-top-left-radius: 2em;
@@ -156,7 +157,7 @@ body {
       display: none;
     }
     > div:nth-child(3) {
-      padding: 3em 0 0 0;
+      padding: 3em 0;
     }
   }
 }

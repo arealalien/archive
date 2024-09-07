@@ -151,7 +151,7 @@
   100% { transform: translate(0, 0) rotate(0); }
 }
 .sidebar {
-  width: 100%; height: calc(100vh - $navbar-height);
+  width: 100%; height: calc(100vh - calc($navbar-height + 2em)) !important;
   position: relative;
   background-color: hslac($black, 1);
   @media (max-width: $layout-breakpoint-small) {
@@ -206,7 +206,7 @@
 
   &-inner {
     > div:nth-child(3) {
-      padding: 1.5em 0 0 0;
+      padding: 1.5em 0;
     }
   }
   &-profilemenu {
@@ -514,7 +514,7 @@
 
   &-inner {
     > div:nth-child(3) {
-      padding: 1.5em 0 0 0;
+      padding: 1.5em 0;
     }
   }
   &-divider {
@@ -681,7 +681,7 @@
     }
   }
   &-playlists {
-    padding: 1.5em 1.5em 6em 1.5em;
+    padding: 1.5em;
     width: 100%;
     &-list {
       width: 100%;

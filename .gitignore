@@ -14,6 +14,7 @@
 # Storage
 /public/users
 /public/images/gallery
+/temp
 
 # misc
 .DS_Store

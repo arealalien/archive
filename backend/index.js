@@ -258,12 +258,18 @@ app.post('/upload/thumbnail', validateToken, tempUpload.single('thumbnail'), asy
             throw new Error('No thumbnail file uploaded');
         }
 
+        // Construct the path for the video folder
         const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
+
+        // Log the path for debugging
+        console.log('Video folder path:', videoFolder);
+
+        // Check if the video folder exists, and create it if it doesn't
         if (!fs.existsSync(videoFolder)) {
-            throw new Error('Video folder does not exist');
+            fs.mkdirSync(videoFolder, { recursive: true });
         }
 
-        const originalFilePath = thumbnailFile.path;
+        const originalFilePath = path.resolve(__dirname, '../', 'temp', 'thumbnail.jpg');
         const jpegFilePath = path.join(videoFolder, 'thumbnail.jpg');
 
         // Convert to JPEG using sharp
@@ -271,16 +277,17 @@ app.post('/upload/thumbnail', validateToken, tempUpload.single('thumbnail'), asy
             .jpeg()
             .toFile(jpegFilePath);
 
-        // Remove the original thumbnail file
-        const filePath = path.resolve(__dirname, '../', 'temp', 'thumbnail.jpg');
-
-        try {
-            fs.accessSync(filePath, fs.constants.F_OK);
-            fs.unlinkSync(filePath);
-            console.log('File removed successfully');
-        } catch (err) {
-            console.error('Error:', err);
-        }
+        // Asynchronously remove the original thumbnail file from temp storage
+        console.log('Attempting to remove file:', originalFilePath);
+        setTimeout(() => {
+            fs.unlink(originalFilePath, (err) => {
+                if (err) {
+                    console.error('Error removing file:', err);
+                } else {
+                    console.log('File removed successfully');
+                }
+            });
+        }, 100);
 
         res.status(200).json({ message: 'Thumbnail uploaded successfully!', filePath: jpegFilePath });
     } catch (error) {

@@ -160,8 +160,7 @@ const UploadForm = () => {
                 },
             });
 
-            alert('Video and thumbnail saved successfully!');
-            navigate('/');
+           navigate('/');
             setTitle('');
             setDescription('');
             setVideoFile(null);

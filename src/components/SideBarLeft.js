@@ -125,9 +125,9 @@ const SideBarLeft  = () => {
     };
 
     const getMenu2Style = () => {
-        if (sidebarWidth <= 8) return { padding: '1em 1em 6em 1em' };
-        if (sidebarWidth > 15) return { padding: '1.5em 1.5em 6em 1.5em' };
-        return { padding: '1em 1em 6em 1em' }; // default
+        if (sidebarWidth <= 8) return { padding: '1em' };
+        if (sidebarWidth > 15) return { padding: '1.5em' };
+        return { padding: '1em' }; // default
     };
 
     useEffect(() => {
