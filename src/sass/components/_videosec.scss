@@ -624,9 +624,9 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   position: absolute;
-  filter: blur(15rem);
-  transform: scale(1.5, 1.5);
-  opacity: .5;
+  filter: blur(10rem);
+  transform: scale(.9, .9);
+  opacity: .7;
 }
 .videoplayer {
   width: 100%; height: 100%;
@@ -636,7 +636,7 @@
   .video-js .vjs-control-bar {
     padding: 0 2.5em 0 2.25em;
     height: 6em !important;
-    gap: 1em;
+    gap: .25em;
     display: grid;
     grid-template-columns: auto auto auto auto 1fr auto auto auto;
     background: linear-gradient(0, hslac($black, .75) 0, hslac($black, 0) 100%) !important;
@@ -668,6 +668,10 @@
   .vjs-load-progress div {
     background: hslac($white, .1) !important;
   }
+  .video-js .vjs-progress-control .vjs-mouse-display {
+    width: 1px !important;
+    background-color: hslac($white, 0) !important;
+  }
   .vjs-volume-panel {
     transition: width .15s cubic-bezier($transition-smooth, 1) !important;
   }
@@ -689,17 +693,29 @@
     }
   }
   .vjs-progress-control {
-    left: 1.5em; top: -2em;
-    height: 2em !important;
+    left: 1.5em; top: -1.5em;
+    height: 1.5em !important;
     width: calc(100% - 3em) !important;
     position: absolute !important;
   }
   .vjs-slider-bar .vjs-time-tooltip {
     display: none !important;
   }
+  .video-js .vjs-volume-panel.vjs-volume-panel-horizontal.vjs-hover, .video-js .vjs-volume-panel.vjs-volume-panel-horizontal:active, .video-js .vjs-volume-panel.vjs-volume-panel-horizontal.vjs-slider-active {
+    width: 11.5em !important;
+  }
+  .vjs-volume-bar.vjs-slider-horizontal {
+    width: 7em !important;
+  }
+  .video-js .vjs-volume-panel.vjs-hover .vjs-volume-control.vjs-volume-horizontal, .video-js .vjs-volume-panel:active .vjs-volume-control.vjs-volume-horizontal, .video-js .vjs-volume-panel:focus .vjs-volume-control.vjs-volume-horizontal, .video-js .vjs-volume-panel .vjs-volume-control:active.vjs-volume-horizontal, .video-js .vjs-volume-panel.vjs-hover .vjs-mute-control ~ .vjs-volume-control.vjs-volume-horizontal, .video-js .vjs-volume-panel .vjs-volume-control.vjs-slider-active.vjs-volume-horizontal {
+    width: 7em !important;
+  }
   .vjs-time-tooltip {
-    top: -3em !important;
+    top: -3.5em !important;
+    padding: .85em 1.25em .75em 1.25em !important;
     background-color: hslac($black, 0) !important;
+    backdrop-filter: blur(2em) brightness(60%);
+    border-radius: .5em !important;
   }
   .vjs-icon-placeholder:before {
     line-height: 2 !important;

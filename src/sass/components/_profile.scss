@@ -15,7 +15,7 @@
       width: 100%;
       position: relative;
       aspect-ratio: 2.75 / 1;
-      border-radius: 3em;
+      border-radius: 2em;
       overflow: hidden;
       @include flex-center();
       @media (max-width: $layout-breakpoint-small) {

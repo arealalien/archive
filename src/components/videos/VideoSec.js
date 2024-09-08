@@ -43,14 +43,19 @@ const VideoSec  = () => {
         fluid: true,
         playbackRates: [0.25, 0.5, 1, 1.5, 2],
         enableSmoothSeeking: true,
+        poster: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/thumbnail.jpg",
         sources: [{
             src: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/" + videoDetails.videoUrl,
             type: 'video/mp4'
         }],
+        userActions: {
+            hotkeys: true
+        },
         controlBar: {
             children: [
                 "progressControl",
                 "playToggle",
+                "seekButton",
                 "volumePanel",
                 "currentTimeDisplay",
                 "timeDivider",
@@ -63,7 +68,9 @@ const VideoSec  = () => {
                 forward: 5,
                 backward: 5
             },
-        }
+        },
+        inactivityTimeout: 3000,
+        aspectRatio: '16:9',
     } : null;
 
     const syncBackgroundVideo = (player) => {

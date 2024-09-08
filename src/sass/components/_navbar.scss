@@ -184,6 +184,7 @@
       background-color: hslac($black, 1);
       border-radius: 1em;
       opacity: 0;
+      pointer-events: none;
       z-index: 10000;
       transition: opacity .3s cubic-bezier($transition-main, 1);
       @include flex-center();
@@ -466,6 +467,7 @@
       position: absolute;
       background-color: hslac($black, 1);
       border-radius: 1em;
+      pointer-events: none;
       opacity: 0;
       z-index: 10000;
       transition: opacity .15s cubic-bezier($transition-main, 1);
