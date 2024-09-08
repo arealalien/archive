@@ -34,7 +34,6 @@ const VideoSec  = () => {
     useFetchVideoData(location, setError, setVideoDetails);
 
     const playerRef = React.useRef(null);
-    const bgVideoRef = useRef(null);
 
     const videoJsOptions = videoDetails ? {
         autoplay: true,
@@ -43,6 +42,7 @@ const VideoSec  = () => {
         fluid: true,
         playbackRates: [0.25, 0.5, 1, 1.5, 2],
         enableSmoothSeeking: true,
+        enableDocumentPictureInPicture: true,
         poster: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/thumbnail.jpg",
         sources: [{
             src: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/" + videoDetails.videoUrl,
@@ -64,34 +64,13 @@ const VideoSec  = () => {
                 "pictureInPictureToggle",
                 "fullscreenToggle"
             ],
-            skipButtons: {
-                forward: 5,
-                backward: 5
-            },
         },
         inactivityTimeout: 3000,
         aspectRatio: '16:9',
     } : null;
 
-    const syncBackgroundVideo = (player) => {
-        const bgVideo = bgVideoRef.current;
-
-        player.on('play', () => {
-            bgVideo.play();
-        });
-
-        player.on('pause', () => {
-            bgVideo.pause();
-        });
-
-        player.on('timeupdate', () => {
-            bgVideo.currentTime = player.currentTime();
-        });
-    };
-
     const handlePlayerReady = (player) => {
         playerRef.current = player;
-        syncBackgroundVideo(player);
     };
 
     if (error) {
@@ -104,14 +83,6 @@ const VideoSec  = () => {
 
     return (
         <>
-            <video
-                ref={bgVideoRef}
-                className="background-video"
-                src={process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/" + videoDetails.videoUrl}
-                muted
-                loop
-                playsInline
-            />
             <VideoJS options={videoJsOptions} onReady={handlePlayerReady}/>
         </>
     )
