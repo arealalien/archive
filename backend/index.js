@@ -241,14 +241,43 @@ app.post('/upload/video', validateToken, tempUpload.single('video'), async (req,
         // Generate sprite images and JSON file using ffmpeg
         const spriteFilePath = path.join(spriteFolder, 'sprite.jpg');
         const jsonFilePath = path.join(spriteFolder, 'sprite.json');
+        const intervalFilePath = path.join(spriteFolder, 'interval.json');
 
         // Dynamically calculate the number of frames, columns, and rows for the sprite
-        const frameInterval = 2; // 1 frame every 5 seconds
+        let frameInterval = 1;
+        const totalIFrames = Math.floor(duration / frameInterval);
+
+        if (totalIFrames >= 5500) {
+            frameInterval = 12;
+        } else if (totalIFrames >= 5000) {
+            frameInterval = 11;
+        } else if (totalIFrames >= 4500) {
+            frameInterval = 10;
+        } else if (totalIFrames >= 4000) {
+            frameInterval = 9;
+        } else if (totalIFrames >= 3500) {
+            frameInterval = 8;
+        } else if (totalIFrames >= 3000) {
+            frameInterval = 7;
+        } else if (totalIFrames >= 2500) {
+            frameInterval = 6;
+        } else if (totalIFrames >= 2000) {
+            frameInterval = 5;
+        } else if (totalIFrames >= 1500) {
+            frameInterval = 4;
+        } else if (totalIFrames >= 1000) {
+            frameInterval = 3;
+        } else if (totalIFrames >= 500) {
+            frameInterval = 2;
+        } else if (totalIFrames >= 100) {
+            frameInterval = 1;
+        }
+
         const totalFrames = Math.floor(parseFloat(duration) / frameInterval);
         const columns = Math.ceil(Math.sqrt(totalFrames)); // Calculate columns for the grid
         const rows = Math.ceil(totalFrames / columns); // Calculate rows for the grid
 
-        // Run ffmpeg to generate the sprite
+        // Generate sprite images using the padded video
         exec(`${ffmpegPath} -i ${videoPath} -vf "fps=1/${frameInterval},scale=160:-1,tile=${columns}x${rows}" ${spriteFilePath}`, async (err) => {
             if (err) {
                 console.error('Error generating sprite:', err);
@@ -268,6 +297,7 @@ app.post('/upload/video', validateToken, tempUpload.single('video'), async (req,
             }
             fs.writeFileSync(jsonFilePath, JSON.stringify(json));
 
+            fs.writeFileSync(intervalFilePath, JSON.stringify({ frameInterval }));
             // Save video metadata to the database
             try {
                 await prisma.video.create({

@@ -24,17 +24,19 @@ const VideoJS  = (props) => {
 
                 player.ready(() => {
                     // Fetch the sprite.json file dynamically
-                    fetch(`${spriteLink}sprite.json`)
-                        .then(response => response.json())
-                        .then(jsonData => {
-                            // Calculate the number of columns based on the jsonData
-                            const frames = Object.keys(jsonData).length;
+                    Promise.all([
+                        fetch(`${spriteLink}sprite.json`).then(response => response.json()),
+                        fetch(`${spriteLink}interval.json`).then(response => response.json())
+                    ])
+                        .then(([spriteData, intervalData]) => {
+                            const frames = Object.keys(spriteData).length;
                             const columns = Math.ceil(Math.sqrt(frames));
+                            const interval = intervalData.frameInterval;
 
                             player.spriteThumbnails({
                                 width: 160,
                                 height: 90,
-                                interval: 2,
+                                interval: interval,
                                 url: `${spriteLink}sprite.jpg`,
                                 columns: columns,
                             });
