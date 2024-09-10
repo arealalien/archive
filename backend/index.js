@@ -209,6 +209,7 @@ app.post('/upload/profile-picture', validateToken, upload.single('profilePicture
 app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpload);
 
 const ffmpegPath = 'E:\\ffmpeg\\bin\\ffmpeg.exe';
+const ffprobePath = 'E:\\ffmpeg\\bin\\ffprobe.exe';
 
 app.post('/upload/video', validateToken, tempUpload.single('video'), async (req, res) => {
     const { title, description, duration } = req.body;
@@ -277,46 +278,112 @@ app.post('/upload/video', validateToken, tempUpload.single('video'), async (req,
         const columns = Math.ceil(Math.sqrt(totalFrames)); // Calculate columns for the grid
         const rows = Math.ceil(totalFrames / columns); // Calculate rows for the grid
 
-        // Generate sprite images using the padded video
-        exec(`${ffmpegPath} -i ${videoPath} -vf "fps=1/${frameInterval},scale=160:-1,tile=${columns}x${rows}" ${spriteFilePath}`, async (err) => {
+        // Get video aspect ratio
+        const aspectRatioFilePath = path.join(spriteFolder, 'aspect_ratio.json');
+        exec(`${ffprobePath} -v error -select_streams v:0 -show_entries stream=width,height -of json ${videoPath}`, (err, stdout) => {
             if (err) {
-                console.error('Error generating sprite:', err);
-                res.status(500).json({ error: 'Failed to generate sprite' });
+                console.error('Error calculating aspect ratio:', err);
+                res.status(500).json({ error: 'Failed to calculate aspect ratio' });
                 return;
             }
 
-            // Create a JSON map with frame positions
-            const json = {};
-            for (let i = 0; i < totalFrames; i++) {
-                json[i * frameInterval] = {
-                    x: (i % columns) * 160,
-                    y: Math.floor(i / columns) * 90,
-                    w: 160,
-                    h: 90
-                };
-            }
-            fs.writeFileSync(jsonFilePath, JSON.stringify(json));
+            const data = JSON.parse(stdout);
+            const width = data.streams[0].width;
+            const height = data.streams[0].height;
+            const aspectRatio = width / height;
+            fs.writeFileSync(aspectRatioFilePath, JSON.stringify({ aspectRatio }));
 
-            fs.writeFileSync(intervalFilePath, JSON.stringify({ frameInterval }));
-            // Save video metadata to the database
-            try {
-                await prisma.video.create({
-                    data: {
-                        creatorId: userId,
-                        videoUrl,
-                        title,
-                        description,
-                        datePosted: new Date(),
-                        duration: parseFloat(duration),
-                    },
-                });
+            // Proceed to generate sprite images and JSON file using ffmpeg
+            let frameInterval = 1;
+            const totalIFrames = Math.floor(duration / frameInterval);
 
-                // Send response after everything is done
-                res.json({ message: 'Video uploaded successfully!', videoId, videoUrl });
-            } catch (error) {
-                console.error('Error saving video metadata:', error);
-                res.status(500).json({ error: 'Failed to save video metadata' });
+            if (totalIFrames >= 8000) {
+                frameInterval = 20;
+            } else if (totalIFrames >= 7600) {
+                frameInterval = 19;
+            } else if (totalIFrames >= 7200) {
+                frameInterval = 18;
+            } else if (totalIFrames >= 6800) {
+                frameInterval = 17;
+            } else if (totalIFrames >= 6400) {
+                frameInterval = 16;
+            } else if (totalIFrames >= 6000) {
+                frameInterval = 15;
+            } else if (totalIFrames >= 5600) {
+                frameInterval = 14;
+            } else if (totalIFrames >= 5200) {
+                frameInterval = 13;
+            } else if (totalIFrames >= 4800) {
+                frameInterval = 12;
+            } else if (totalIFrames >= 4400) {
+                frameInterval = 11;
+            } else if (totalIFrames >= 3600) {
+                frameInterval = 10;
+            } else if (totalIFrames >= 3200) {
+                frameInterval = 9;
+            } else if (totalIFrames >= 2800) {
+                frameInterval = 8;
+            } else if (totalIFrames >= 2400) {
+                frameInterval = 7;
+            } else if (totalIFrames >= 2000) {
+                frameInterval = 6;
+            } else if (totalIFrames >= 1600) {
+                frameInterval = 5;
+            } else if (totalIFrames >= 1200) {
+                frameInterval = 4;
+            } else if (totalIFrames >= 800) {
+                frameInterval = 3;
+            } else if (totalIFrames >= 400) {
+                frameInterval = 2;
+            } else if (totalIFrames >= 100) {
+                frameInterval = 1;
             }
+
+            const totalFrames = Math.floor(parseFloat(duration) / frameInterval);
+            const columns = Math.ceil(Math.sqrt(totalFrames)); // Calculate columns for the grid
+            const rows = Math.ceil(totalFrames / columns); // Calculate rows for the grid
+
+            // Generate sprite images using the video
+            exec(`${ffmpegPath} -i ${videoPath} -vf "fps=1/${frameInterval},scale=160:-1,tile=${columns}x${rows}" ${spriteFilePath}`, async (err) => {
+                if (err) {
+                    console.error('Error generating sprite:', err);
+                    res.status(500).json({ error: 'Failed to generate sprite' });
+                    return;
+                }
+
+                // Create a JSON map with frame positions
+                const json = {};
+                for (let i = 0; i < totalFrames; i++) {
+                    json[i * frameInterval] = {
+                        x: (i % columns) * 160,
+                        y: Math.floor(i / columns) * 90,
+                        w: 160,
+                        h: 90
+                    };
+                }
+                fs.writeFileSync(jsonFilePath, JSON.stringify(json));
+                fs.writeFileSync(intervalFilePath, JSON.stringify({ frameInterval }));
+
+                // Save video metadata to the database
+                try {
+                    await prisma.video.create({
+                        data: {
+                            creatorId: userId,
+                            videoUrl,
+                            title,
+                            description,
+                            datePosted: new Date(),
+                            duration: parseFloat(duration),
+                        },
+                    });
+
+                    // Send response after everything is done
+                    res.json({ message: 'Video uploaded successfully!', videoId, videoUrl });
+                } catch (error) {
+                    console.error('Error saving video metadata:', error);
+                    res.status(500).json({ error: 'Failed to save video metadata' });
+                }
+            });
         });
 
     } catch (error) {

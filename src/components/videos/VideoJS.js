@@ -23,26 +23,30 @@ const VideoJS  = (props) => {
                 onReady && onReady(player);
 
                 player.ready(() => {
-                    // Fetch the sprite.json file dynamically
                     Promise.all([
                         fetch(`${spriteLink}sprite.json`).then(response => response.json()),
-                        fetch(`${spriteLink}interval.json`).then(response => response.json())
+                        fetch(`${spriteLink}interval.json`).then(response => response.json()),
+                        fetch(`${spriteLink}aspect_ratio.json`).then(response => response.json())
                     ])
-                        .then(([spriteData, intervalData]) => {
+                        .then(([spriteData, intervalData, aspectRatioData]) => {
                             const frames = Object.keys(spriteData).length;
                             const columns = Math.ceil(Math.sqrt(frames));
                             const interval = intervalData.frameInterval;
+                            const aspectRatio = aspectRatioData.aspectRatio; // This is a number like 1.3333
+
+                            const spriteHeight = 90; // Keep width fixed
+                            const spriteWidth = Math.round(spriteHeight * aspectRatio);
 
                             player.spriteThumbnails({
-                                width: 160,
-                                height: 90,
+                                width: spriteWidth,
+                                height: spriteHeight,
                                 interval: interval,
                                 url: `${spriteLink}sprite.jpg`,
                                 columns: columns,
                             });
                         })
                         .catch(error => {
-                            console.error("Error fetching sprite.json:", error);
+                            console.error("Error fetching sprite or aspect ratio data:", error);
                         });
                 });
             });
