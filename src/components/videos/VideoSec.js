@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
-import VideoJS from './VideoJS'
+import VideoJS from './VideoJS';
 import 'video.js/dist/video-js.css';
 
 const useFetchVideoData = (location, setError, setVideoDetails) => {
@@ -83,7 +83,7 @@ const VideoSec  = () => {
 
     return (
         <>
-            <VideoJS options={videoJsOptions} onReady={handlePlayerReady}/>
+            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} spriteLink={process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/sprites/"}/>
         </>
     )
 }

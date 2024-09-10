@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const multer = require('multer');
+const { exec } = require('child_process');
+const ffmpeg = require('ffmpeg');
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
@@ -206,6 +208,8 @@ const handleFileUpload = async (req, res) => {
 app.post('/upload/profile-picture', validateToken, upload.single('profilePicture'), handleFileUpload);
 app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpload);
 
+const ffmpegPath = 'E:\\ffmpeg\\bin\\ffmpeg.exe';
+
 app.post('/upload/video', validateToken, tempUpload.single('video'), async (req, res) => {
     const { title, description, duration } = req.body;
     const videoFile = req.file;
@@ -219,29 +223,72 @@ app.post('/upload/video', validateToken, tempUpload.single('video'), async (req,
 
         const videoUrl = videoId + path.extname(videoFile.originalname);
         const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
+        const spriteFolder = path.join(videoFolder, 'sprites');
 
         // Ensure the video folder exists
         if (!fs.existsSync(videoFolder)) {
             fs.mkdirSync(videoFolder, { recursive: true });
         }
 
+        if (!fs.existsSync(spriteFolder)) {
+            fs.mkdirSync(spriteFolder, { recursive: true });
+        }
+
         // Move video to the final destination
+        const videoPath = path.join(videoFolder, videoUrl);
         fs.renameSync(videoFile.path, path.join(videoFolder, videoUrl));
 
-        // Save video metadata to the database
-        const video = await prisma.video.create({
-            data: {
-                creatorId: userId,
-                videoUrl,
-                title,
-                description,
-                datePosted: new Date(),
-                duration: parseFloat(duration),
-            },
+        // Generate sprite images and JSON file using ffmpeg
+        const spriteFilePath = path.join(spriteFolder, 'sprite.jpg');
+        const jsonFilePath = path.join(spriteFolder, 'sprite.json');
+
+        // Dynamically calculate the number of frames, columns, and rows for the sprite
+        const frameInterval = 2; // 1 frame every 5 seconds
+        const totalFrames = Math.floor(parseFloat(duration) / frameInterval);
+        const columns = Math.ceil(Math.sqrt(totalFrames)); // Calculate columns for the grid
+        const rows = Math.ceil(totalFrames / columns); // Calculate rows for the grid
+
+        // Run ffmpeg to generate the sprite
+        exec(`${ffmpegPath} -i ${videoPath} -vf "fps=1/${frameInterval},scale=160:-1,tile=${columns}x${rows}" ${spriteFilePath}`, async (err) => {
+            if (err) {
+                console.error('Error generating sprite:', err);
+                res.status(500).json({ error: 'Failed to generate sprite' });
+                return;
+            }
+
+            // Create a JSON map with frame positions
+            const json = {};
+            for (let i = 0; i < totalFrames; i++) {
+                json[i * frameInterval] = {
+                    x: (i % columns) * 160,
+                    y: Math.floor(i / columns) * 90,
+                    w: 160,
+                    h: 90
+                };
+            }
+            fs.writeFileSync(jsonFilePath, JSON.stringify(json));
+
+            // Save video metadata to the database
+            try {
+                await prisma.video.create({
+                    data: {
+                        creatorId: userId,
+                        videoUrl,
+                        title,
+                        description,
+                        datePosted: new Date(),
+                        duration: parseFloat(duration),
+                    },
+                });
+
+                // Send response after everything is done
+                res.json({ message: 'Video uploaded successfully!', videoId, videoUrl });
+            } catch (error) {
+                console.error('Error saving video metadata:', error);
+                res.status(500).json({ error: 'Failed to save video metadata' });
+            }
         });
 
-        // Send videoId to use for thumbnail upload
-        res.json({ message: 'Video uploaded successfully!', videoId, videoUrl });
     } catch (error) {
         console.error('Error saving video metadata:', error);
         res.status(500).json({ error: 'Failed to save video metadata', details: error.message });

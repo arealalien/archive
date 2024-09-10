@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
+import SpriteThumbnails from "videojs-sprite-thumbnails";
 
 const VideoJS  = (props) => {
     const videoRef = React.useRef(null);
     const playerRef = React.useRef(null);
-    const {options, onReady} = props;
+    const {options, onReady, spriteLink} = props;
 
     useEffect(() => {
 
@@ -20,10 +21,29 @@ const VideoJS  = (props) => {
             const player = playerRef.current = videojs(videoElement, options, () => {
                 videojs.log('player is ready');
                 onReady && onReady(player);
-            });
 
-            // You could update an existing player in the `else` block here
-            // on prop change, for example:
+                player.ready(() => {
+                    // Fetch the sprite.json file dynamically
+                    fetch(`${spriteLink}sprite.json`)
+                        .then(response => response.json())
+                        .then(jsonData => {
+                            // Calculate the number of columns based on the jsonData
+                            const frames = Object.keys(jsonData).length;
+                            const columns = Math.ceil(Math.sqrt(frames));
+
+                            player.spriteThumbnails({
+                                width: 160,
+                                height: 90,
+                                interval: 2,
+                                url: `${spriteLink}sprite.jpg`,
+                                columns: columns,
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error fetching sprite.json:", error);
+                        });
+                });
+            });
         } else {
             const player = playerRef.current;
 
@@ -45,7 +65,7 @@ const VideoJS  = (props) => {
 
     return (
         <>
-            <div className="video-js videoplayer" data-vjs-player>
+            <div id="videojs-sprite-thumbnails-player" className="video-js videoplayer" data-vjs-player>
                 <div ref={videoRef}/>
             </div>
         </>

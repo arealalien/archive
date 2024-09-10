@@ -785,11 +785,13 @@
     width: 7em !important;
   }
   .vjs-time-tooltip {
-    top: -3.5em !important;
-    padding: .85em 1.25em .75em 1.25em !important;
-    background-color: hslac($black, 0) !important;
-    backdrop-filter: blur(1em) brightness(60%);
+    top: -11em !important;
+    width: 160px !important;
+    height: 90px !important;
+    text-shadow: none !important;
     border-radius: .5em !important;
+    box-shadow: 0 5px 25px -5px hslac($black, .4);
+    border: none !important;
   }
   .vjs-mouse-display .vjs-volume-tooltip {
     padding: .8em 1.25em .8em 1.25em !important;
