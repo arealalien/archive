@@ -32,9 +32,9 @@ const VideoJS  = (props) => {
                             const frames = Object.keys(spriteData).length;
                             const columns = Math.ceil(Math.sqrt(frames));
                             const interval = intervalData.frameInterval;
-                            const aspectRatio = aspectRatioData.aspectRatio; // This is a number like 1.3333
+                            const aspectRatio = aspectRatioData.aspectRatio;
 
-                            const spriteHeight = 90; // Keep width fixed
+                            const spriteHeight = 90; // Keep height fixed
                             const spriteWidth = Math.round(spriteHeight * aspectRatio);
 
                             player.spriteThumbnails({

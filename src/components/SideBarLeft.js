@@ -1,5 +1,6 @@
 import React, { useContext, useState, useRef, useCallback, useEffect  } from "react";
 import { AuthContext } from '../contexts/AuthContext';
+import axios from 'axios';
 import { NavLink } from "react-router-dom";
 import ScrollBar from './ScrollBar';
 
@@ -9,6 +10,7 @@ const SideBarLeft  = () => {
         return savedWidth ? parseFloat(savedWidth) : 35;
     });
     const [isMouseDown, setIsMouseDown] = useState(false);
+    const [playlists, setPlaylists] = useState([]);
     const sidebarRef = useRef(null);
     const noteRef = useRef(null);
     const noteNameRef = useRef(null);
@@ -17,6 +19,30 @@ const SideBarLeft  = () => {
     const prevWidth = useRef(sidebarWidth);
 
     const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchPlaylists = async () => {
+            try {
+                const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+                const response = await fetch(`http://localhost:5000/playlists?creator=${encodeURIComponent(user.name)}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch videos');
+                }
+                const data = await response.json();
+                setPlaylists(data.map(playlist => ({
+                    ...playlist
+                })));
+            } catch (error) {
+                console.error('Error fetching video data:', error);
+            }
+        };
+
+        fetchPlaylists();
+    }, [user]);
 
     useEffect(() => {
         localStorage.setItem('sidebarWidth', sidebarWidth);
@@ -255,7 +281,28 @@ const SideBarLeft  = () => {
                     </div>
                     <div className="sidebar-left-playlists" style={getMenu2Style()}>
                         <div className="sidebar-left-playlists-list">
-                            <NavLink to="/playlist" className="sidebar-left-playlists-list-item"
+                            {playlists.length > 0 ? (
+                                playlists.map((playlist, index) => (
+                                    <NavLink to={`/playlist?list=` + playlist.playlistUrl} className="sidebar-left-playlists-list-item" key={index}
+                                             style={getPlaylistStyle()}
+                                             onMouseEnter={() => handleNoteNameChange(playlist.name, "@" + playlist.creator.name, "1")}
+                                             onMouseLeave={() => handleNoteNameChange(playlist.name, "@" + playlist.creator.name, "0")}>
+                                        <div className="sidebar-left-playlists-list-item-left">
+                                            <img className="sidebar-left-playlists-list-item-left-image"
+                                                 src={process.env.PUBLIC_URL + `/images/gallery/0476d014bcfd4716611c1c59f8f7611b.jpg`}
+                                                 alt=""/>
+                                        </div>
+                                        <div className="sidebar-left-playlists-list-item-right"
+                                             style={getDisplayStyle2()}>
+                                            <h3 className="sidebar-left-playlists-list-item-right-title">{playlist.name}</h3>
+                                            <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
+                                        </div>
+                                    </NavLink>
+                                ))
+                            ) : (
+                                <p></p>
+                            )}
+                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item"
                                      style={getPlaylistStyle()}
                                      onMouseEnter={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "@username", "1")}
                                      onMouseLeave={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "@username", "0")}>

@@ -84,9 +84,11 @@ app.post('/signup', async (req, res) => {
         });
         console.log('Created user:', user);
 
+        const playlistUrl = uuidv4();
         const likedVideosPlaylist = await prisma.playlist.create({
             data: {
                 name: 'Liked Videos',
+                playlistUrl: playlistUrl,
                 creator: {
                     connect: { id: user.id },
                 },
