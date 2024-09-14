@@ -10,8 +10,19 @@
       display: grid;
       grid-template-columns: 35em 1fr;
       gap: 2em;
+      .not-editable {
+        cursor: default !important;
+
+        .playlist-header-top-left-note {
+          display: none !important;
+        }
+      }
       &-left {
         width: 100%;
+        position: relative;
+        cursor: pointer;
+        @include flex-center();
+
         &-container {
           width: 100%;
           aspect-ratio: 1 / 1;
@@ -26,6 +37,47 @@
             object-fit: cover;
           }
         }
+        &:hover &-note {
+          opacity: 1;
+          bottom: -5em;
+        }
+        &-note {
+          bottom: -6em;
+          padding: 1.3em 1.7em;
+          position: absolute;
+          background-color: hslac($black, 1);
+          border-radius: 5em;
+          opacity: 0;
+          pointer-events: none;
+          transition: all .3s cubic-bezier($transition-main, 1);
+
+          &-arrow {
+            top: -5px; left: calc(50% - 5px);
+            width: 10px; height: 10px;
+            position: absolute;
+            background-color: hslac($black, 1);
+            border-top-right-radius: 50%;
+            transform: rotate(-60deg) skewX(-30deg) scale(1,.866);
+            &::before,
+            &::after {
+              content: '';
+              width: 10px; height: 10px;
+              position: absolute;
+              background-color: inherit;
+              border-top-right-radius: 50%;
+            }
+            &::before {
+              transform: rotate(-135deg) skewX(-45deg) scale(1.414,.707) translate(0,-50%);
+            }
+            &::after {
+              transform: rotate(135deg) skewY(-45deg) scale(.707,1.414) translate(50%);
+            }
+          }
+          &-text {
+            color: hslac($white, .7);
+            font-size: $paragraph;
+          }
+        }
       }
       &-right {
         padding: 0 0 2em 0;
@@ -33,13 +85,18 @@
         gap: 1em;
         @include flex-col-left-ne();
 
+        .not-editable {
+          cursor: default !important;
+        }
         &-title {
           padding: 0 1em 0 0;
           max-width: 100%;
+          position: relative;
           color: hslac($white, 1);
           font-size: $heading-medium;
           font-weight: 800;
           z-index: 4;
+          cursor: pointer;
         }
         &-toptitle {
           color: hslac($white, .7);
@@ -49,6 +106,7 @@
           @include flex-left();
 
           &-left {
+            text-decoration: none;
             gap: .5em;
             @include flex-left();
 
@@ -104,4 +162,112 @@
       width: 100%; height: 5em;
     }
   }
+}
+.playlist-edit {
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000000;
+  @include flex-center();
+
+  &-modal {
+    padding: 2.5em 3em;
+    background-color: hslac($black, 1);
+    border-radius: 2em;
+    gap: 1.5em;
+    z-index: 1000000;
+    @include flex-col();
+
+    &-top {
+      width: 100%;
+      @include flex-space-bet();
+
+      &-title {
+        font-size: $heading-small;
+        font-weight: 800;
+      }
+      &-button {
+        padding: 1em;
+        background-color: hslac($background-gray, 1);
+        border: 1px solid hslac($white, 0);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all .15s cubic-bezier($transition-main, 1);
+        @include flex-center();
+
+        &:hover {
+          border: 1px solid hslac($white, .1);
+        }
+        svg {
+          width: 2em; height: 2em;
+          g {
+            g {
+              stroke: hslac($white, .7);
+            }
+          }
+        }
+      }
+    }
+    &-bottom {
+      width: 100%;
+      @include flex-right();
+
+      .mainbutton {
+        font-size: $paragraph-medium;
+      }
+    }
+    &-center {
+      display: grid;
+      grid-template-columns: 25em auto;
+      gap: 1.5em;
+    }
+    &-left {
+      cursor: pointer;
+      &-image {
+        width: 100%;
+        border-radius: 1.5em;
+      }
+    }
+    &-right {
+      gap: 1.5em;
+      @include flex-col-left-ns();
+
+      &-title {
+        padding: 1.2rem 1.7rem;
+        width: 25em;
+        color: hslac($white, 1);
+        background-color: hslac($background-lightgray, 1);
+        border-radius: .5em;
+        border: 1px solid hslac($white, .1);
+        font-family: $font-main;
+        font-size: calc($paragraph-large);
+        font-weight: 400;
+      }
+      &-description {
+        padding: 1.2rem 1.7rem;
+        width: 100%; height: 100%;
+        color: hslac($white, 1);
+        background-color: hslac($background-lightgray, 1);
+        border-radius: 1em;
+        border: 1px solid hslac($white, .1);
+        font-family: $font-main;
+        font-size: calc($paragraph-medium);
+        font-weight: 300;
+        resize: none;
+      }
+    }
+  }
+  &-overlay {
+    width: 100%; height: 100%;
+    position: absolute;
+    background-color: hslac($black, .5);
+    backdrop-filter: blur(.25em) brightness(80%);
+    z-index: 900000;
+  }
+}
+.visible {
+  opacity: 1;
+  pointer-events: auto;
 }

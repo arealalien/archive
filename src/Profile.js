@@ -20,6 +20,7 @@ function Profile() {
     const [subscriberCount, setSubscriberCount] = useState(null);
     const [error, setError] = useState('');
     const [isSubscribed, setIsSubscribed] = useState(false);
+    const [dateSubscribed, setDateSubscribed] = useState(false);
     const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
     const [isProfileMenuVisible] = useState(true);
     const { page } = useParams();
@@ -49,6 +50,10 @@ function Profile() {
                 // Fetch subscription status
                 const subscriptionStatus = await axios.get(`http://localhost:5000/subscribe/status/${encodeURIComponent(username)}`, { headers });
                 setIsSubscribed(subscriptionStatus.data.isSubscribed);
+
+                // Fetch subscription date
+                const subscriptionDate = await axios.get(`http://localhost:5000/subscribe/date/${encodeURIComponent(username)}`, { headers });
+                setDateSubscribed(subscriptionDate.data.dateSubscribed)
 
                 // Fetch subscriber count
                 const subscriberResponse = await axios.get(`http://localhost:5000/user/${encodeURIComponent(username)}/subscribers`, { headers });
@@ -162,7 +167,7 @@ function Profile() {
                                 />
                             </header>
                             <div className="profile-inner-content">
-                                <ProfileSec page={page} profileName={user2.name} />
+                                <ProfileSec page={page} profileName={user2.name} profile={user2} />
                             </div>
                         </div>
                     </section>
@@ -172,6 +177,7 @@ function Profile() {
                               profile={user2}
                               subscriberCount={subscriberCount}
                               isSubscribed={isSubscribed}
+                              dateSubscribed={dateSubscribed}
                               handleSubscribe={handleSubscribe} />
             </div>
             <PageShadow/>

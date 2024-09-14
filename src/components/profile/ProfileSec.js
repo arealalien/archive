@@ -4,7 +4,7 @@ import React from "react";
 import VideosSec from "../videos/VideosSec";
 import PlaylistsSec from "../playlists/PlaylistsSec";
 
-const ProfileSec  = ({ profileName, page }) => {
+const ProfileSec  = ({ profile, profileName, page }) => {
 
     const renderSettingsContent = () => {
         switch(page) {
@@ -37,7 +37,7 @@ const ProfileSec  = ({ profileName, page }) => {
                         </div>
                         <div className="profile-inner-content-right playlists-grid">
                             <div className="profile-inner-content-right-playlists playlists-grid-inner">
-                                <PlaylistsSec videoCreator={profileName}/>
+                                <PlaylistsSec videoCreator={profileName} creator={profile}/>
                             </div>
                         </div>
                     </>

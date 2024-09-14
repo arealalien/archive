@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import ColorThief from 'colorthief';
+import axios from 'axios';
+import { AuthContext } from './contexts/AuthContext';
+import { useLocation } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import ScrollBar from './components/ScrollBar';
 import './css/main.css';
 
@@ -13,14 +15,22 @@ import Footer from "./components/Footer";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
 import VideosSec from "./components/videos/VideosSec";
+import PlaylistUpload from "./components/playlists/PlaylistUpload";
 
 function Playlist() {
     const location = useLocation();
+    const { user } = useContext(AuthContext);
+    const [playlistImage, setPlaylistImage] = useState('');
     const [playlistDetails, setPlaylistDetails] = useState(null);
     const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
     const [error, setError] = useState('');
+    const [isEditVisible, setEditVisible] = useState(false);
 
     const PlaylistCoverRef = useRef(null);
+
+    const toggleSidebarMenu = () => {
+        setSidebarMenuVisible(prevState => !prevState);
+    };
 
     useEffect(() => {
         const fetchPlaylistData = async () => {
@@ -118,8 +128,10 @@ function Playlist() {
                 document.querySelector(".playlist-content").style.background = gradient;
             };
 
+            // Ensure image load completion
             imgElement.addEventListener('load', updateBackgroundColor);
 
+            // Check if image is already loaded
             if (imgElement.complete) {
                 updateBackgroundColor();
             }
@@ -128,10 +140,31 @@ function Playlist() {
                 imgElement.removeEventListener('load', updateBackgroundColor);
             };
         }
-    }, [PlaylistCoverRef]);
+    }, [playlistDetails]);
 
-    const toggleSidebarMenu = () => {
-        setSidebarMenuVisible(prevState => !prevState);
+    const playlistPictureUploadRef = useRef(null);
+
+    const handlePlaylistPictureUpload = (filePath) => {
+        setPlaylistImage(`http://localhost:5000/${filePath}`);
+    };
+
+    const handleEditOutClick = () => {
+        setEditVisible(false);
+    };
+
+    const isCurrentUserCreator = user && playlistDetails && user.id === playlistDetails.creator.id && playlistDetails.name !== 'Liked Videos';
+
+    const handleClick = () => {
+        if (isCurrentUserCreator) {
+            setEditVisible(true);
+            playlistPictureUploadRef.current.triggerFileInput();
+        }
+    };
+
+    const handleNameClick = () => {
+        if (isCurrentUserCreator) {
+            setEditVisible(true);
+        }
     };
 
     if (error) {
@@ -150,28 +183,94 @@ function Playlist() {
         profilePictureUrl = `${process.env.PUBLIC_URL}/${playlistDetails.creator.profilePicture}`;
     }
 
+    let playlistCover;
+
+    if (PlaylistCoverRef) {
+        playlistCover = `${process.env.PUBLIC_URL}/${playlistDetails.playlistImg}`;
+    }
+
     return (
         <>
-            <DocumentTitle title="Playlist - Archive"/>
+            <DocumentTitle title={playlistDetails.name + ` - Archive`}/>
             <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
                 <SideBarLeft/>
                 <ScrollBar className="page-center">
+                    {isCurrentUserCreator && (
+                        <div className={`playlist-edit ${isEditVisible ? 'visible' : ''}`}>
+                            <div className="playlist-edit-modal">
+                                <div className="playlist-edit-modal-top">
+                                    <h3 className="playlist-edit-modal-top-title">Edit details</h3>
+                                    <div className="playlist-edit-modal-top-button" onClick={handleEditOutClick}>
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <title>close square</title>
+                                            <g id="close-square" stroke="none" stroke-width="1" fill="none"
+                                               fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                                <g id="close-square-inner" transform="translate(2.000000, 2.000000)"
+                                                   stroke="#000000" stroke-width="1.5">
+                                                    <line x1="12.3941" y1="7.5948" x2="7.6021" y2="12.3868" id="Stroke-1"/>
+                                                    <line x1="12.3999" y1="12.3931" x2="7.5999" y2="7.5931" id="Stroke-2"/>
+                                                    <path
+                                                        d="M0.75,10.0001 C0.75,16.9371 3.063,19.2501 10,19.2501 C16.937,19.2501 19.25,16.9371 19.25,10.0001 C19.25,3.0631 16.937,0.7501 10,0.7501 C3.063,0.7501 0.75,3.0631 0.75,10.0001 Z"
+                                                        id="Stroke-3"/>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="playlist-edit-modal-center">
+                                    <div className="playlist-edit-modal-left"
+                                         onClick={() => playlistPictureUploadRef.current.triggerFileInput()}>
+                                        <img className="playlist-edit-modal-left-image"
+                                             src={playlistImage || playlistCover} alt=""/>
+                                    </div>
+                                    <div className="playlist-edit-modal-right">
+                                        <input className="playlist-edit-modal-right-title" id="name" type="text"
+                                               placeholder="Playlist Name" value={playlistDetails.name} name="name"
+                                               aria-label=""/>
+                                        <textarea className="playlist-edit-modal-right-description"
+                                                  placeholder="Description"></textarea>
+                                    </div>
+                                </div>
+                                <div className="playlist-edit-modal-bottom">
+                                    <button className="mainbutton" type="submit">Save changes</button>
+                                </div>
+                            </div>
+                            <div className="playlist-edit-overlay" onClick={handleEditOutClick}></div>
+                        </div>
+                    )}
                     <section className="playlist">
                         <header className="playlist-header">
                             <div className="playlist-header-top">
-                                <div className="playlist-header-top-left">
+                                <div className={`playlist-header-top-left ${isCurrentUserCreator ? '' : 'not-editable'}`} onClick={isCurrentUserCreator ? handleClick : null}>
                                     <div className="playlist-header-top-left-container">
-                                        <img ref={PlaylistCoverRef} className="playlist-header-top-left-container-image" src={process.env.PUBLIC_URL + `/images/gallery/347504210_2210436199143577_4984331646709175478_n.jpg`} alt="" />
+                                    <img ref={PlaylistCoverRef} className="playlist-header-top-left-container-image"
+                                             src={playlistImage || playlistCover} alt=""/>
                                     </div>
+                                    <div className="playlist-header-top-left-note">
+                                        <div className="playlist-header-top-left-note-arrow"></div>
+                                        <p className="playlist-header-top-left-note-text">Edit picture</p>
+                                    </div>
+                                    <PlaylistUpload
+                                        ref={playlistPictureUploadRef}
+                                        uploadUrl={`http://localhost:5000/upload/playlist-picture`}
+                                        onSuccess={handlePlaylistPictureUpload}
+                                        playlistDetails={playlistDetails}
+                                        fileKey="playlistPicture"
+                                    />
                                 </div>
                                 <div className="playlist-header-top-right">
-                                    <p className="playlist-header-top-right-toptitle">Public playlist</p>
-                                    <h1 className={`playlist-header-top-right-title`}>{playlistDetails.name}</h1>
+                                    {playlistDetails.visibility === 0 ? (
+                                        <p className="playlist-header-top-right-toptitle">Private playlist</p>
+                                    ) : playlistDetails.visibility === 1 ? (
+                                        <p className="playlist-header-top-right-toptitle">Public playlist</p>
+                                    ) : null}
+                                    <h1 className={`playlist-header-top-right-title ${isCurrentUserCreator ? '' : 'not-editable'}`} onClick={isCurrentUserCreator ? handleNameClick : null}>{playlistDetails.name}</h1>
                                     <div className="playlist-header-top-right-details">
-                                        <div className="playlist-header-top-right-details-left">
+                                        <NavLink to={`/channel/${playlistDetails.creator.name}`} className="playlist-header-top-right-details-left">
                                             <div className="playlist-header-top-right-details-left-container">
-                                                <img
+                                            <img
                                                      className="playlist-header-top-right-details-left-container-image"
                                                      src={profilePictureUrl}
                                                      alt=""/>
@@ -209,7 +308,7 @@ function Playlist() {
                                                     </svg>
                                                 ) : null}
                                             </h3>
-                                        </div>
+                                        </NavLink>
                                         <div className="playlist-header-top-right-details-right">
                                             <p className="playlist-header-top-right-details-right-thicktitle">&middot;</p>
                                             <p className="playlist-header-top-right-details-right-subtitle">41

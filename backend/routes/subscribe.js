@@ -144,4 +144,42 @@ router.get('/subscribe/status/:username', async (req, res) => {
     }
 });
 
+router.get('/subscribe/date/:username', async (req, res) => {
+    const { username } = req.params;
+    const subscriberId = req.userId; // Ensure req.userId is correctly set
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { name: username },
+            select: { id: true },
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const subscription = await prisma.subscription.findUnique({
+            where: {
+                subscriberId_subscribedToId: {
+                    subscriberId: subscriberId,
+                    subscribedToId: user.id,
+                },
+            },
+            select: {
+                dateSubscribed: true,
+            },
+        });
+
+        // Return null if the subscription does not exist
+        if (!subscription) {
+            return res.json({ dateSubscribed: null });
+        }
+
+        res.json({ dateSubscribed: subscription.dateSubscribed });
+    } catch (error) {
+        console.error('Error checking subscription status:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 module.exports = router;

@@ -3,6 +3,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { NumericFormat } from "react-number-format";
+import { formatDistanceToNow } from "date-fns";
 import ScrollBar from './ScrollBar';
 
 const SideBarRight = ({
@@ -12,6 +13,7 @@ const SideBarRight = ({
                           videoDetails,
                           profile,
                           subscriberCount,
+                          dateSubscribed,
                           isSubscribed,
                           handleSubscribe,
                           handleLike
@@ -338,9 +340,11 @@ const SideBarRight = ({
                                                 <h3 className="video-inner-right-box-top-user-text-username">
                                                     <span>{videoDetails.creator.displayName}</span>
                                                     {videoDetails.creator?.verified === 1 ? (
-                                                        <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
+                                                        <svg className="verified-icon" viewBox="0 0 22 22"
+                                                             aria-hidden="true">
                                                             <g>
-                                                                <linearGradient gradientUnits="userSpaceOnUse" id="a" x1="4.411"
+                                                                <linearGradient gradientUnits="userSpaceOnUse" id="a"
+                                                                                x1="4.411"
                                                                                 x2="18.083"
                                                                                 y1="2.495" y2="21.508">
                                                                     <stop offset="0"></stop>
@@ -349,7 +353,8 @@ const SideBarRight = ({
                                                                     <stop offset="1"></stop>
                                                                     <stop offset="1"></stop>
                                                                 </linearGradient>
-                                                                <linearGradient gradientUnits="userSpaceOnUse" id="b" x1="5.355"
+                                                                <linearGradient gradientUnits="userSpaceOnUse" id="b"
+                                                                                x1="5.355"
                                                                                 x2="16.361"
                                                                                 y1="3.395" y2="19.133">
                                                                     <stop offset="0"></stop>
@@ -576,9 +581,15 @@ const SideBarRight = ({
                                         ) : null}
                                     </h3>
                                     <p className="profile-menu-container-details-subscribers">{subscriberCount} Subscribers</p>
+                                    {dateSubscribed && (
+                                        <p className="profile-menu-container-details-subscribers">
+                                            Subscribed {formatDistanceToNow(new Date(dateSubscribed))} ago
+                                        </p>
+                                    )}
                                 </div>
                             </div>
-                            <div className="sidebar-right-profilemenu" style={{display: isProfileVisible && !isMenuVisible ? 'block' : 'none'}}>
+                            <div className="sidebar-right-profilemenu"
+                                 style={{display: isProfileVisible && !isMenuVisible ? 'block' : 'none'}}>
                                 <div className="sidebar-right-profilemenu-list">
                                     <NavLink to={`/channel/` + profile.name}
                                              className="sidebar-right-profilemenu-list-top">

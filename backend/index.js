@@ -48,6 +48,68 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// Set up Multer to store files
+const playlistStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const userId = req.userId;
+
+        console.log('UserId:', userId);
+        // Define the folder for the playlist
+        const uploadDir = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'playlists', req.body.playlistUrl);
+
+        console.log('Upload directory:', uploadDir);
+        // Create folder if it doesn't exist
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        const fileType = req.route.path;
+        cb(null, `${fileType}.jpg`);
+    }
+});
+
+// Initialize upload middleware
+const playlistUpload = multer({ playlistStorage });
+
+// Handle playlist cover image upload
+app.post('/upload/playlist-picture', playlistUpload.single('playlistPicture'), async (req, res) => {
+    try {
+        const { playlistUrl, userId } = req.body;
+
+        console.log('Received file:', req.file);
+        console.log('Updating playlist for URL:', playlistUrl);
+        console.log('User ID:', userId);
+
+        // Construct the file path with userId
+        const filePath = path.join(__dirname, '..', 'public', 'users', userId, 'playlists', playlistUrl);
+        const dataFilePath = path.join('users', userId, 'playlists', playlistUrl, 'cover.jpg');
+
+        // Ensure the directory exists
+        if (!fs.existsSync(filePath)) {
+            fs.mkdirSync(filePath, { recursive: true });
+        }
+
+        // Convert to JPEG using sharp
+        await sharp(req.file.buffer)
+            .jpeg()
+            .toFile(path.join(filePath, 'cover.jpg'));
+
+        await prisma.playlist.update({
+            where: { playlistUrl: playlistUrl },
+            data: { playlistImg: dataFilePath },
+        });
+
+        console.log('File uploaded and playlist updated with path:', dataFilePath);
+        res.status(200).json({ filePath: path.join('users', userId, `${fileType}.jpg`) });
+    } catch (err) {
+        console.error('Error updating playlist image:', err);
+        res.status(500).json({ error: 'Failed to update playlist image' });
+    }
+});
+
 const tempStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const tempFolder = path.join(__dirname, '..', 'temp');
@@ -89,6 +151,8 @@ app.post('/signup', async (req, res) => {
             data: {
                 name: 'Liked Videos',
                 playlistUrl: playlistUrl,
+                playlistImg: 'images/liked.jpg',
+                visibility: 0,
                 creator: {
                     connect: { id: user.id },
                 },

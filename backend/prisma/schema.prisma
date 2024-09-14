@@ -22,6 +22,7 @@ model User {
   profilePicture String    @default("users/0/profilePicture.jpg")
   banner         String    @default("users/0/banner.jpg")
   verified       Int       @default(0)
+  dateCreated    DateTime  @default(now())
   videos         Video[]
   posts          Post[]
   playlists      Playlist[]
@@ -53,6 +54,7 @@ model Post {
   creatorId      Int
   title          String
   content        String
+  datePosted     DateTime  @default(now())
   likes          Int       @default(0)
   comments       Comment[]
 }
@@ -62,7 +64,10 @@ model Playlist {
   name           String
   creator        User      @relation(fields: [creatorId], references: [id])
   creatorId      Int
-  playlistUrl    String?    @unique
+  playlistUrl    String    @unique
+  playlistImg    String    @default("images/cover.jpg")
+  dateCreated    DateTime  @default(now())
+  visibility     Int       @default(1)
   videos         PlaylistVideo[]
 }
 
@@ -85,6 +90,7 @@ model Comment {
   videoId        Int?
   post           Post?     @relation(fields: [postId], references: [id])
   postId         Int?
+  dateCommented DateTime        @default(now())
 }
 
 model Subscription {
@@ -93,6 +99,7 @@ model Subscription {
   subscriberId   Int
   subscribedTo   User            @relation("SubscribedTo", fields: [subscribedToId], references: [id])
   subscribedToId Int
+  dateSubscribed DateTime        @default(now())
 
   @@unique([subscriberId, subscribedToId])
 }

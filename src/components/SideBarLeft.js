@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useCallback, useEffect  } from "react";
 import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import ScrollBar from './ScrollBar';
 
 const SideBarLeft  = () => {
@@ -19,6 +19,15 @@ const SideBarLeft  = () => {
     const prevWidth = useRef(sidebarWidth);
 
     const { user } = useContext(AuthContext);
+
+    const location = useLocation(); // Get the current location
+
+    const isActiveLink = (playlistUrl) => {
+        // Create the URL for the playlist
+        const playlistUrlWithQuery = `/playlist?list=${playlistUrl}`;
+        // Compare the current location pathname with the playlist URL
+        return location.search === `?list=${playlistUrl}`;
+    };
 
     useEffect(() => {
         const fetchPlaylists = async () => {
@@ -47,6 +56,25 @@ const SideBarLeft  = () => {
     useEffect(() => {
         localStorage.setItem('sidebarWidth', sidebarWidth);
     }, [sidebarWidth]);
+
+    const handleCreatePlaylist = async () => {
+        try {
+            const token = localStorage.getItem('token'); // Ensure user is authenticated
+            const headers = { Authorization: `Bearer ${token}` };
+
+            const response = await axios.get(`http://localhost:5000/createPlaylists?creator=${encodeURIComponent(user.name)}`, { headers });
+
+            if (response.status === 200) {
+                // Optionally: Fetch playlists again or update the playlist list
+                console.log('Playlist created successfully:', response.data);
+            }
+            if (response.status === 200) {
+                setPlaylists([...playlists, response.data]); // Add the new playlist to the list
+            }
+        } catch (error) {
+            console.error('Error creating playlist:', error);
+        }
+    };
 
     const handleMouseMove = useCallback((e) => {
         if (isResizing.current) {
@@ -234,7 +262,7 @@ const SideBarLeft  = () => {
                                     <p className="sidebar-left-island-inner-top-left-text"
                                        style={getRetardDisplayStyle()}>Your Library</p>
                                 </div>
-                                <div className="sidebar-left-island-inner-top-right" style={getDisplayStyle2()}>
+                                <div className="sidebar-left-island-inner-top-right" style={getDisplayStyle2()} onClick={handleCreatePlaylist}>
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="24px" height="24px"
                                          viewBox="0 0 24 24" version="1.1">
@@ -283,13 +311,19 @@ const SideBarLeft  = () => {
                         <div className="sidebar-left-playlists-list">
                             {playlists.length > 0 ? (
                                 playlists.map((playlist, index) => (
-                                    <NavLink to={`/playlist?list=` + playlist.playlistUrl} className="sidebar-left-playlists-list-item" key={index}
-                                             style={getPlaylistStyle()}
-                                             onMouseEnter={() => handleNoteNameChange(playlist.name, "@" + playlist.creator.name, "1")}
-                                             onMouseLeave={() => handleNoteNameChange(playlist.name, "@" + playlist.creator.name, "0")}>
+                                    <NavLink
+                                        to={`/playlist?list=${playlist.playlistUrl}`}
+                                        className={({ isActive }) =>
+                                            `sidebar-left-playlists-list-item ${isActiveLink(playlist.playlistUrl) ? 'active' : ''}`
+                                        }
+                                        key={index}
+                                        style={getPlaylistStyle()}
+                                        onMouseEnter={() => handleNoteNameChange(playlist.name, "@" + playlist.creator.name, "1")}
+                                        onMouseLeave={() => handleNoteNameChange(playlist.name, "@" + playlist.creator.name, "0")}
+                                    >
                                         <div className="sidebar-left-playlists-list-item-left">
                                             <img className="sidebar-left-playlists-list-item-left-image"
-                                                 src={process.env.PUBLIC_URL + `/images/gallery/0476d014bcfd4716611c1c59f8f7611b.jpg`}
+                                                 src={`http://localhost:5000/` + playlist.playlistImg}
                                                  alt=""/>
                                         </div>
                                         <div className="sidebar-left-playlists-list-item-right"
@@ -302,169 +336,6 @@ const SideBarLeft  = () => {
                             ) : (
                                 <p></p>
                             )}
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item"
-                                     style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("🪷 Top 200 volume 2024 🪷", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/0476d014bcfd4716611c1c59f8f7611b.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">🪷 Top 200 volume 2024
-                                        🪷</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item"
-                                     style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("🐸 Top 200 volume 2023 🐸", "@username", "0")}>
-                            <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/173558115_790424168538166_2849205650520624862_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">🐸 Top 200 volume 2023
-                                        🐸</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item"
-                                     style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/135060407_240088560971081_6826181255437109694_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">Poopie doopie
-                                        Name</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Shoort", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Shoort", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/317227331_166200936047228_5967614100849288512_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">Shoort</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Playlist Name", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Playlist Name", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/347504210_2210436199143577_4984331646709175478_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                <h3 className="sidebar-left-playlists-list-item-right-title">📖 Tangled sheets, magazines on the floor, beeing teenager again 📖</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("A Longer Playlist Nameee", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("A Longer Playlist Nameee", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/155839804_115429443928743_8673419221365525306_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">A Longer
-                                        Playlist
-                                        Nameee</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Poopie doopie Name", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Poopie doopie Name", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/118809709_249357199583197_8804687060382916519_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">Poopie doopie
-                                        Name</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Shoort", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Shoort", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/100507160_277101373474665_8527359069873583537_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">Shoort</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Mhmmmm 🩰", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Mhmmmm 🩰", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/Ym1H5ip.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">Mhmmmm 🩰</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Hmmm kinda shoort", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Hmmm kinda shoort", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/tumblr_orrsz3IAuf1vot3zgo1_500.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">Hmmm kinda shoort</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
-                            <NavLink to="/playlist1" className="sidebar-left-playlists-list-item" style={getPlaylistStyle()}
-                                     onMouseEnter={() => handleNoteNameChange("Longer than short", "@username", "1")}
-                                     onMouseLeave={() => handleNoteNameChange("Longer than short", "@username", "0")}>
-                                <div className="sidebar-left-playlists-list-item-left">
-                                    <img className="sidebar-left-playlists-list-item-left-image"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/347717546_576210121266890_1431385856945323170_n.jpg`}
-                                         alt=""/>
-                                </div>
-                                <div className="sidebar-left-playlists-list-item-right"
-                                     style={getDisplayStyle2()}>
-                                    <h3 className="sidebar-left-playlists-list-item-right-title">Longer than short</h3>
-                                    <p className="sidebar-left-playlists-list-item-right-subtitle">41 Videos</p>
-                                </div>
-                            </NavLink>
                         </div>
                     </div>
                 </ScrollBar>
