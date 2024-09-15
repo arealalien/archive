@@ -86,9 +86,9 @@ const VideosSec = ({ videoCreator, search }) => {
         const positions = [0.20, 0.40, 0.60, 0.80];
         let currentIndex = 0;
 
-        if (video.loopRequest) {
-            cancelAnimationFrame(video.loopRequest);
-            video.loopRequest = null;
+        if (video.loopTimeout) {
+            clearTimeout(video.loopTimeout);
+            video.loopTimeout = null;
         }
 
         const updateTime = () => {
@@ -97,9 +97,8 @@ const VideosSec = ({ videoCreator, search }) => {
             const percent = (video.currentTime / video.duration) * 100;
             progressBar.style.width = `${percent}%`;
 
-            video.loopRequest = requestAnimationFrame(() => {
-                setTimeout(updateTime, 3000);
-            });
+            // Update every 3 seconds
+            video.loopTimeout = setTimeout(updateTime, 3000);
         };
 
         const onMetadataLoaded = () => {
@@ -113,7 +112,11 @@ const VideosSec = ({ videoCreator, search }) => {
         if (video.readyState >= 1) {
             onMetadataLoaded();
         } else {
-            video.addEventListener('loadedmetadata', onMetadataLoaded, { once: true });
+            const metadataLoadedHandler = () => {
+                onMetadataLoaded();
+                video.removeEventListener('loadedmetadata', metadataLoadedHandler);
+            };
+            video.addEventListener('loadedmetadata', metadataLoadedHandler);
         }
     };
 
@@ -126,9 +129,9 @@ const VideosSec = ({ videoCreator, search }) => {
         const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
         if (!video || !thumbnail || !progressBar) return;
 
-        if (video.loopRequest) {
-            cancelAnimationFrame(video.loopRequest);
-            video.loopRequest = null;
+        if (video.loopTimeout) {
+            clearTimeout(video.loopTimeout);
+            video.loopTimeout = null;
         }
 
         video.pause();

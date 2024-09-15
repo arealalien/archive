@@ -384,9 +384,10 @@ const SideBarRight = ({
                                                     <div className="blackbutton-shadow"></div>
                                                 </button>
                                             ) : (
-                                                <button className="mainbutton" onClick={handleSubscribe}
+                                                <button className="whitebutton" onClick={handleSubscribe}
                                                         disabled={isSubscribed}>
                                                     Subscribe
+                                                    <div className="whitebutton-shadow"></div>
                                                 </button>
                                             )}
                                         </div>
@@ -494,7 +495,6 @@ const SideBarRight = ({
                                         </svg>
                                     </div>
                                 </div>
-                                <div className="video-inner-right-box-shadow"></div>
                             </div>
                             <div className="video-inner-right-box-comments">
                                 <div className="video-inner-right-box-comments-top">
@@ -506,7 +506,6 @@ const SideBarRight = ({
                                 <div className="video-inner-right-box-comments-bottom">
 
                                 </div>
-                                <div className="video-inner-right-box-comments-shadow"></div>
                             </div>
                         </div>
                     ) : null}

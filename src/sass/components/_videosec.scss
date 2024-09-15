@@ -41,10 +41,8 @@
       gap: 4em;
       &-box {
         width: 100%;
-        background-color: hslac($black, 0);
-        border: 1px solid hslac($white, .1);
-        border-radius: 2.5rem;
-        backdrop-filter: blur(1.5rem) brightness(70%);
+        background-color: hslac($black, 1);
+        border-radius: 2rem;
         @include flex-col();
 
         &-top {
@@ -57,7 +55,7 @@
             width: 100%;
             position: relative;
             gap: 1em;
-            border-radius: 2.5rem 2.5em 0 0;
+            border-radius: 2rem 2em 0 0;
             overflow: hidden;
             z-index: 5;
             @include flex-col();
@@ -104,8 +102,7 @@
               @include flex-center();
 
               &-image {
-                min-width: 100%; min-height: 100%;
-                max-width: 105%;
+                width: 100%; height: 100%;
                 position: absolute;
                 object-fit: cover;
               }
@@ -144,7 +141,7 @@
             width: 100%;
             position: relative;
             z-index: 5;
-            .mainbutton, .blackbutton {
+            .whitebutton, .blackbutton {
               width: 100%;
               font-size: $paragraph-medium !important;
             }
@@ -194,23 +191,13 @@
             }
           }
         }
-        &-shadow {
-          top: 1em;
-          width: 100%; height: 100%;
-          position: absolute;
-          background-color: hslac($black, .3);
-          filter: blur(1.5rem);
-          z-index: -1;
-        }
       }
       &-box-comments {
         width: 100%;
         padding: 2.5em;
         position: relative;
-        background-color: hslac($black, 0);
-        border: 1px solid hslac($white, .1);
-        border-radius: 2.5rem;
-        backdrop-filter: blur(1.5rem) brightness(70%);
+        background-color: hslac($black, 1);
+        border-radius: 2rem;
         gap: 3em;
         @include flex-col();
 
@@ -220,15 +207,6 @@
             font-size: $paragraph-xlarge;
             font-weight: 600;
           }
-        }
-        &-shadow {
-          top: 1em;
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          background-color: hslac($black, .3);
-          filter: blur(1.5rem);
-          z-index: -1;
         }
       }
     }

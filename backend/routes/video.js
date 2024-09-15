@@ -118,17 +118,26 @@ router.post('/videos/:videoUrl/like', async (req, res) => {
             return res.status(404).json({ error: 'Video not found' });
         }
 
-        // Add the video to the user's liked videos
-        await prisma.user.update({
+        const user = await prisma.user.findUnique({
             where: { id: userId },
-            data: {
-                likedVideos: {
-                    connect: { id: video.id }
-                }
-            }
+            include: { likedVideos: true } // Include liked videos to check for duplicates
         });
 
-        // Find or create the "Liked Videos" playlist
+        const isAlreadyLiked = user.likedVideos.some(likedVideo => likedVideo.id === video.id);
+
+        if (!isAlreadyLiked) {
+            await prisma.user.update({
+                where: { id: userId },
+                data: {
+                    likedVideos: {
+                        connect: { id: video.id }
+                    }
+                }
+            });
+            console.log('Video connected to user\'s liked videos');
+        }
+
+        // 3. Find or create the "Liked Videos" playlist for the user
         let likedPlaylist = await prisma.playlist.upsert({
             where: {
                 creatorId_name: {
@@ -136,13 +145,10 @@ router.post('/videos/:videoUrl/like', async (req, res) => {
                     name: 'Liked Videos'
                 }
             },
-            update: {},
-            create: {
-                name: 'Liked Videos',
-                creatorId: userId
-            }
+            update: {}
         });
 
+        // 4. Add the video to the "Liked Videos" playlist in PlaylistVideo
         await prisma.playlistVideo.upsert({
             where: {
                 playlistId_videoId: {
@@ -150,12 +156,13 @@ router.post('/videos/:videoUrl/like', async (req, res) => {
                     videoId: video.id
                 }
             },
-            update: {},
+            update: {}, // If already exists, do nothing
             create: {
                 playlistId: likedPlaylist.id,
                 videoId: video.id
             }
         });
+        console.log('Video added to Liked Videos playlist in PlaylistVideo table');
 
         res.json({ message: 'Video liked and added to Liked Videos playlist' });
     } catch (err) {

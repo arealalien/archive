@@ -94,6 +94,12 @@ app.post('/upload/playlist-picture', playlistUpload.single('playlistPicture'), a
 
         // Convert to JPEG using sharp
         await sharp(req.file.buffer)
+            .resize({
+                width: 500,
+                height: 500,
+                fit: sharp.fit.cover,
+                position: 'center'
+            })
             .jpeg()
             .toFile(path.join(filePath, 'cover.jpg'));
 
@@ -241,9 +247,29 @@ const handleFileUpload = async (req, res) => {
         console.log('JPEG file path:', jpegFilePath); // Debugging line
 
         // Convert to JPEG using sharp
-        await sharp(originalFilePath)
-            .jpeg()
-            .toFile(jpegFilePath);
+        if (fileType === 'banner') {
+            // Resize for banner
+            await sharp(originalFilePath)
+                .resize({
+                    width: 1496,
+                    height: 544,
+                    fit: sharp.fit.cover,
+                    position: sharp.strategy.entropy
+                })
+                .jpeg()
+                .toFile(jpegFilePath);
+        } else if (fileType === 'profilePicture') {
+            // Resize for profile picture
+            await sharp(originalFilePath)
+                .resize({
+                    width: 500,
+                    height: 500,
+                    fit: sharp.fit.cover,
+                    position: 'center'
+                })
+                .jpeg()
+                .toFile(jpegFilePath);
+        }
 
         // Ensure the file is no longer being used before unlinking
         unlinkFile(originalFilePath);
@@ -484,6 +510,12 @@ app.post('/upload/thumbnail', validateToken, tempUpload.single('thumbnail'), asy
 
         // Convert to JPEG using sharp
         await sharp(originalFilePath)
+            .resize({
+                width: 640,
+                height: 360,
+                fit: sharp.fit.cover,
+                position: 'center'
+            })
             .jpeg()
             .toFile(jpegFilePath);
 

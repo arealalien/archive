@@ -77,6 +77,7 @@ model PlaylistVideo {
   playlistId     Int
   video          Video     @relation(fields: [videoId], references: [id])
   videoId        Int
+  dateAdded      DateTime  @default(now())
 
   @@unique([playlistId, videoId])
 }
@@ -90,7 +91,7 @@ model Comment {
   videoId        Int?
   post           Post?     @relation(fields: [postId], references: [id])
   postId         Int?
-  dateCommented DateTime        @default(now())
+  dateCommented DateTime   @default(now())
 }
 
 model Subscription {
