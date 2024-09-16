@@ -37,7 +37,7 @@ const SideBarRight = ({
 
     const handleSignOut = () => {
         signOut();
-        navigate('/');
+        navigate('/login');
     };
 
     const handleMouseMoveRight = useCallback((e) => {

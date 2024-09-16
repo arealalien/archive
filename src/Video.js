@@ -105,7 +105,7 @@ function Video() {
     const handleLike = async () => {
         try {
             const response = await axios.post(`http://localhost:5000/videos/${videoDetails.videoUrl}/like`, {
-                userId: user.id // Pass the user ID
+                userId: user // Pass the user ID
             });
 
             if (response.data.message === 'Video liked and added to Liked Videos playlist') {

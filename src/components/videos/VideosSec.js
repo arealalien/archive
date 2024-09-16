@@ -83,7 +83,7 @@ const VideosSec = ({ videoCreator, search }) => {
         thumbnail.style.opacity = "0";
         video.preload = "metadata"; // Preload the video metadata
 
-        const positions = [0.20, 0.40, 0.60, 0.80];
+        const positions = [0.15, 0.30, 0.45, 0.60, 0.75, 0.90];
         let currentIndex = 0;
 
         if (video.loopTimeout) {
@@ -98,7 +98,7 @@ const VideosSec = ({ videoCreator, search }) => {
             progressBar.style.width = `${percent}%`;
 
             // Update every 3 seconds
-            video.loopTimeout = setTimeout(updateTime, 3000);
+            video.loopTimeout = setTimeout(updateTime, 2000);
         };
 
         const onMetadataLoaded = () => {

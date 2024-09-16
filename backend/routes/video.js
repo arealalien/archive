@@ -119,13 +119,14 @@ router.post('/videos/:videoUrl/like', async (req, res) => {
         }
 
         const user = await prisma.user.findUnique({
-            where: { id: userId },
+            where: { id: userId.id },
             include: { likedVideos: true } // Include liked videos to check for duplicates
         });
 
         const isAlreadyLiked = user.likedVideos.some(likedVideo => likedVideo.id === video.id);
 
         if (!isAlreadyLiked) {
+            // Add the video to the user's likedVideos and likedBy relationship
             await prisma.user.update({
                 where: { id: userId },
                 data: {
@@ -134,32 +135,39 @@ router.post('/videos/:videoUrl/like', async (req, res) => {
                     }
                 }
             });
-            console.log('Video connected to user\'s liked videos');
+
+            await prisma.video.update({
+                where: { id: video.id },
+                data: {
+                    likedBy: {
+                        connect: { id: user.id }
+                    }
+                }
+            });
         }
 
-        // 3. Find or create the "Liked Videos" playlist for the user
-        let likedPlaylist = await prisma.playlist.upsert({
+        const likedPlaylist = await prisma.playlist.findUnique({
             where: {
                 creatorId_name: {
-                    creatorId: userId,
+                    creatorId: userId.id,
                     name: 'Liked Videos'
                 }
-            },
-            update: {}
+            }
         });
 
-        // 4. Add the video to the "Liked Videos" playlist in PlaylistVideo
-        await prisma.playlistVideo.upsert({
-            where: {
-                playlistId_videoId: {
-                    playlistId: likedPlaylist.id,
-                    videoId: video.id
+        if (!likedPlaylist) {
+            return res.status(404).json({ error: 'Liked Videos playlist not found' });
+        }
+
+        // Add the video to the "Liked Videos" playlist in PlaylistVideo
+        await prisma.playlistVideo.create({
+            data: {
+                playlist: {
+                    connect: { id: likedPlaylist.id }
+                },
+                video: {
+                    connect: { id: video.id }
                 }
-            },
-            update: {}, // If already exists, do nothing
-            create: {
-                playlistId: likedPlaylist.id,
-                videoId: video.id
             }
         });
         console.log('Video added to Liked Videos playlist in PlaylistVideo table');
