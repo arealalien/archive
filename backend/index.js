@@ -303,9 +303,10 @@ app.post('/upload/banner', validateToken, upload.single('banner'), handleFileUpl
 const ffmpegPath = 'E:\\ffmpeg\\bin\\ffmpeg.exe';
 const ffprobePath = 'E:\\ffmpeg\\bin\\ffprobe.exe';
 
-app.post('/upload/video', validateToken, tempUpload.single('video'), async (req, res) => {
+app.post('/upload/video', validateToken, tempUpload.fields([{ name: 'video', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), async (req, res) => {
     const { title, description, duration } = req.body;
-    const videoFile = req.file;
+    const videoFile = req.files['video'][0];
+    const thumbnailFile = req.files['thumbnail'] ? req.files['thumbnail'][0] : null;
     const videoId = uuidv4(); // Generate a unique video ID
     const userId = req.userId;
 
@@ -325,6 +326,34 @@ app.post('/upload/video', validateToken, tempUpload.single('video'), async (req,
 
         if (!fs.existsSync(spriteFolder)) {
             fs.mkdirSync(spriteFolder, { recursive: true });
+        }
+
+        if (thumbnailFile) {
+            const tempThumbnailPath = path.join(videoFolder, 'thumbnail-temp.jpg');
+
+            // Move the thumbnail to the video folder for processing with a new name
+            fs.renameSync(thumbnailFile.path, tempThumbnailPath);
+
+            try {
+                const finalThumbnailPath = path.join(videoFolder, 'thumbnail.jpg');
+
+                // Use the moved file path for processing with Sharp
+                await sharp(tempThumbnailPath)
+                    .resize({ width: 640, height: 360, fit: sharp.fit.cover, position: 'center' })
+                    .jpeg()
+                    .toFile(finalThumbnailPath);
+
+                // Optionally delete the temporary file after processing
+                fs.unlink(tempThumbnailPath, (err) => {
+                    if (err) console.error('Error deleting temporary thumbnail file:', err);
+                });
+            } catch (err) {
+                console.error('Error processing thumbnail:', err);
+                // If an error occurs, delete the temporary thumbnail file
+                fs.unlink(tempThumbnailPath, (err) => {
+                    if (err) console.error('Error deleting temporary thumbnail file:', err);
+                });
+            }
         }
 
         // Move video to the final destination
@@ -481,58 +510,6 @@ app.post('/upload/video', validateToken, tempUpload.single('video'), async (req,
     } catch (error) {
         console.error('Error saving video metadata:', error);
         res.status(500).json({ error: 'Failed to save video metadata', details: error.message });
-    }
-});
-
-app.post('/upload/thumbnail', validateToken, tempUpload.single('thumbnail'), async (req, res) => {
-    const thumbnailFile = req.file;
-    const { videoId } = req.body; // Get videoId from request body
-    const userId = req.userId;
-
-    try {
-        if (!thumbnailFile) {
-            throw new Error('No thumbnail file uploaded');
-        }
-
-        // Construct the path for the video folder
-        const videoFolder = path.join(__dirname, '..', 'public', 'users', userId.toString(), 'videos', videoId);
-
-        // Log the path for debugging
-        console.log('Video folder path:', videoFolder);
-
-        // Check if the video folder exists, and create it if it doesn't
-        if (!fs.existsSync(videoFolder)) {
-            fs.mkdirSync(videoFolder, { recursive: true });
-        }
-
-        const originalFilePath = path.resolve(__dirname, '../', 'temp', 'thumbnail.jpg');
-        const jpegFilePath = path.join(videoFolder, 'thumbnail.jpg');
-
-        // Convert to JPEG using sharp
-        await sharp(originalFilePath)
-            .resize({
-                width: 640,
-                height: 360,
-                fit: sharp.fit.cover,
-                position: 'center'
-            })
-            .jpeg()
-            .toFile(jpegFilePath);
-
-        // Asynchronously remove the original thumbnail file from temp storage
-        console.log('Attempting to remove file:', originalFilePath);
-        fs.unlink(originalFilePath, (err) => {
-            if (err) {
-                console.error('Error removing file:', err);
-            } else {
-                console.log('File removed successfully');
-            }
-        });
-
-        res.status(200).json({ message: 'Thumbnail uploaded successfully!', filePath: jpegFilePath });
-    } catch (error) {
-        console.error('Error processing thumbnail:', error);
-        res.status(500).json({ error: 'Failed to process thumbnail', details: error.message });
     }
 });
 

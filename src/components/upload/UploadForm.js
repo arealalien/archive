@@ -22,6 +22,7 @@ const UploadForm = () => {
         setVideoFile(file);
         setVideoDuration(duration);
         setShowDetailsForm(true);
+        setTitle(file.name.split(".")[0]);
 
         // Generate thumbnails
         const url = URL.createObjectURL(file);
@@ -116,31 +117,16 @@ const UploadForm = () => {
         try {
             const token = localStorage.getItem('token');
 
-            // Step 1: Upload video
-            const videoFormData = new FormData();
-            videoFormData.append('video', videoFile);
-            videoFormData.append('title', title);
-            videoFormData.append('description', description);
-            videoFormData.append('duration', videoDuration);
+            // Create a single FormData object containing both video and thumbnail
+            const formData = new FormData();
+            formData.append('video', videoFile);
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('duration', videoDuration);
 
-            const videoResponse = await axios.post('http://localhost:5000/upload/video', videoFormData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-            const { videoId } = videoResponse.data;
-
-            // Ensure videoId is not undefined
-            if (!videoId) {
-                throw new Error('Video ID is missing in the response');
-            }
-
-            // Step 2: Upload thumbnail
-            const imageFormData = new FormData();
+            // Add the thumbnail to the form data if it exists
             if (selectedThumbnail === customThumbnail) {
-                imageFormData.append('thumbnail', imageFile);
+                formData.append('thumbnail', imageFile);
             } else {
                 let blob;
                 if (selectedThumbnail.startsWith('data:image')) {
@@ -149,11 +135,11 @@ const UploadForm = () => {
                     const response = await fetch(selectedThumbnail);
                     blob = await response.blob();
                 }
-                imageFormData.append('thumbnail', new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' }));
+                formData.append('thumbnail', new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' }));
             }
-            imageFormData.append('videoId', videoId); // Pass the videoId to the thumbnail upload
 
-            await axios.post('http://localhost:5000/upload/thumbnail', imageFormData, {
+            // Send the combined request
+            const response = await axios.post('http://localhost:5000/upload/video', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`,
