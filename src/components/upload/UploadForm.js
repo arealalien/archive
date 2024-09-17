@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 import FileUpload from './FileUpload';
 import ImageUpload from './ImageUpload';
@@ -15,6 +15,7 @@ const UploadForm = () => {
     const [customThumbnail, setCustomThumbnail] = useState('');
     const [selectedThumbnail, setSelectedThumbnail] = useState(null);
     const [showDetailsForm, setShowDetailsForm] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
     const videoUploadRef = useRef(null);
     const imageUploadRef = useRef(null);
 
@@ -144,20 +145,40 @@ const UploadForm = () => {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`,
                 },
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setUploadProgress(percentCompleted); // Update progress
+                }
             });
 
-            navigate('/');
-            setTitle('');
-            setDescription('');
-            setVideoFile(null);
-            setImageFile(null);
-            setShowDetailsForm(false);
+            if (uploadProgress === 100) {
+                setUploadProgress(0);
+                setTitle('');
+                setDescription('');
+                setVideoFile(null);
+                setImageFile(null);
+                setShowDetailsForm(false);
+                navigate('/');
+            }
         } catch (error) {
             console.error('Error saving video and thumbnail:', error.response ? error.response.data : error.message);
             alert('Failed to save video and thumbnail.');
             navigate('/');
         }
     };
+
+    useEffect(() => {
+        if (uploadProgress === 100) {
+            // Wait until progress is 100% before navigating away
+            setUploadProgress(0);
+            setTitle('');
+            setDescription('');
+            setVideoFile(null);
+            setImageFile(null);
+            setShowDetailsForm(false);
+            navigate('/');
+        }
+    }, [uploadProgress]);
 
     return (
         <section className="upload">
@@ -175,6 +196,39 @@ const UploadForm = () => {
                 {showDetailsForm && (
                     <form onSubmit={handleSubmit} className="upload-inner-second">
                         <div className="upload-inner-second-top">
+                            <div className="upload-inner-second-right">
+                                <fieldset className="upload-inner-second-right-form-center">
+                                    <div className="upload-inner-second-right-form-center-container">
+                                        <label
+                                            className="upload-inner-second-right-form-center-container-label">Title*</label>
+                                        <div className="upload-inner-second-right-form-center-container-input">
+                                            <input
+                                                id="title"
+                                                type="text"
+                                                placeholder="Title"
+                                                name="title"
+                                                required
+                                                value={title}
+                                                onChange={(e) => setTitle(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="upload-inner-second-right-form-center-container">
+                                        <label
+                                            className="upload-inner-second-right-form-center-container-label">Description*</label>
+                                        <div className="upload-inner-second-right-form-center-container-input">
+                                            <textarea
+                                                id="description"
+                                                placeholder="Description"
+                                                name="description"
+                                                required
+                                                value={description}
+                                                onChange={(e) => setDescription(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
                             <div className="upload-inner-second-left">
                                 <div className="upload-inner-second-left-container">
                                     <div className="upload-inner-second-left-container-overlay"></div>
@@ -251,49 +305,18 @@ const UploadForm = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="upload-inner-second-right">
-                                <fieldset className="upload-inner-second-right-form-center">
-                                    <div className="upload-inner-second-right-form-center-container">
-                                        <label
-                                            className="upload-inner-second-right-form-center-container-label">Title*</label>
-                                        <div className="upload-inner-second-right-form-center-container-input">
-                                            <input
-                                                id="title"
-                                                type="text"
-                                                placeholder="Title"
-                                                name="title"
-                                                required
-                                                value={title}
-                                                onChange={(e) => setTitle(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="upload-inner-second-right-form-center-container">
-                                        <label
-                                            className="upload-inner-second-right-form-center-container-label">Description*</label>
-                                        <div className="upload-inner-second-right-form-center-container-input">
-                                            <textarea
-                                                id="description"
-                                                placeholder="Description"
-                                                name="description"
-                                                required
-                                                value={description}
-                                                onChange={(e) => setDescription(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
                         </div>
                         <div className="upload-inner-second-bottom">
                             <div className="upload-inner-second-bottom-progress view-width">
                                 <div className="upload-inner-second-bottom-progress-inner">
                                     <div className="upload-inner-second-bottom-progress-left">
-                                        <p className="upload-inner-second-bottom-progress-left-number">0%</p>
+                                        <p className="upload-inner-second-bottom-progress-left-number">{uploadProgress}%</p>
                                     </div>
                                     <div className="upload-inner-second-bottom-progress-center">
                                         <div className="upload-inner-second-bottom-progress-center-bar">
-                                            <div className="upload-inner-second-bottom-progress-center-bar-inner" style={{ width: 0 }}></div>
+                                            <progress className="upload-inner-second-bottom-progress-center-bar-inner"
+                                                      value={uploadProgress} max="100">{uploadProgress}%
+                                            </progress>
                                         </div>
                                     </div>
                                     <div className="upload-inner-second-bottom-progress-right">
