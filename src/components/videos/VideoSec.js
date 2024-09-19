@@ -42,7 +42,6 @@ const VideoSec  = () => {
         fluid: true,
         playbackRates: [0.25, 0.5, 1, 1.5, 2],
         enableSmoothSeeking: true,
-        enableDocumentPictureInPicture: true,
         poster: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/thumbnail.jpg",
         sources: [{
             src: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/" + videoDetails.videoUrl,
@@ -61,6 +60,7 @@ const VideoSec  = () => {
                 "timeDivider",
                 "durationDisplay",
                 "playbackRateMenuButton",
+                "httpSourceSelector",
                 "pictureInPictureToggle",
                 "fullscreenToggle"
             ],

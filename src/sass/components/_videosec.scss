@@ -770,6 +770,7 @@
     border-radius: .5em !important;
     box-shadow: 0 5px 25px -5px hslac($black, .4);
     border: none !important;
+    transition: none !important;
   }
   .vjs-mouse-display .vjs-volume-tooltip {
     padding: .8em 1.25em .8em 1.25em !important;

@@ -11,7 +11,6 @@ const ProfileSec  = ({ profile, profileName, page }) => {
             case 'videos':
                 return (
                     <>
-                        <div>videos</div>
                         <div className="profile-inner-content-right">
                             <div className="profile-inner-content-right-videos videos-inner-4 videos-inner">
                                 <VideosSec videoCreator={profileName}/>
@@ -25,7 +24,11 @@ const ProfileSec  = ({ profile, profileName, page }) => {
                 );
             case 'playlists':
                 return (
-                    <div>playlists</div>
+                    <div className="profile-inner-content-right playlists-grid">
+                        <div className="profile-inner-content-right-playlists playlists-grid-inner">
+                            <PlaylistsSec videoCreator={profileName} creator={profile}/>
+                        </div>
+                    </div>
                 );
             default:
                 return (

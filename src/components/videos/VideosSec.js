@@ -163,7 +163,7 @@ const VideosSec = ({ videoCreator, search }) => {
                              className="videos-inner-item-video-overlay"></div>
                         <video
                             className="videos-inner-item-video-video"
-                            src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl}
+                            src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl.split('.')[0] + "-144p." + video.videoUrl.split('.')[1]}
                             muted
                             loop
                             preload="none"

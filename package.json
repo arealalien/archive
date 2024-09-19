@@ -19,6 +19,8 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
     "screenfull": "^6.0.2",
+    "videojs-contrib-quality-levels": "^4.1.0",
+    "videojs-http-source-selector": "^1.1.6",
     "videojs-sprite-thumbnails": "^2.2.1",
     "web-vitals": "^2.1.4"
   },

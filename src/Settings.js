@@ -341,8 +341,7 @@ function Settings() {
                                 </div>
                                 <div className="settings-inner-right-center-block-right">
                                     <div className="settings-inner-right-center-block-right-line">
-                                        <p className="settings-inner-right-center-block-right-line-title">Must have
-                                            atleast <span>1000</span> watch hours</p>
+                                        <p className="settings-inner-right-center-block-right-line-title">Post at least <span>5</span> videos</p>
                                         <div className="settings-inner-right-center-block-right-line-progressbar">
                                             <div style={{width: 100 + '%'}}
                                                  className="settings-inner-right-center-block-right-line-progressbar-progress"></div>
@@ -350,7 +349,7 @@ function Settings() {
                                     </div>
                                     <div className="settings-inner-right-center-block-right-line">
                                         <p className="settings-inner-right-center-block-right-line-title">Minimum
-                                            of <span>100 000</span> total video views</p>
+                                            of <span>100</span> total video views</p>
                                         <div className="settings-inner-right-center-block-right-line-progressbar">
                                             <div style={{width: 43 + '%'}}
                                                  className="settings-inner-right-center-block-right-line-progressbar-progress"></div>
@@ -358,7 +357,7 @@ function Settings() {
                                     </div>
                                     <div className="settings-inner-right-center-block-right-line">
                                         <p className="settings-inner-right-center-block-right-line-title">Must have at
-                                            least <span>5</span> subscribers</p>
+                                            least <span>10</span> subscribers</p>
                                         <div className="settings-inner-right-center-block-right-line-progressbar">
                                             <div style={{width: 80 + '%'}}
                                                  className="settings-inner-right-center-block-right-line-progressbar-progress"></div>

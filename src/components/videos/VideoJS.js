@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import SpriteThumbnails from "videojs-sprite-thumbnails";
+import "videojs-contrib-quality-levels";
+import "videojs-http-source-selector";
 
 const VideoJS  = (props) => {
     const videoRef = React.useRef(null);
@@ -23,6 +25,11 @@ const VideoJS  = (props) => {
                 onReady && onReady(player);
 
                 player.ready(() => {
+                    player.qualityLevels();
+                    if (typeof player.httpSourceSelector === "function" && player) {
+                        player.httpSourceSelector();
+                    }
+
                     Promise.all([
                         fetch(`${spriteLink}sprite.json`).then(response => response.json()),
                         fetch(`${spriteLink}interval.json`).then(response => response.json()),

@@ -16,6 +16,8 @@ const videoRoutes = require('./routes/video');
 const SearchRoutes = require('./routes/search');
 const CreatorsRoutes = require('./routes/creators');
 const PlaylistsRoutes = require('./routes/playlist');
+const http = require('http');
+const WebSocket = require('ws');
 
 const prisma = new PrismaClient();
 const app = express();
@@ -23,11 +25,48 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // Adjust the origin as needed
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
 });
+
+// Create HTTP server and WebSocket server
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+// WebSocket connections map to track clients
+const clients = new Map();
+
+wss.on('connection', (ws) => {
+    console.log('WebSocket client connected');
+
+    // Handle incoming messages from clients (e.g., subscription to videoId)
+    ws.on('message', (message) => {
+        const { videoId } = JSON.parse(message);
+        clients.set(videoId, ws); // Store the client connection based on videoId
+    });
+
+    ws.on('close', () => {
+        // Remove the client from the map when disconnected
+        clients.forEach((client, videoId) => {
+            if (client === ws) {
+                clients.delete(videoId);
+            }
+        });
+        console.log('WebSocket client disconnected');
+    });
+});
+
+// Function to send status updates via WebSocket
+const sendStatusUpdate = (videoId, status) => {
+    const client = clients.get(videoId);
+    if (client && client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ videoId, status }));
+    }
+};
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -262,8 +301,8 @@ const handleFileUpload = async (req, res) => {
             // Resize for profile picture
             await sharp(originalFilePath)
                 .resize({
-                    width: 500,
-                    height: 500,
+                    width: 400,
+                    height: 400,
                     fit: sharp.fit.cover,
                     position: 'center'
                 })
@@ -356,105 +395,105 @@ app.post('/upload/video', validateToken, tempUpload.fields([{ name: 'video', max
             }
         }
 
-        // Move video to the final destination
-        const videoPath = path.join(videoFolder, videoUrl);
-        fs.renameSync(videoFile.path, path.join(videoFolder, videoUrl));
+        // Move the original video to its final location
+        const originalVideoPath = path.join(videoFolder, videoId + path.extname(videoFile.originalname));
+        fs.renameSync(videoFile.path, originalVideoPath);
 
-        // Generate sprite images and JSON file using ffmpeg
-        const spriteFilePath = path.join(spriteFolder, 'sprite.jpg');
-        const jsonFilePath = path.join(spriteFolder, 'sprite.json');
-        const intervalFilePath = path.join(spriteFolder, 'interval.json');
-
-        // Dynamically calculate the number of frames, columns, and rows for the sprite
-        let frameInterval = 1;
-        const totalIFrames = Math.floor(duration / frameInterval);
-
-        if (totalIFrames >= 5500) {
-            frameInterval = 12;
-        } else if (totalIFrames >= 5000) {
-            frameInterval = 11;
-        } else if (totalIFrames >= 4500) {
-            frameInterval = 10;
-        } else if (totalIFrames >= 4000) {
-            frameInterval = 9;
-        } else if (totalIFrames >= 3500) {
-            frameInterval = 8;
-        } else if (totalIFrames >= 3000) {
-            frameInterval = 7;
-        } else if (totalIFrames >= 2500) {
-            frameInterval = 6;
-        } else if (totalIFrames >= 2000) {
-            frameInterval = 5;
-        } else if (totalIFrames >= 1500) {
-            frameInterval = 4;
-        } else if (totalIFrames >= 1000) {
-            frameInterval = 3;
-        } else if (totalIFrames >= 500) {
-            frameInterval = 2;
-        } else if (totalIFrames >= 100) {
-            frameInterval = 1;
-        }
-
-        const totalFrames = Math.floor(parseFloat(duration) / frameInterval);
-        const columns = Math.ceil(Math.sqrt(totalFrames)); // Calculate columns for the grid
-        const rows = Math.ceil(totalFrames / columns); // Calculate rows for the grid
-
-        // Get video aspect ratio
-        const aspectRatioFilePath = path.join(spriteFolder, 'aspect_ratio.json');
-        exec(`${ffprobePath} -v error -select_streams v:0 -show_entries stream=width,height -of json ${videoPath}`, (err, stdout) => {
+        // Determine the original video's width and height using ffprobe
+        exec(`${ffprobePath} -v error -select_streams v:0 -show_entries stream=width,height -of json ${originalVideoPath}`, async (err, stdout) => {
             if (err) {
-                console.error('Error calculating aspect ratio:', err);
-                res.status(500).json({ error: 'Failed to calculate aspect ratio' });
-                return;
+                console.error('Error determining video resolution:', err);
+                return res.status(500).json({error: 'Failed to determine video resolution'}); // Add return here
             }
 
             const data = JSON.parse(stdout);
-            const width = data.streams[0].width;
-            const height = data.streams[0].height;
-            const aspectRatio = width / height;
-            fs.writeFileSync(aspectRatioFilePath, JSON.stringify({ aspectRatio }));
+            const originalWidth = data.streams[0].width;
+            const originalHeight = data.streams[0].height;
 
-            // Proceed to generate sprite images and JSON file using ffmpeg
+            // Set the maximum resolution based on the original height
+            const resolutions = [
+                {name: '144p', width: 256, height: 144},
+                {name: '240p', width: 426, height: 240},
+                {name: '360p', width: 640, height: 360},
+                {name: '480p', width: 854, height: 480},
+                {name: '720p', width: 1280, height: 720},
+                {name: '1080p', width: 1920, height: 1080}
+            ];
+
+            // Determine the maximum resolution to transcode to
+            const maxResolution = resolutions
+                .filter(r => r.height <= originalHeight)
+                .sort((a, b) => b.height - a.height)[0] || resolutions[resolutions.length - 1];
+            console.log('Max Resolution:', maxResolution);
+
+            // Store the transcoding promises for resolutions up to the maximum
+            const transcodingPromises = resolutions
+                .filter(r => r.height <= maxResolution.height)
+                .map(({ width, height, name }) => {
+                    const outputVideoPath = path.join(videoFolder, `${videoId}-${name}.mp4`);
+                    const command = `${ffmpegPath} -i ${originalVideoPath} -vf "scale=w=${width}:h=${height}:force_original_aspect_ratio=decrease,pad=w=${width}:h=${height}:x=(ow-iw)/2:y=(oh-ih)/2" -c:a copy ${outputVideoPath}`;
+                    console.log('Running command:', command);
+                    return new Promise((resolve, reject) => {
+                        exec(`${ffmpegPath} -i ${originalVideoPath} -vf "scale=w=${width}:h=${height}:force_original_aspect_ratio=decrease,pad=w=${width}:h=${height}:x=(ow-iw)/2:y=(oh-ih)/2" -c:a copy ${outputVideoPath}`, (err) => {
+                            if (err) {
+                                console.error(`Error transcoding video to ${name}:`, err);
+                                reject(err);
+                            } else {
+                                console.log(`Successfully transcoded video to ${name}`);
+                                resolve();
+                            }
+                        });
+                    });
+                });
+
+            try {
+                await Promise.all(transcodingPromises);
+                console.log('All transcoding completed successfully');
+
+                // Verify all files were created
+                const filePaths = resolutions.map(r => path.join(videoFolder, `${videoId}-${r.name}.mp4`));
+                filePaths.forEach(filePath => {
+                    if (fs.existsSync(filePath)) {
+                        console.log(`Found file: ${filePath}`);
+                    } else {
+                        console.error(`File missing: ${filePath}`);
+                    }
+                });
+            } catch (transcodingError) {
+                console.error('Error during transcoding:', transcodingError);
+                return res.status(500).json({ error: 'Failed to transcode video' });
+            }
+
+            // Generate sprite images and JSON file using ffmpeg
+            const spriteFilePath = path.join(spriteFolder, 'sprite.jpg');
+            const jsonFilePath = path.join(spriteFolder, 'sprite.json');
+            const intervalFilePath = path.join(spriteFolder, 'interval.json');
+
+            // Dynamically calculate the number of frames, columns, and rows for the sprite
             let frameInterval = 1;
             const totalIFrames = Math.floor(duration / frameInterval);
 
-            if (totalIFrames >= 8000) {
-                frameInterval = 20;
-            } else if (totalIFrames >= 7600) {
-                frameInterval = 19;
-            } else if (totalIFrames >= 7200) {
-                frameInterval = 18;
-            } else if (totalIFrames >= 6800) {
-                frameInterval = 17;
-            } else if (totalIFrames >= 6400) {
-                frameInterval = 16;
-            } else if (totalIFrames >= 6000) {
-                frameInterval = 15;
-            } else if (totalIFrames >= 5600) {
-                frameInterval = 14;
-            } else if (totalIFrames >= 5200) {
-                frameInterval = 13;
-            } else if (totalIFrames >= 4800) {
+            if (totalIFrames >= 5500) {
                 frameInterval = 12;
-            } else if (totalIFrames >= 4400) {
+            } else if (totalIFrames >= 5000) {
                 frameInterval = 11;
-            } else if (totalIFrames >= 3600) {
+            } else if (totalIFrames >= 4500) {
                 frameInterval = 10;
-            } else if (totalIFrames >= 3200) {
+            } else if (totalIFrames >= 4000) {
                 frameInterval = 9;
-            } else if (totalIFrames >= 2800) {
+            } else if (totalIFrames >= 3500) {
                 frameInterval = 8;
-            } else if (totalIFrames >= 2400) {
+            } else if (totalIFrames >= 3000) {
                 frameInterval = 7;
-            } else if (totalIFrames >= 2000) {
+            } else if (totalIFrames >= 2500) {
                 frameInterval = 6;
-            } else if (totalIFrames >= 1600) {
+            } else if (totalIFrames >= 2000) {
                 frameInterval = 5;
-            } else if (totalIFrames >= 1200) {
+            } else if (totalIFrames >= 1500) {
                 frameInterval = 4;
-            } else if (totalIFrames >= 800) {
+            } else if (totalIFrames >= 1000) {
                 frameInterval = 3;
-            } else if (totalIFrames >= 400) {
+            } else if (totalIFrames >= 500) {
                 frameInterval = 2;
             } else if (totalIFrames >= 100) {
                 frameInterval = 1;
@@ -464,52 +503,117 @@ app.post('/upload/video', validateToken, tempUpload.fields([{ name: 'video', max
             const columns = Math.ceil(Math.sqrt(totalFrames)); // Calculate columns for the grid
             const rows = Math.ceil(totalFrames / columns); // Calculate rows for the grid
 
-            // Generate sprite images using the video
-            exec(`${ffmpegPath} -i ${videoPath} -vf "fps=1/${frameInterval},scale=160:-1,tile=${columns}x${rows}" ${spriteFilePath}`, async (err) => {
+            // Get video aspect ratio
+            const aspectRatioFilePath = path.join(spriteFolder, 'aspect_ratio.json');
+            exec(`${ffprobePath} -v error -select_streams v:0 -show_entries stream=width,height -of json ${originalVideoPath}`, (err, stdout) => {
                 if (err) {
-                    console.error('Error generating sprite:', err);
-                    res.status(500).json({ error: 'Failed to generate sprite' });
+                    console.error('Error calculating aspect ratio:', err);
+                    res.status(500).json({error: 'Failed to calculate aspect ratio'});
                     return;
                 }
 
-                // Create a JSON map with frame positions
-                const json = {};
-                for (let i = 0; i < totalFrames; i++) {
-                    json[i * frameInterval] = {
-                        x: (i % columns) * 160,
-                        y: Math.floor(i / columns) * 90,
-                        w: 160,
-                        h: 90
-                    };
-                }
-                fs.writeFileSync(jsonFilePath, JSON.stringify(json));
-                fs.writeFileSync(intervalFilePath, JSON.stringify({ frameInterval }));
+                const data = JSON.parse(stdout);
+                const width = data.streams[0].width;
+                const height = data.streams[0].height;
+                const aspectRatio = width / height;
+                fs.writeFileSync(aspectRatioFilePath, JSON.stringify({aspectRatio}));
 
-                // Save video metadata to the database
-                try {
-                    await prisma.video.create({
-                        data: {
-                            creatorId: userId,
-                            videoUrl,
-                            title,
-                            description,
-                            datePosted: new Date(),
-                            duration: parseFloat(duration),
-                        },
-                    });
+                // Proceed to generate sprite images and JSON file using ffmpeg
+                let frameInterval = 1;
+                const totalIFrames = Math.floor(duration / frameInterval);
 
-                    // Send response after everything is done
-                    res.json({ message: 'Video uploaded successfully!', videoId, videoUrl });
-                } catch (error) {
-                    console.error('Error saving video metadata:', error);
-                    res.status(500).json({ error: 'Failed to save video metadata' });
+                if (totalIFrames >= 8000) {
+                    frameInterval = 20;
+                } else if (totalIFrames >= 7600) {
+                    frameInterval = 19;
+                } else if (totalIFrames >= 7200) {
+                    frameInterval = 18;
+                } else if (totalIFrames >= 6800) {
+                    frameInterval = 17;
+                } else if (totalIFrames >= 6400) {
+                    frameInterval = 16;
+                } else if (totalIFrames >= 6000) {
+                    frameInterval = 15;
+                } else if (totalIFrames >= 5600) {
+                    frameInterval = 14;
+                } else if (totalIFrames >= 5200) {
+                    frameInterval = 13;
+                } else if (totalIFrames >= 4800) {
+                    frameInterval = 12;
+                } else if (totalIFrames >= 4400) {
+                    frameInterval = 11;
+                } else if (totalIFrames >= 3600) {
+                    frameInterval = 10;
+                } else if (totalIFrames >= 3200) {
+                    frameInterval = 9;
+                } else if (totalIFrames >= 2800) {
+                    frameInterval = 8;
+                } else if (totalIFrames >= 2400) {
+                    frameInterval = 7;
+                } else if (totalIFrames >= 2000) {
+                    frameInterval = 6;
+                } else if (totalIFrames >= 1600) {
+                    frameInterval = 5;
+                } else if (totalIFrames >= 1200) {
+                    frameInterval = 4;
+                } else if (totalIFrames >= 800) {
+                    frameInterval = 3;
+                } else if (totalIFrames >= 400) {
+                    frameInterval = 2;
+                } else if (totalIFrames >= 100) {
+                    frameInterval = 1;
                 }
+
+                const totalFrames = Math.floor(parseFloat(duration) / frameInterval);
+                const columns = Math.ceil(Math.sqrt(totalFrames)); // Calculate columns for the grid
+                const rows = Math.ceil(totalFrames / columns); // Calculate rows for the grid
+
+                // Generate sprite images using the video
+                exec(`${ffmpegPath} -i ${originalVideoPath} -vf "fps=1/${frameInterval},scale=160:-1,tile=${columns}x${rows}" ${spriteFilePath}`, async (err) => {
+                    if (err) {
+                        console.error('Error generating sprite:', err);
+                        res.status(500).json({error: 'Failed to generate sprite'});
+                        return;
+                    }
+
+                    // Create a JSON map with frame positions
+                    const json = {};
+                    for (let i = 0; i < totalFrames; i++) {
+                        json[i * frameInterval] = {
+                            x: (i % columns) * 160,
+                            y: Math.floor(i / columns) * 90,
+                            w: 160,
+                            h: 90
+                        };
+                    }
+                    fs.writeFileSync(jsonFilePath, JSON.stringify(json));
+                    fs.writeFileSync(intervalFilePath, JSON.stringify({frameInterval}));
+
+                    // Save video metadata to the database
+                    try {
+                        await prisma.video.create({
+                            data: {
+                                creatorId: userId,
+                                videoUrl,
+                                title,
+                                description,
+                                datePosted: new Date(),
+                                duration: parseFloat(duration),
+                            },
+                        });
+
+                        // Send success response after all processing is complete
+                        res.json({message: 'Video uploaded and processed successfully!', videoId, videoUrl});
+                    } catch (dbError) {
+                        console.error('Error saving video metadata:', dbError);
+                        res.status(500).json({error: 'Failed to save video metadata'});
+                    }
+                });
             });
         });
-
-    } catch (error) {
-        console.error('Error saving video metadata:', error);
-        res.status(500).json({ error: 'Failed to save video metadata', details: error.message });
+    } catch (err) {
+        console.error('Error processing video upload:', err);
+        res.status(500).json({ error: 'Failed to upload video' });
     }
 });
 
