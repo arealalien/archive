@@ -59,15 +59,6 @@ wss.on('connection', (ws) => {
     });
 });
 
-// Function to send status updates via WebSocket
-const sendStatusUpdate = (videoId, status) => {
-    const client = clients.get(videoId);
-    if (client && client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ videoId, status }));
-    }
-};
-
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const userId = req.userId;
@@ -656,6 +647,6 @@ app.get('/profile', validateToken, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

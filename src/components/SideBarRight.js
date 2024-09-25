@@ -1,6 +1,6 @@
 import React, { useContext, useState , useRef, useCallback, useEffect } from "react";
 import { AuthContext } from '../contexts/AuthContext';
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import { NumericFormat } from "react-number-format";
 import { formatDistanceToNow } from "date-fns";
@@ -34,6 +34,13 @@ const SideBarRight = ({
     useEffect(() => {
         localStorage.setItem('sidebarRightWidth', sidebarRightWidth);
     }, [sidebarRightWidth]);
+
+    const location = useLocation();
+
+    const isActiveLink = (path) => {
+        // Compare the current location pathname with the given path
+        return location.pathname === path;
+    };
 
     const handleSignOut = () => {
         signOut();
@@ -579,7 +586,7 @@ const SideBarRight = ({
                                             </svg>
                                         ) : null}
                                     </h3>
-                                    <p className="profile-menu-container-details-subscribers">{subscriberCount} Subscribers</p>
+                                    <NavLink to={`/channel/` + profile.name + `/subscribers`} className="profile-menu-container-details-subscribers">{subscriberCount} Subscribers</NavLink>
                                     {dateSubscribed && (
                                         <p className="profile-menu-container-details-subscribers">
                                             Subscribed {formatDistanceToNow(new Date(dateSubscribed))} ago
@@ -590,58 +597,10 @@ const SideBarRight = ({
                             <div className="sidebar-right-profilemenu"
                                  style={{display: isProfileVisible && !isMenuVisible ? 'block' : 'none'}}>
                                 <div className="sidebar-right-profilemenu-list">
-                                    <NavLink to={`/channel/` + profile.name}
-                                             className="sidebar-right-profilemenu-list-top">
-                                        <img className="sidebar-right-profilemenu-list-top-image" src={pictureUrl}
-                                             alt=""/>
-                                        <div className="sidebar-right-profilemenu-list-top-text">
-                                            <p className="sidebar-right-profilemenu-list-top-text-displayname">
-                                                <span>{profile.displayName}</span> {profile?.verified === 1 ? (
-                                                <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
-                                                    <g>
-                                                        <linearGradient gradientUnits="userSpaceOnUse" id="c" x1="4.411"
-                                                                        x2="18.083"
-                                                                        y1="2.495" y2="21.508">
-                                                            <stop offset="0"></stop>
-                                                            <stop offset=".539"></stop>
-                                                            <stop offset=".68"></stop>
-                                                            <stop offset="1"></stop>
-                                                            <stop offset="1"></stop>
-                                                        </linearGradient>
-                                                        <linearGradient gradientUnits="userSpaceOnUse" id="d" x1="5.355"
-                                                                        x2="16.361"
-                                                                        y1="3.395" y2="19.133">
-                                                            <stop offset="0"></stop>
-                                                            <stop offset=".406"></stop>
-                                                            <stop offset=".989"></stop>
-                                                        </linearGradient>
-                                                        <g clip-rule="evenodd" fill-rule="evenodd">
-                                                            <path
-                                                                d="M13.324 3.848L11 1.6 8.676 3.848l-3.201-.453-.559 3.184L2.06 8.095 3.48 11l-1.42 2.904 2.856 1.516.559 3.184 3.201-.452L11 20.4l2.324-2.248 3.201.452.559-3.184 2.856-1.516L18.52 11l1.42-2.905-2.856-1.516-.559-3.184zm-7.09 7.575l3.428 3.428 5.683-6.206-1.347-1.247-4.4 4.795-2.072-2.072z"></path>
-                                                            <path
-                                                                d="M13.101 4.533L11 2.5 8.899 4.533l-2.895-.41-.505 2.88-2.583 1.37L4.2 11l-1.284 2.627 2.583 1.37.505 2.88 2.895-.41L11 19.5l2.101-2.033 2.895.41.505-2.88 2.583-1.37L17.8 11l1.284-2.627-2.583-1.37-.505-2.88zm-6.868 6.89l3.429 3.428 5.683-6.206-1.347-1.247-4.4 4.795-2.072-2.072z"></path>
-                                                            <path
-                                                                d="M6.233 11.423l3.429 3.428 5.65-6.17.038-.033-.005 1.398-5.683 6.206-3.429-3.429-.003-1.405.005.003z"></path>
-                                                        </g>
-                                                    </g>
-                                                </svg>
-                                            ) : null}</p>
-                                            <p className="sidebar-right-profilemenu-list-top-text-name">@{profile.name}</p>
-                                        </div>
-                                    </NavLink>
-                                    <div className="sidebar-right-profilemenu-list-bottom">
-                                        <div className="sidebar-right-profilemenu-list-bottom-line">
-                                            <div
-                                                className="sidebar-right-profilemenu-list-bottom-line-curve curve1"></div>
-                                            <div
-                                                className="sidebar-right-profilemenu-list-bottom-line-curve curve2"></div>
-                                            <div
-                                                className="sidebar-right-profilemenu-list-bottom-line-curve curve3"></div>
-                                            <div
-                                                className="sidebar-right-profilemenu-list-bottom-line-curve curve4"></div>
-                                        </div>
                                         <NavLink to={`/channel/` + profile.name}
-                                                 className="sidebar-right-profilemenu-list-item">
+                                                 className={() =>
+                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile.name}`) ? 'active' : ''}`
+                                                 }>
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <title>Star</title>
@@ -659,7 +618,9 @@ const SideBarRight = ({
                                             <p className="sidebar-right-profilemenu-list-item-text">Feed</p>
                                         </NavLink>
                                         <NavLink to={`/channel/` + profile.name + `/videos`}
-                                                 className="sidebar-right-profilemenu-list-item">
+                                                 className={() =>
+                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile.name}/videos`) ? 'active' : ''}`
+                                                 }>
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <title>Video</title>
@@ -679,32 +640,10 @@ const SideBarRight = ({
                                             </svg>
                                             <p className="sidebar-right-profilemenu-list-item-text">Videos</p>
                                         </NavLink>
-                                        <NavLink to={`/channel/` + profile.name + `/pictures`}
-                                                 className="sidebar-right-profilemenu-list-item">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <title>Image 2</title>
-                                                <g id="image-2" stroke="none" stroke-width="1" fill="none"
-                                                   fill-rule="evenodd" stroke-linecap="round"
-                                                   stroke-linejoin="round">
-                                                    <g id="image-2-inner" transform="translate(2.000000, 2.000000)"
-                                                       stroke-width="1.5">
-                                                        <path
-                                                            d="M0.75,10.0001 C0.75,16.9371 3.063,19.2501 10,19.2501 C16.937,19.2501 19.25,16.9371 19.25,10.0001 C19.25,3.0631 16.937,0.7501 10,0.7501 C3.063,0.7501 0.75,3.0631 0.75,10.0001 Z"
-                                                            id="Stroke-1"/>
-                                                        <path
-                                                            d="M8.5986,6.7842 C8.5986,7.7572 7.8106,8.5452 6.8376,8.5452 C5.8656,8.5452 5.0766,7.7572 5.0766,6.7842 C5.0766,5.8112 5.8656,5.0232 6.8376,5.0232 C7.8106,5.0232 8.5986,5.8112 8.5986,6.7842 Z"
-                                                            id="Stroke-3"/>
-                                                        <path
-                                                            d="M19.1201,12.6666 C18.2391,11.7606 16.9931,9.9296 14.7041,9.9296 C12.4151,9.9296 12.3651,13.9676 10.0291,13.9676 C7.6921,13.9676 6.7511,12.5966 5.2281,13.3126 C3.7061,14.0276 2.4661,16.8736 2.4661,16.8736"
-                                                            id="Stroke-5"/>
-                                                    </g>
-                                                </g>
-                                            </svg>
-                                            <p className="sidebar-right-profilemenu-list-item-text">Pictures</p>
-                                        </NavLink>
                                         <NavLink to={`/channel/` + profile.name + `/playlists`}
-                                                 className="sidebar-right-profilemenu-list-item">
+                                                 className={() =>
+                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile.name}/playlists`) ? 'active' : ''}`
+                                                 }>
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <title>Folder</title>
@@ -723,7 +662,6 @@ const SideBarRight = ({
                                             </svg>
                                             <p className="sidebar-right-profilemenu-list-item-text">Playlists</p>
                                         </NavLink>
-                                    </div>
                                 </div>
                             </div>
                         </>

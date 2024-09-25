@@ -216,91 +216,10 @@
     &-list {
       width: 100%;
       position: relative;
-      border: 1px solid hslac($white, .1);
-      border-radius: 2em;
-      backdrop-filter: blur(1.5rem) brightness(70%);
       @include flex-col();
 
-      &-top {
-        padding: 1.5em;
-        width: 100%;
-        display: grid;
-        grid-template-columns: 4.5em 1fr;
-        text-decoration: none;
-        place-items: flex-start;
-        align-items: center;
-        gap: 1em;
-        overflow: hidden;
-        transition: all .3s cubic-bezier($transition-main, 1);
-        &:hover {
-          opacity: .5;
-        }
-        &-image {
-          width: 100%;
-          border-radius: 50%;
-        }
-        &-text {
-          gap: .05em;
-          @include flex-col-left-ns();
-
-          &-displayname {
-            color: hslac($white, 1);
-            font-size: $paragraph-large;
-            font-weight: 700;
-            gap: .25em;
-            @include flex-left();
-
-            svg {
-              width: $paragraph-large;
-            }
-          }
-          &-name {
-            color: hslac($white, .7);
-            font-size: $paragraph-small;
-          }
-        }
-      }
       .active {
-
-      }
-      &-bottom {
-        margin: 0 0 2em 0;
-        padding: 0 0 0 6em;
-        width: 100%;
-        position: relative;
-        @include flex-col();
-
-        &-line {
-          top: 0; left: 3.6em;
-          width: 2px; height: calc(100% - 3.55em);
-          position: absolute;
-          background-color: hslac($white, 0);
-          border-radius: 5em;
-          &-curve {
-            width: 1.5em;
-            position: absolute;
-            border: 2px solid hslac($white, .1);
-            border-top: none;
-            border-right: none;
-            border-radius: 0 0 0 1em;
-          }
-          .curve1 {
-            top: -.3em;
-            height: 2.5em;
-          }
-          .curve2 {
-            top: 2.8em;
-            height: 3.4em;
-          }
-          .curve3 {
-            top: 6.8em;
-            height: 3.4em;
-          }
-          .curve4 {
-            top: 10.8em;
-            height: 3.4em;
-          }
-        }
+        opacity: 1;
       }
       &-item {
         padding: 1em 0;
@@ -310,11 +229,12 @@
         background-color: hslac($black, 0);
         border-radius: 2em;
         gap: 1em;
-        transition: all .3s cubic-bezier($transition-main, 1);
+        opacity: .5;
+        transition: all .15s cubic-bezier($transition-main, 1);
         @include flex-center();
 
         &:hover {
-          opacity: .5;
+          opacity: 1;
         }
         svg {
           height: 2em;

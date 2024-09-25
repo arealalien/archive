@@ -22,7 +22,8 @@
     "videojs-contrib-quality-levels": "^4.1.0",
     "videojs-http-source-selector": "^1.1.6",
     "videojs-sprite-thumbnails": "^2.2.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "ws": "^8.18.0"
   },
   "scripts": {
     "css:watch": "sass --watch src/sass/main.scss:src/css/main.css",

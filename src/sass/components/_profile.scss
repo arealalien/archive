@@ -44,8 +44,31 @@
       gap: 6em;
 
       &-right {
+        gap: 1.5em;
         @include flex-col();
 
+        &-title {
+          width: 100%;
+          gap: .5em;
+          @include flex-left();
+
+          &-name {
+            color: hslac($white, .7);
+            font-size: $paragraph-medium;
+            font-weight: 700;
+          }
+          &-divider {
+            color: hslac($white, .3);
+            font-size: $paragraph-medium;
+            font-weight: 400;
+          }
+          &-link {
+            color: hslac($white, .3);
+            font-size: $paragraph-medium;
+            font-weight: 400;
+            text-decoration: none;
+          }
+        }
         &-videos {
           width: 100%;
         }
@@ -81,6 +104,7 @@
       color: hslac($white, .7);
       font-size: $paragraph;
       font-weight: 500;
+      text-decoration: none;
     }
   }
   &-inner {
