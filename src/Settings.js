@@ -59,9 +59,9 @@ function Settings() {
 
                 // Apply the dark color directly as the background with the adjusted alpha
                 const colorString = `rgba(${darkColor.join(',')}, ${alpha})`;
-                const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, .15) 75em)`;
+                const gradient = `linear-gradient(180deg, ${colorString} 0, rgba(${darkColor.join(',')}, 0) 75em)`;
 
-                document.querySelector(".page-center").style.background = `linear-gradient(180deg, rgba(${darkColor.join(',')}, .3) 0, rgba(${darkColor.join(',')}, .02) 75em)`;
+                document.querySelector(".page-center").style.background = gradient;
                 document.querySelector(".sidebar-right").style.background = gradient;
             };
 
@@ -110,7 +110,6 @@ function Settings() {
                         <div className="settings-inner-right-top">
                             <h1 className="settings-inner-right-top-title">Profile Settings</h1>
                         </div>
-                        <div className="settings-inner-right-divider"></div>
                         <div className="settings-inner-right-center">
                             <div className="settings-inner-right-center-picture">
                                 <div className="settings-inner-right-center-picture-edit"
@@ -186,9 +185,8 @@ function Settings() {
                                 <button className="mainbutton" type="submit">Save</button>
                             </div>
                         </div>
-                        <div className="settings-inner-right-divider"></div>
                         <div className="settings-inner-right-center">
-                            <div className="settings-inner-right-center-block">
+                        <div className="settings-inner-right-center-block">
                                 <div className="settings-inner-right-center-block-left">
                                     <h2 className="settings-inner-right-center-block-left-title">Public profile</h2>
                                     <p className="settings-inner-right-center-block-left-subtitle">This will be
@@ -383,7 +381,6 @@ function Settings() {
                         <div className="settings-inner-right-top">
                             <h1 className="settings-inner-right-top-title">Layout Settings</h1>
                         </div>
-                        <div className="settings-inner-right-divider"></div>
                         <div className="settings-inner-right-center">
 
                         </div>

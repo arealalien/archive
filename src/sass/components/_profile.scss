@@ -1,5 +1,5 @@
 .profile {
-  padding: 0 0 25em 0;
+  padding: 0 0 7em 0;
   width: 100%;
   @include flex-center();
 
@@ -149,7 +149,7 @@
       position: absolute;
       z-index: 7;
     }
-    .mainbutton, .whitebutton {
+    .mainbutton, .whitebutton, .blackbutton {
       font-size: $paragraph;
       font-weight: 500;
     }

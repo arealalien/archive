@@ -10,6 +10,10 @@ function CreatorsSec({ user }) {
                 const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
                 let url = 'http://localhost:5000/creators';
 
+                if (user) {
+                    url = `http://localhost:5000/creators?user=${user}`;
+                }
+
                 const response = await fetch(url, {
                     headers: {
                         Authorization: `Bearer ${token}`,

@@ -48,6 +48,51 @@ router.get('/playlists', async (req, res) => {
     }
 });
 
+router.get('/featuredplaylists', async (req, res) => {
+    const { creator } = req.query;
+
+    try {
+        const where = creator ? {
+            name: {
+                not: 'Liked Videos',
+            },
+            creator: {
+                name: creator,
+            },
+        } : {};
+
+        const playlists = await prisma.playlist.findMany({
+            where,
+            orderBy: {
+                dateCreated: 'asc',
+            },
+            select: {
+                id: true,
+                name: true,
+                playlistUrl: true,
+                playlistImg: true,
+                visibility: true,
+                creator: {
+                    select: {
+                        name: true,
+                        profilePicture: true,
+                        verified: true,
+                    },
+                },
+            },
+            take: 5
+        });
+        if (playlists.length > 0) {
+            res.json(playlists);
+        } else {
+            res.status(404).json({ error: 'No playlists found for this user' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.get('/playlistsUrl', async (req, res) => {
     const { url } = req.query;
 
