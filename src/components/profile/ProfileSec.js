@@ -1,15 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import axios from 'axios';
+import { format } from "date-fns";
+import { NumericFormat } from "react-number-format";
 import { formatDistanceToNow } from "date-fns";
 
 // Components
 import VideosSec from "../videos/VideosSec";
 import PlaylistsSec from "../playlists/PlaylistsSec";
 import CreatorsSec from "../creator/CreatorsSec";
+import VideoSec from "../videos/VideoSec";
 
 const ProfileSec  = ({ profile, profileName, page }) => {
+    const [videoDetails, setVideoDetails] = useState(null);
     const [videos, setVideos] = useState([]);
     const [playlists, setPlaylists] = useState([]);
+
+    useEffect(() => {
+        const fetchFeaturedVideo = async () => {
+            try {
+                const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+
+                const headers = { Authorization: `Bearer ${token}` };
+
+                // Then fetch video details
+                const videoResponse = await axios.get(`http://localhost:5000/featuredvideo?creator=${encodeURIComponent(profileName)}`, { headers });
+                setVideoDetails(videoResponse.data[0])
+            } catch (error) {
+                console.error('Error fetching video data:', error);
+            }
+        };
+
+        fetchFeaturedVideo();
+    }, [profileName]);
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -204,6 +227,35 @@ const ProfileSec  = ({ profile, profileName, page }) => {
             default:
                 return (
                     <>
+                        <div className="profile-inner-content-right featuredvideo">
+                            {videoDetails ? (
+                                <div className="featuredvideo-inner">
+                                    <div className="featuredvideo-inner-left">
+                                        <VideoSec video={videoDetails}/>
+                                    </div>
+                                    <div className="featuredvideo-inner-right">
+                                        <div className="featuredvideo-inner-right-top">
+                                            <NavLink to={`/video?view=` + videoDetails.videoUrl.split('.')[0]} className="featuredvideo-inner-right-top-title">{videoDetails.title}</NavLink>
+                                            <p className="featuredvideo-inner-right-top-subtitle">
+                                                Seen <NumericFormat
+                                                    value={videoDetails.views}
+                                                    thousandSeparator=" "
+                                                    displayType="text"
+                                                    renderText={(value) => <b>{value}</b>}
+                                                /> times &middot; {format(new Date(videoDetails.datePosted), 'MMM d, yyyy')}
+                                            </p>
+                                        </div>
+                                        <div className="featuredvideo-inner-right-bottom">
+                                            <p className="featuredvideo-inner-right-bottom-description">
+                                                {videoDetails.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div></div>
+                            )}
+                        </div>
                         <div className="profile-inner-content-right">
                             <div className="profile-inner-content-right-title">
                                 <h3 className="profile-inner-content-right-title-name">Videos</h3>
@@ -311,18 +363,22 @@ const ProfileSec  = ({ profile, profileName, page }) => {
                             <div className="profile-inner-content-right-playlists playlists-grid-inner">
                                 {playlists.length > 0 ? (
                                     playlists.map((playlist, index) => (
-                                        <NavLink to={`/playlist?list=${playlist.playlistUrl}`} key={index} className="playlists-grid-inner-item">
+                                        <NavLink to={`/playlist?list=${playlist.playlistUrl}`} key={index}
+                                                 className="playlists-grid-inner-item">
                                             <div className="playlists-grid-inner-item-top">
-                                                <img className="playlists-grid-inner-item-top-image" src={`${process.env.PUBLIC_URL}/${playlist.playlistImg}`} alt=""/>
+                                                <img className="playlists-grid-inner-item-top-image"
+                                                     src={`${process.env.PUBLIC_URL}/${playlist.playlistImg}`} alt=""/>
                                             </div>
                                             <div className="playlists-grid-inner-item-bottom">
                                                 <p className="playlists-grid-inner-item-bottom-title">{playlist.name}</p>
                                                 <p className="playlists-grid-inner-item-bottom-subtitle">
                                                     <span>{playlist.creator.name}</span>
                                                     {playlist.creator?.verified === 1 ? (
-                                                        <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
+                                                        <svg className="verified-icon" viewBox="0 0 22 22"
+                                                             aria-hidden="true">
                                                             <g>
-                                                                <linearGradient gradientUnits="userSpaceOnUse" id="a" x1="4.411"
+                                                                <linearGradient gradientUnits="userSpaceOnUse" id="a"
+                                                                                x1="4.411"
                                                                                 x2="18.083"
                                                                                 y1="2.495" y2="21.508">
                                                                     <stop offset="0"></stop>
@@ -331,7 +387,8 @@ const ProfileSec  = ({ profile, profileName, page }) => {
                                                                     <stop offset="1"></stop>
                                                                     <stop offset="1"></stop>
                                                                 </linearGradient>
-                                                                <linearGradient gradientUnits="userSpaceOnUse" id="b" x1="5.355"
+                                                                <linearGradient gradientUnits="userSpaceOnUse" id="b"
+                                                                                x1="5.355"
                                                                                 x2="16.361"
                                                                                 y1="3.395" y2="19.133">
                                                                     <stop offset="0"></stop>

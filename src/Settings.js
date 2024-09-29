@@ -188,7 +188,7 @@ function Settings() {
                         <div className="settings-inner-right-center">
                         <div className="settings-inner-right-center-block">
                                 <div className="settings-inner-right-center-block-left">
-                                    <h2 className="settings-inner-right-center-block-left-title">Public profile</h2>
+                                    <h2 className="settings-inner-right-center-block-left-title">Public details</h2>
                                     <p className="settings-inner-right-center-block-left-subtitle">This will be
                                         displayed on your profile</p>
                                 </div>

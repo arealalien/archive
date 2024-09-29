@@ -4,18 +4,22 @@ import axios from "axios";
 import VideoJS from './VideoJS';
 import 'video.js/dist/video-js.css';
 
-const useFetchVideoData = (location, setError, setVideoDetails) => {
+const useFetchVideoData = (video, location, setError, setVideoDetails) => {
     useEffect(() => {
         const fetchVideoData = async () => {
             const token = localStorage.getItem("token");
             if (!token) return setError("No token found");
 
-            const videoUrl = new URLSearchParams(location.search).get("view");
-            if (!videoUrl) return setError("No video URL found");
+            let urlToFetch = video.videoUrl.split(".")[0];
+
+            if (!urlToFetch) {
+                setError("No video URL found");
+                return;
+            }
 
             try {
                 const headers = { Authorization: `Bearer ${token}` };
-                const response = await axios.get(`http://localhost:5000/videos/${encodeURIComponent(videoUrl)}`, { headers });
+                const response = await axios.get(`http://localhost:5000/videos/${encodeURIComponent(urlToFetch)}`, { headers });
                 setVideoDetails(response.data);
             } catch (err) {
                 console.error("Error fetching video data:", err);
@@ -23,15 +27,15 @@ const useFetchVideoData = (location, setError, setVideoDetails) => {
             }
         };
         fetchVideoData();
-    }, [location.search, setError, setVideoDetails]);
+    }, [video, location.search, setError, setVideoDetails]);
 };
 
-const VideoSec  = () => {
+const VideoSec  = ({ video }) => {
     const location = useLocation();
     const [videoDetails, setVideoDetails] = useState(null);
     const [error, setError] = useState('');
 
-    useFetchVideoData(location, setError, setVideoDetails);
+    useFetchVideoData(video, location, setError, setVideoDetails);
 
     const playerRef = React.useRef(null);
 
@@ -42,9 +46,9 @@ const VideoSec  = () => {
         fluid: true,
         playbackRates: [0.25, 0.5, 1, 1.5, 2],
         enableSmoothSeeking: true,
-        poster: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/thumbnail.jpg",
+        poster: process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg",
         sources: [{
-            src: process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/" + videoDetails.videoUrl,
+            src: process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl,
             type: 'video/mp4'
         }],
         userActions: {
@@ -83,7 +87,7 @@ const VideoSec  = () => {
 
     return (
         <>
-            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} spriteLink={process.env.PUBLIC_URL + "/users/" + videoDetails.creator.id + "/videos/" + videoDetails.videoUrl.split('.')[0] + "/sprites/"}/>
+            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} spriteLink={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/sprites/"}/>
         </>
     )
 }
