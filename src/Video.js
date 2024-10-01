@@ -50,6 +50,7 @@ function Video() {
                 const headers = { Authorization: `Bearer ${token}` };
 
                 // First, increment view count
+                // NOTE* Bugged in development because of React.StrictMode
                 await axios.post(`http://localhost:5000/videos/${encodeURIComponent(videoUrl)}/increment-view`, {}, { headers });
 
                 // Then fetch video details

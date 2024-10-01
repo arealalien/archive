@@ -197,7 +197,7 @@
                 background-color: hslac($black, 0);
                 border: 1px solid hslac($white, .1);
                 border-radius: 5em;
-                backdrop-filter: blur(1.5rem) brightness(80%);
+                backdrop-filter: blur(1.5rem) brightness(70%);
               }
             }
           }
@@ -215,7 +215,7 @@
             background-color: hslac($black, 0);
             border: 1px solid hslac($white, .5);
             border-radius: 50%;
-            backdrop-filter: blur(1.25rem) brightness(90%);
+            backdrop-filter: blur(1.25rem) brightness(70%);
             cursor: pointer;
             z-index: 10;
             @include flex-center();

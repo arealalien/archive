@@ -102,6 +102,9 @@ router.get('/discoveryplaylists', async (req, res) => {
                 name: {
                     not: 'Liked Videos',
                 },
+                creator: {
+                    name: 'archive',
+                },
             },
             orderBy: {
                 dateCreated: 'asc',

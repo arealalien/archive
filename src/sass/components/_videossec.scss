@@ -1,8 +1,16 @@
 .videos {
   margin: 3em 0 0 0;
   width: 100%;
-  @include flex-center();
+  @include flex-col();
 
+  &-top {
+    margin: 0 0 1em 0;
+    &-title {
+      color: hslac($white, .7);
+      font-size: $paragraph-medium;
+      font-weight: 600;
+    }
+  }
   &-inner-4 {
     row-gap: 3em;
     column-gap: 1.5em;
@@ -278,4 +286,9 @@
       }
     }
   }
+}
+.discovery {
+  width: 100%;
+  gap: 5em;
+  @include flex-col();
 }
