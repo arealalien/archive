@@ -56,17 +56,26 @@
             color: hslac($white, .7);
             font-size: $paragraph-medium;
             font-weight: 700;
+            @include lightMode {
+              color: hslac($black, .7);
+            }
           }
           &-divider {
             color: hslac($white, .3);
             font-size: $paragraph-medium;
             font-weight: 400;
+            @include lightMode {
+              color: hslac($black, .3);
+            }
           }
           &-link {
             color: hslac($white, .3);
             font-size: $paragraph-medium;
             font-weight: 400;
             text-decoration: none;
+            @include lightMode {
+              color: hslac($black, .3);
+            }
           }
         }
         &-videos {
@@ -95,6 +104,9 @@
       span {
         font-size: $heading-small;
         font-weight: 700;
+        @include lightMode {
+          color: hslac($black, 1);
+        }
       }
       svg {
         width: $heading-small;
@@ -105,6 +117,9 @@
       font-size: $paragraph;
       font-weight: 500;
       text-decoration: none;
+      @include lightMode {
+        color: hslac($black, .7);
+      }
     }
   }
   &-inner {
@@ -189,6 +204,9 @@
 
     &-text {
       color: hslac($white, 1);
+      @include lightMode {
+        color: hslac($black, 1);
+      }
     }
   }
 }

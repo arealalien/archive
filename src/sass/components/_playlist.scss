@@ -97,9 +97,15 @@
           font-weight: 800;
           z-index: 4;
           cursor: pointer;
+          @include lightMode {
+            color: hslac($black, 1);
+          }
         }
         &-toptitle {
           color: hslac($white, .7);
+          @include lightMode {
+            color: hslac($black, .7);
+          }
         }
         &-details {
           gap: .5em;
@@ -130,6 +136,9 @@
               font-weight: 600;
               gap: .25em;
               @include flex-left();
+              @include lightMode {
+                color: hslac($black, .7);
+              }
 
               svg {
                 width: $paragraph-medium;
@@ -142,10 +151,16 @@
 
             &-subtitle {
               color: hslac($white, .5);
+              @include lightMode {
+                color: hslac($black, .5);
+              }
             }
             &-thicktitle {
               color: hslac($white, .5);
               font-weight: 800;
+              @include lightMode {
+                color: hslac($black, .5);
+              }
             }
           }
         }
@@ -179,6 +194,9 @@
     gap: 1.5em;
     z-index: 1000000;
     @include flex-col();
+    @include lightMode {
+      background-color: hslac($white, 1);
+    }
 
     &-top {
       width: 100%;
@@ -187,6 +205,9 @@
       &-title {
         font-size: $heading-small;
         font-weight: 800;
+        @include lightMode {
+          color: hslac($black, 1);
+        }
       }
       &-button {
         padding: 1em;
@@ -196,15 +217,25 @@
         cursor: pointer;
         transition: all .15s cubic-bezier($transition-main, 1);
         @include flex-center();
+        @include lightMode {
+          background-color: hslac($lm-background-gray, 1);
+          border: 1px solid hslac($black, 0);
+        }
 
         &:hover {
           border: 1px solid hslac($white, .1);
+          @include lightMode {
+            border: 1px solid hslac($black, .1);
+          }
         }
         svg {
           width: 2em; height: 2em;
           g {
             g {
               stroke: hslac($white, .7);
+              @include lightMode {
+                stroke: hslac($black, .7);
+              }
             }
           }
         }
@@ -244,6 +275,11 @@
         font-family: $font-main;
         font-size: calc($paragraph-large);
         font-weight: 400;
+        @include lightMode {
+          color: hslac($black, 1);
+          background-color: hslac($lm-background-lightgray, 1);
+          border: 1px solid hslac($black, .1);
+        }
       }
       &-description {
         padding: 1.2rem 1.7rem;
@@ -256,6 +292,11 @@
         font-size: calc($paragraph-medium);
         font-weight: 300;
         resize: none;
+        @include lightMode {
+          color: hslac($black, 1);
+          background-color: hslac($lm-background-lightgray, 1);
+          border: 1px solid hslac($black, .1);
+        }
       }
     }
   }

@@ -105,6 +105,49 @@ router.get('/videos', async (req, res) => {
     }
 });
 
+router.get('/discoveryvideos', async (req, res) => {
+    const { creator } = req.query;
+    try {
+        const where = creator ? {
+            creator: {
+                name: creator,
+            },
+        } : {};
+
+        const videos = await prisma.video.findMany({
+            where,
+            orderBy: {
+                views: 'desc',
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                videoUrl: true,
+                datePosted: true,
+                views: true,
+                likes: true,
+                duration: true,
+                creator: {
+                    select: {
+                        id: true,
+                        name: true,
+                        displayName: true,
+                        profilePicture: true,
+                        banner: true,
+                        verified: true,
+                    }
+                }
+            }
+        });
+
+        res.json(videos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.get('/featuredvideos', async (req, res) => {
     const { creator } = req.query;
     try {

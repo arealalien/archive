@@ -38,6 +38,9 @@
           font-size: $paragraph-large;
           font-weight: 500;
           line-height: 1.2;
+          @include lightMode {
+            color: hslac($black, 1);
+          }
         }
         &-subtitle {
           color: hslac($white, .7);
@@ -45,6 +48,9 @@
           font-weight: 300;
           gap: .25em;
           @include flex-left();
+          @include lightMode {
+            color: hslac($black, .7);
+          }
 
           span {
             font-size: $paragraph;

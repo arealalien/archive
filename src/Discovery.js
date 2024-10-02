@@ -77,7 +77,7 @@ function Discovery() {
                                 <h3 className="videos-top-title">Videos</h3>
                             </div>
                             <div className="videos-inner videos-inner-4 view-width">
-                                <VideosSec/>
+                                <VideosSec discovery="1" />
                             </div>
                         </section>
                     </div>

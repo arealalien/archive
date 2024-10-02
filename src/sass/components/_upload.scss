@@ -13,6 +13,10 @@
     border: 1px solid hslac($white, .1);
     border-radius: 3em;
     @include flex-center();
+    @include lightMode {
+      background-color: hslac($white, 1);
+      border: 1px solid hslac($black, .1);
+    }
 
     .hidden {
       display: none !important;
@@ -144,6 +148,9 @@
                 color: hslac($white, .5);
                 font-family: $font-main;
                 font-size: $paragraph;
+                @include lightMode {
+                  color: hslac($black, .5);
+                }
               }
 
               &-input {
@@ -162,6 +169,11 @@
                   border: 1px solid hslac($white, .1);
                   border-radius: 5em;
                   backdrop-filter: blur(1.5rem);
+                  @include lightMode {
+                    color: hslac($black, 1);
+                    background-color: hslac($black, .1);
+                    border: 1px solid hslac($black, .1);
+                  }
                 }
                 textarea {
                   padding: 1.5em;
@@ -175,6 +187,11 @@
                   border-radius: 2em;
                   backdrop-filter: blur(1.5rem);
                   resize: none;
+                  @include lightMode {
+                    color: hslac($black, 1);
+                    background-color: hslac($black, .1);
+                    border: 1px solid hslac($black, .1);
+                  }
                 }
               }
             }
@@ -205,6 +222,11 @@
             place-items: center;
             gap: 2em;
             z-index: 523;
+            @include lightMode {
+              background-color: hslac($white, 0);
+              border: 1px solid hslac($black, .1);
+              backdrop-filter: blur(1.5rem) brightness(140%);
+            }
 
             &-shadow {
               top: .75em;
@@ -214,6 +236,9 @@
               transform: scale(.98, .98);
               filter: blur(2rem);
               z-index: 500;
+              @include lightMode {
+                background-color: hslac($white, .35);
+              }
             }
           }
           &-left {
@@ -222,6 +247,9 @@
 
             p {
               opacity: .7;
+              @include lightMode {
+                color: hslac($black, 1);
+              }
             }
           }
           &-center {
@@ -235,6 +263,9 @@
               background-color: hslac($white, .1);
               border-radius: 5em;
               @include flex-left();
+              @include lightMode {
+                background-color: hslac($black, .1);
+              }
 
               &-inner {
                 -webkit-appearance: none;
@@ -242,9 +273,15 @@
                 width: 100%; height: 100%;
                 background-color: hslac($white, .1);
                 border-radius: 5em;
+                @include lightMode {
+                  background-color: hslac($black, .1);
+                }
                 &::-webkit-progress-bar {
                   background-color: hslac($white, 0);
                   border-radius: 5em;
+                  @include lightMode {
+                    background-color: hslac($black, 0);
+                  }
                 }
                 &::-webkit-progress-value {
                   background-color: hslac($primary, 1);
@@ -270,6 +307,9 @@
 .brightness-50 {
   border-color: hslac($white, .1);
   filter: brightness(20%);
+  @include lightMode {
+    filter: brightness(30%);
+  }
 }
 .upload-progress {
   bottom: 0;

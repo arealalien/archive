@@ -4,6 +4,9 @@ body {
   font-family: $font-main;
   background: hslac($black, 1);
   overflow: hidden;
+  @include lightMode {
+    background-color: hslac($white, 1);
+  }
 }
 .view-width {
   width: $view-width !important;
@@ -19,6 +22,9 @@ body {
   pointer-events: none;
   opacity: .5;
   z-index: 9999;
+  @include lightMode {
+    background: linear-gradient(0, hslac($white, .2) 0, hslac($white, 0) 100%);
+  }
 }
 
 .blackbutton {
@@ -94,6 +100,10 @@ body {
   text-decoration: none;
   cursor: pointer;
   z-index: 6;
+  @include lightMode {
+    color: hslac($black, 1);
+    background-color: hslac($white, 1);
+  }
 }
 
 .verified-icon {
@@ -149,9 +159,15 @@ body {
     scrollbar-gutter: stable;
     scrollbar-width: none;
     transition: opacity .3s cubic-bezier($transition-main, 1);
+    @include lightMode {
+      background-color: hslac($lm-background-gray, 1);
+    }
 
     &:hover::-webkit-scrollbar-thumb {
       background-color: hslac($white, .3);
+      @include lightMode {
+        background-color: hslac($black, .3);
+      }
     }
     &::-webkit-scrollbar-thumb {
       display: none;
@@ -171,6 +187,11 @@ input:-webkit-autofill:active{
   color: hslac($white, 1);
   transition: background-color 5000s ease-in-out 0s;
   box-shadow: inset 0 0 50px 50px hslac($white, .1);
+  @include lightMode {
+    -webkit-text-fill-color: hslac($black, 1);
+    color: hslac($black, 1);
+    box-shadow: inset 0 0 50px 50px hslac($black, .1);
+  }
 }
 
 ::selection {
@@ -190,9 +211,15 @@ input:-webkit-autofill:active{
 }
 ::-webkit-scrollbar-thumb:hover {
   background: hslac($white, 1);
+  @include lightMode {
+    background: hslac($black, 1);
+  }
 }
 ::-webkit-scrollbar-thumb:active {
   background: hslac($white, 1);
+  @include lightMode {
+    background: hslac($black, 1);
+  }
 }
 ::-webkit-scrollbar-track {
   background: transparent;

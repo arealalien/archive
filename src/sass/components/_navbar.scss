@@ -5,6 +5,9 @@
   background-color: hslac($black, 1);
   z-index: 10000;
   @include flex-center();
+  @include lightMode {
+    background-color: hslac($white, 1);
+  }
 
   &-inner {
     margin: 2em 0; padding: 0 2em;
@@ -24,6 +27,9 @@
           height: calc($navbar-height / 1.55);
           path {
             fill: hslac($white, 1);
+            @include lightMode {
+              fill: hslac($black, 1);
+            }
           }
         }
       }
@@ -46,14 +52,24 @@
         gap: 1em;
         transition: all .3s cubic-bezier($transition-main, 1);
         @include flex-center();
+        @include lightMode {
+          background-color: hslac($lm-background-lightgray, 1);
+          border: 1px solid hslac($black, 0);
+        }
 
         &:hover {
           border: 1px solid hslac($white, .1);
+          @include lightMode {
+            border: 1px solid hslac($black, .1);
+          }
         }
         svg {
           height: 2em;
           g {
             stroke: hslac($white, .7);
+            @include lightMode {
+              stroke: hslac($black, .7);
+            }
           }
         }
       }
@@ -71,6 +87,9 @@
           z-index: 10007;
           #search-inner {
             stroke: hslac($white, .7);
+            @include lightMode {
+              stroke: hslac($black, .7);
+            }
           }
         }
         &-input {
@@ -85,16 +104,30 @@
           border-radius: 5em;
           transition: all .3s cubic-bezier($transition-main, 1);
           z-index: 10005;
+          @include lightMode {
+            color: hslac($black, 1);
+            background-color: hslac($lm-background-lightgray, 1);
+            border: 1px solid hslac($black, 0);
+          }
 
           &::placeholder {
             color: hslac($white, .5);
+            @include lightMode {
+              color: hslac($black, .5);
+            }
           }
           &:focus {
             border: 1px solid hslac($white, .1);
             outline: none;
+            @include lightMode {
+              border: 1px solid hslac($black, .1);
+            }
           }
           &:hover {
             border: 1px solid hslac($white, .1);
+            @include lightMode {
+              border: 1px solid hslac($black, .1);
+            }
           }
         }
       }
@@ -154,6 +187,9 @@
   width: 100%; height: calc(100vh - calc($navbar-height + 2em)) !important;
   position: relative;
   background-color: hslac($black, 1);
+  @include lightMode {
+    background-color: hslac($white, 1);
+  }
   @media (max-width: $layout-breakpoint-small) {
     display: none;
   }
@@ -166,6 +202,9 @@
     overflow-x: hidden;
     scrollbar-gutter: stable;
     scrollbar-width: none;
+    @include lightMode {
+      background-color: hslac($lm-background-gray, 1);
+    }
   }
 }
 .sidebarright {
@@ -188,6 +227,9 @@
       z-index: 10000;
       transition: opacity .3s cubic-bezier($transition-main, 1);
       @include flex-center();
+      @include lightMode {
+        background-color: hslac($white, 1);
+      }
 
       svg {
         top: 0;
@@ -195,6 +237,9 @@
         transform: rotate(45deg);
         path {
           stroke: hslac($white, 1);
+          @include lightMode {
+            stroke: hslac($black, 1);
+          }
         }
       }
     }
@@ -232,6 +277,9 @@
         opacity: .5;
         transition: all .15s cubic-bezier($transition-main, 1);
         @include flex-center();
+        @include lightMode {
+          background-color: hslac($white, 0);
+        }
 
         &:hover {
           opacity: 1;
@@ -240,12 +288,18 @@
           height: 2em;
           g {
             stroke: hslac($white, .7);
+            @include lightMode {
+              background-color: hslac($black, .7);
+            }
           }
         }
         &-text {
           width: 100%;
           color: hslac($white, .7);
           font-weight: 300;
+          @include lightMode {
+            color: hslac($black, .7);
+          }
         }
       }
     }
@@ -254,6 +308,9 @@
     padding: 1.5em;
     width: 100%; height: 100%;
     background-color: hslac($background-gray, 1);
+    @include lightMode {
+      background-color: hslac($lm-background-gray, 1);
+    }
     &-inner {
       width: 100%;
       gap: 3em;
@@ -362,6 +419,17 @@
             }
           }
           .darkbutton {
+            svg {
+              g {
+                g {
+                  @include lightMode {
+                    stroke: hslac($black, 1);
+                  }
+                }
+              }
+            }
+          }
+          .darkbutton {
             @include flex-left();
           }
           .mainbutton {
@@ -392,6 +460,9 @@
       z-index: 10000;
       transition: opacity .15s cubic-bezier($transition-main, 1);
       @include flex-center();
+      @include lightMode {
+        background-color: hslac($white, 1);
+      }
 
       svg {
         top: 0;
@@ -399,6 +470,9 @@
         transform: rotate(-45deg);
         path {
           stroke: hslac($white, 1);
+          @include lightMode {
+            stroke: hslac($black, 1);
+          }
         }
       }
     }
@@ -414,6 +488,9 @@
     opacity: 0;
     transition: all .3s cubic-bezier($transition-main, 1);
     z-index: 10000;
+    @include lightMode {
+      background-color: hslac($white, 1);
+    }
     &-title {
       white-space: nowrap;
     }
@@ -422,6 +499,9 @@
       color: hslac($white, .3);
       font-size: $paragraph;
       white-space: nowrap;
+      @include lightMode {
+        color: hslac($black, .3);
+      }
 
       span {
         font-size: $paragraph;
@@ -449,6 +529,9 @@
       background-color: hslac($black, 1);
       border-radius: 2em;
       @include flex-space-bet();
+      @include lightMode {
+        background-color: hslac($white, 1);
+      }
       &-left {
         gap: 1em;
         @include flex-left();
@@ -457,12 +540,18 @@
           g {
             g {
               stroke: hslac($white, .7);
+              @include lightMode {
+                stroke: hslac($black, .7);
+              }
             }
           }
         }
         &-text {
           width: calc(100% - 1.5em);
           color: hslac($white, .7);
+          @include lightMode {
+            color: hslac($black, .7);
+          }
         }
       }
       &-right {
@@ -471,6 +560,9 @@
           g {
             g {
               stroke: hslac($white, .7);
+              @include lightMode {
+                stroke: hslac($black, .7);
+              }
             }
           }
         }
@@ -488,6 +580,9 @@
     border-bottom-right-radius: 2em;
     z-index: 10000;
     @include flex-center();
+    @include lightMode {
+      background-color: hslac($lm-background-gray, 1);
+    }
 
     &-inner {
       padding: 1.5em;
@@ -496,6 +591,9 @@
       border-radius: 2em;
       gap: 1em;
       @include flex-col();
+      @include lightMode {
+        background-color: hslac($white, 1);
+      }
 
       &-top {
         width: 100%;
@@ -506,12 +604,18 @@
           border-radius: 5em;
           gap: 1em;
           @include flex-left();
+          @include lightMode {
+            background-color: hslac($lm-background-gray, 0);
+          }
 
           svg {
             width: 2em; height: 2em;
             g {
               g {
                 stroke: hslac($white, .7);
+                @include lightMode {
+                  stroke: hslac($black, .7);
+                }
               }
             }
           }
@@ -519,6 +623,9 @@
             color: hslac($white, .7);
             font-size: $paragraph-medium;
             font-weight: 600;
+            @include lightMode {
+              color: hslac($black, .7);
+            }
           }
         }
         &-right {
@@ -527,12 +634,18 @@
           border-radius: 50%;
           cursor: pointer;
           @include flex-center();
+          @include lightMode {
+            background-color: hslac($lm-background-gray, 1);
+          }
 
           svg {
             width: 2em; height: 2em;
             g {
               g {
                 stroke: hslac($white, .7);
+                @include lightMode {
+                  stroke: hslac($black, .7);
+                }
               }
             }
           }
@@ -562,6 +675,9 @@
             background: linear-gradient(90deg, hslac($black, 0) 0,  hslac($black, 0) 2.5em, hslac($black, 0) 6em, hslac($black, 0) 50%, hslac($black, 1) 100%);
             pointer-events: none;
             z-index: 10007;
+            @include lightMode {
+              background: linear-gradient(90deg, hslac($white, 0) 0,  hslac($white, 0) 2.5em, hslac($white, 0) 6em, hslac($white, 0) 50%, hslac($white, 1) 100%);
+            }
           }
         }
         &-xbutton {
@@ -571,12 +687,18 @@
           cursor: pointer;
           z-index: 100009;
           @include flex-center();
+          @include lightMode {
+            background-color: hslac($lm-background-gray, 1);
+          }
 
           svg {
             width: 2em; height: 2em;
             g {
               g {
                 stroke: hslac($white, .7);
+                @include lightMode {
+                  stroke: hslac($black, .7);
+                }
               }
             }
           }
@@ -588,15 +710,27 @@
           white-space: nowrap;
           user-select: none;
           cursor: pointer;
+          @include lightMode {
+            background-color: hslac($lm-background-gray, 1);
+          }
           &-title {
             font-size: $paragraph-medium;
             font-weight: 600;
+            @include lightMode {
+              color: hslac($black, 1);
+            }
           }
         }
         .active {
           background-color: hslac($white, 1);
+          @include lightMode {
+            background-color: hslac($black, 1);
+          }
           .sidebar-left-island-inner-bottom-button-title {
             color: hslac($black, 1);
+            @include lightMode {
+              color: hslac($white, 1);
+            }
           }
         }
       }
@@ -613,6 +747,10 @@
       .active {
         background-color: hslac($background-lightgray, 1);
         border: 1px solid hslac($white, .1);
+        @include lightMode {
+          background-color: hslac($lm-background-lightgray, 1);
+          border: 1px solid hslac($black, .1);
+        }
       }
       &-item {
         padding: .8em;
@@ -627,8 +765,15 @@
         text-decoration: none;
         gap: 1em;
         transition: all .3s cubic-bezier($transition-main, 1);
+        @include lightMode {
+          background-color: hslac($white, 1);
+          border: 1px solid hslac($black, 0);
+        }
         &:hover {
           border: 1px solid hslac($white, .1);
+          @include lightMode {
+            border: 1px solid hslac($black, .1);
+          }
         }
         &-left {
           width: 100%;
@@ -663,12 +808,18 @@
             text-overflow: ellipsis;
             overflow: hidden;
             z-index: 4;
+            @include lightMode {
+              color: hslac($black, 1);
+            }
           }
           &-subtitle {
             color: hslac($white, .6);
             font-size: $paragraph;
             font-weight: 300;
             z-index: 4;
+            @include lightMode {
+              color: hslac($black, .6);
+            }
           }
         }
       }
