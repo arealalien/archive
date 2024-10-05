@@ -1,0 +1,121 @@
+.skeleton {
+  margin: 3em 0 0 0;
+  width: 100%;
+  @include flex-col();
+
+  &-top {
+    margin: 0 0 1em 0;
+    &-title {
+      color: hslac($white, .7);
+      font-size: $paragraph-medium;
+      font-weight: 600;
+      @include lightMode {
+        color: hslac($black, .7);
+      }
+    }
+  }
+  &-inner-4 {
+    row-gap: 3em;
+    column-gap: 1.5em;
+    grid-template-columns: repeat(auto-fill, minmax(26em, 1fr));
+    @media (max-width: $layout-breakpoint-msmall) {
+      gap: 1em;
+    }
+    @media (max-width: $layout-breakpoint-xsmall) {
+      gap: 2em;
+    }
+  }
+  &-inner {
+    display: grid;
+
+    &-item {
+      width: 100%;
+      position: relative;
+      gap: 1.6em;
+      @include flex-col-start-center();
+
+      &-video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        position: relative;
+        background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+        background-size: 200% 100%;
+        border-radius: 1.5em;
+        overflow: hidden;
+        animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+        @include flex-center();
+      }
+      &-info {
+        bottom: 0;
+        width: 100%;
+        display: grid;
+        position: relative;
+        grid-template-columns: auto 1fr;
+        place-items: flex-start;
+        gap: 1.2em;
+        transition: all .25s cubic-bezier($transition-smooth, 1);
+        z-index: 5;
+        &-left {
+          &-image {
+            width: 4em; height: 4em;
+            background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+            background-size: 200% 100%;
+            border-radius: 50%;
+            animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+          }
+        }
+        &-right {
+          width: 100%;
+          @include flex-col-left();
+
+          &-title {
+            width: 100%;
+            height: calc(calc($paragraph-medium * 2));
+            background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+            background-size: 200% 100%;
+            border-radius: .75em;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            white-space: normal;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+          }
+          &-name {
+            margin: .5em 0 0 0;
+            width: 50%;
+            gap: .5em;
+            text-decoration: none;
+            @include flex-center();
+
+            span {
+              width: 100%;
+              height: calc($paragraph-large + .5rem);
+              line-height: $paragraph-large;
+              background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+              background-size: 200% 100%;
+              border-radius: .5em;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 1;
+              white-space: normal;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
