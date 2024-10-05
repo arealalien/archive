@@ -38,12 +38,17 @@
         width: 100%;
         aspect-ratio: 16 / 9;
         position: relative;
-        background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+        background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-extralightgray, 1) 50%, hslac($background-lightgray, 1) 75%);
         background-size: 200% 100%;
         border-radius: 1.5em;
         overflow: hidden;
         animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
         @include flex-center();
+        @include lightMode {
+          background: linear-gradient(-45deg, hslac($lm-background-lightgray, 1) 25%, hslac($lm-background-extralightgray, 1) 50%, hslac($lm-background-lightgray, 1) 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+        }
       }
       &-info {
         bottom: 0;
@@ -58,10 +63,15 @@
         &-left {
           &-image {
             width: 4em; height: 4em;
-            background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+            background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-extralightgray, 1) 50%, hslac($background-lightgray, 1) 75%);
             background-size: 200% 100%;
             border-radius: 50%;
             animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+            @include lightMode {
+              background: linear-gradient(-45deg, hslac($lm-background-lightgray, 1) 25%, hslac($lm-background-extralightgray, 1) 50%, hslac($lm-background-lightgray, 1) 75%);
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+            }
           }
         }
         &-right {
@@ -71,7 +81,7 @@
           &-title {
             width: 100%;
             height: calc(calc($paragraph-medium * 2));
-            background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+            background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-extralightgray, 1) 50%, hslac($background-lightgray, 1) 75%);
             background-size: 200% 100%;
             border-radius: .75em;
             display: -webkit-box;
@@ -81,6 +91,11 @@
             text-overflow: ellipsis;
             overflow: hidden;
             animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+            @include lightMode {
+              background: linear-gradient(-45deg, hslac($lm-background-lightgray, 1) 25%, hslac($lm-background-extralightgray, 1) 50%, hslac($lm-background-lightgray, 1) 75%);
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+            }
           }
           &-name {
             margin: .5em 0 0 0;
@@ -93,7 +108,7 @@
               width: 100%;
               height: calc($paragraph-large + .5rem);
               line-height: $paragraph-large;
-              background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-lightgray, .5) 50%, hslac($background-lightgray, 1) 75%);
+              background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-extralightgray, 1) 50%, hslac($background-lightgray, 1) 75%);
               background-size: 200% 100%;
               border-radius: .5em;
               display: -webkit-box;
@@ -103,6 +118,11 @@
               text-overflow: ellipsis;
               overflow: hidden;
               animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+              @include lightMode {
+                background: linear-gradient(-45deg, hslac($lm-background-lightgray, 1) 25%, hslac($lm-background-extralightgray, 1) 50%, hslac($lm-background-lightgray, 1) 75%);
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+              }
             }
           }
         }
