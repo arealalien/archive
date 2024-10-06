@@ -10,10 +10,12 @@ import VideosSec from "./components/videos/VideosSec";
 import PageShadow from "./components/PageShadow";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
+import PlaylistsSkeletonSec from "./components/playlists/PlaylistsSkeletonSec";
 
 function Discovery() {
     const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
     const [playlists, setPlaylists] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleSidebarMenu = () => {
         setSidebarMenuVisible(prevState => !prevState);
@@ -35,8 +37,10 @@ function Discovery() {
                 setPlaylists(data.map(playlist => ({
                     ...playlist
                 })));
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching video data:', error);
+                setIsLoading(false);
             }
         };
 
@@ -56,19 +60,23 @@ function Discovery() {
                                 <h3 className="videos-top-title">Playlists for you</h3>
                             </div>
                             <div className="videos-inner videos-inner-4 playlists-grid-inner view-width">
-                                {playlists.length > 0 ? (
-                                    playlists.map((playlist, index) => (
-                                        <NavLink to={`/playlist?list=${playlist.playlistUrl}`} key={index}
-                                                 className="playlists-grid-inner-item">
-                                            <div className="playlists-grid-inner-item-top">
-                                                <img className="playlists-grid-inner-item-top-image"
-                                                     src={`${process.env.PUBLIC_URL}/${playlist.playlistImg}`}
-                                                     alt=""/>
-                                            </div>
-                                        </NavLink>
-                                    ))
+                                {isLoading ? (
+                                    <PlaylistsSkeletonSec count={6} />
                                 ) : (
-                                    <p>No playlists found</p>
+                                    playlists.length > 0 ? (
+                                        playlists.map((playlist, index) => (
+                                            <NavLink to={`/playlist?list=${playlist.playlistUrl}`} key={index}
+                                                     className="playlists-grid-inner-item">
+                                                <div className="playlists-grid-inner-item-top">
+                                                    <img className="playlists-grid-inner-item-top-image"
+                                                         src={`${process.env.PUBLIC_URL}/${playlist.playlistImg}`}
+                                                         alt=""/>
+                                                </div>
+                                            </NavLink>
+                                        ))
+                                    ) : (
+                                        <p>No playlists found</p>
+                                    )
                                 )}
                             </div>
                         </section>

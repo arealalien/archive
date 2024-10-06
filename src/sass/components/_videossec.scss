@@ -56,7 +56,7 @@
         width: 100%;
         aspect-ratio: 16 / 9;
         position: relative;
-        background-color: hslac($black, 1);
+        background-color: hslac($background-lightgray, 1);
         border-radius: 1.5em;
         overflow: hidden;
         cursor: pointer;
@@ -114,6 +114,7 @@
           position: absolute;
           object-fit: cover;
           pointer-events: none;
+          transition: opacity .5s .2s cubic-bezier($transition-main, 1);
           z-index: 2;
         }
       }
@@ -158,9 +159,12 @@
         }
         &-left {
           &-image {
-            width: 4em;
-            background-color: hslac($black, 1);
+            width: 4em; height: 4em;
+            background-color: hslac($background-lightgray, 1);
             border-radius: 50%;
+            @include lightMode {
+              background-color: hslac($lm-background-lightgray, 1);
+            }
           }
         }
         &-right {

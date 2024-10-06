@@ -10,7 +10,7 @@ import VideosSec from "../videos/VideosSec";
 import PlaylistsSec from "../playlists/PlaylistsSec";
 import CreatorsSec from "../creator/CreatorsSec";
 import VideoSec from "../videos/VideoSec";
-import SkeletonSec from "../videos/SkeletonSec";
+import VideosSkeletonSec from "../videos/VideosSkeletonSec";
 
 const ProfileSec  = ({ profile, profileName, page }) => {
     const [videoDetails, setVideoDetails] = useState(null);

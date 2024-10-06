@@ -1,6 +1,6 @@
 import React from "react";
 
-const SkeletonSec = ({ count }) => {
+const VideosSkeletonSec = ({ count }) => {
     const skeletonItems = Array.from({ length: count }, (_, index) => index);
 
     return (
@@ -23,4 +23,4 @@ const SkeletonSec = ({ count }) => {
     );
 };
 
-export default SkeletonSec;
+export default VideosSkeletonSec;

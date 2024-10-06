@@ -19,10 +19,15 @@
       }
       &-top {
         width: 100%;
+        aspect-ratio: 1 / 1;
         position: relative;
+        background-color: hslac($background-lightgray, 1);
         border-radius: 1.5em;
         overflow: hidden;
         @include flex-center();
+        @include lightMode {
+          background-color: hslac($lm-background-lightgray, 1);
+        }
 
         &-image {
           width: 100%;

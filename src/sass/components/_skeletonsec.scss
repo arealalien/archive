@@ -130,6 +130,71 @@
     }
   }
 }
+.playlistsskeleton-grid {
+  &-inner {
+    &-item {
+      width: 100%;
+      gap: 1em;
+      opacity: 1;
+      animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+      @include flex-col-start-center();
+
+      &-top {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        background: linear-gradient(-45deg, hslac($background-lightgray, 1) 25%, hslac($background-extralightgray, 1) 50%, hslac($background-lightgray, 1) 75%);
+        background-size: 200% 100%;
+        border-radius: 1.5em;
+        overflow: hidden;
+        animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+        @include flex-center();
+        @include lightMode {
+          background: linear-gradient(-45deg, hslac($lm-background-lightgray, 1) 25%, hslac($lm-background-extralightgray, 1) 50%, hslac($lm-background-lightgray, 1) 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite cubic-bezier($transition-menu, 1);
+        }
+
+        &-image {
+          width: 100%;
+        }
+      }
+      &-bottom {
+        width: 100%; height: 100%;
+        gap: .3em;
+        @include flex-col-left-ns();
+
+        &-title {
+          color: hslac($white, 1);
+          font-size: $paragraph-large;
+          font-weight: 500;
+          line-height: 1.2;
+          @include lightMode {
+            color: hslac($black, 1);
+          }
+        }
+        &-subtitle {
+          color: hslac($white, .7);
+          font-size: $paragraph;
+          font-weight: 300;
+          gap: .25em;
+          @include flex-left();
+          @include lightMode {
+            color: hslac($black, .7);
+          }
+
+          span {
+            font-size: $paragraph;
+            font-weight: 300;
+          }
+          svg {
+            width: $paragraph-medium;
+          }
+        }
+      }
+    }
+  }
+}
 
 @keyframes shimmer {
   0% {

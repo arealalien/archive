@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
-import SkeletonSec from "./SkeletonSec";
+import VideosSkeletonSec from "./VideosSkeletonSec";
 
 const VideosSec = ({ videoCreator, search, discovery }) => {
     const [videos, setVideos] = useState([]);
@@ -89,7 +89,6 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
         const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
         if (!video || !thumbnail || !progressBar) return;
 
-        thumbnail.style.opacity = "0";
         video.preload = "metadata"; // Preload the video metadata
 
         const positions = [0.15, 0.30, 0.45, 0.60, 0.75, 0.90];
@@ -111,6 +110,7 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
         };
 
         const onMetadataLoaded = () => {
+            thumbnail.style.opacity = "0";
             video.play().then(() => {
                 updateTime();
             }).catch(err => {
@@ -152,7 +152,7 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
     return (
         <>
             {isLoading ? (
-                <SkeletonSec count={10} />
+                <VideosSkeletonSec count={16} />
             ) : (
                 videos.length > 0 ? (
                     videos.map((video, index) => (

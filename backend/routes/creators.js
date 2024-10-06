@@ -8,6 +8,9 @@ const prisma = new PrismaClient();
 router.get('/', async (req, res) => {
     try {
         const users = await prisma.user.findMany({
+            orderBy: {
+                name: 'asc',
+            },
             select: {
                 id: true,
                 name: true,
