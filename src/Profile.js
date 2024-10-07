@@ -153,7 +153,7 @@ function Profile() {
             <DocumentTitle title={user2.displayName + ` - Archive`}/>
             <Navbar searchbar="yes" profile="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
-                <SideBarLeft profile={user2} />
+                <SideBarLeft />
                 <ScrollBar className="page-center">
                     <section className="profile">
                         <div className="profile-inner view-width">

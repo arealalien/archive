@@ -19,7 +19,6 @@ const SideBarRight = ({
                           handleSubscribe,
                           handleLike
                       }) => {
-
     const [sidebarRightWidth, setSidebarRightWidth] = useState(() => {
         const savedRightWidth = localStorage.getItem('sidebarRightWidth');
         return savedRightWidth ? parseFloat(savedRightWidth) : 35;
@@ -591,10 +590,10 @@ const SideBarRight = ({
                                  style={{display: isProfileVisible && !isMenuVisible ? 'flex' : 'none'}}>
                                 <div className="profile-menu-container-inner">
                                     <div className="profile-menu-container-inner-button">
-                                        <p className="profile-menu-container-inner-button-text">@{profile.name}</p>
+                                        <p className="profile-menu-container-inner-button-text">@{profile?.name}</p>
                                         <div className="profile-menu-container-inner-live-shadow"></div>
                                     </div>
-                                    {user.name === profile.name ? (
+                                    {user && profile && user.name === profile.name ? (
                                         <NavLink className="profile-menu-container-inner-cta subscribed whitebutton"
                                                  to="/settings/profile">
                                             Edit profile
@@ -623,7 +622,7 @@ const SideBarRight = ({
                                 </div>
                                 <div className="profile-menu-container-details">
                                     <h3 className="profile-menu-container-details-username">
-                                        <span>{profile.displayName}</span>
+                                        <span>{profile?.displayName}</span>
                                         {profile?.verified === 1 ? (
                                             <svg className="verified-icon" viewBox="0 0 22 22" aria-hidden="true">
                                                 <g>
@@ -667,9 +666,9 @@ const SideBarRight = ({
                             <div className="sidebar-right-profilemenu"
                                  style={{display: isProfileVisible && !isMenuVisible ? 'block' : 'none'}}>
                                 <div className="sidebar-right-profilemenu-list">
-                                        <NavLink to={`/channel/` + profile.name}
+                                        <NavLink to={`/channel/` + profile?.name}
                                                  className={() =>
-                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile.name}`) ? 'active' : ''}`
+                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile?.name}`) ? 'active' : ''}`
                                                  }>
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -687,9 +686,9 @@ const SideBarRight = ({
                                             </svg>
                                             <p className="sidebar-right-profilemenu-list-item-text">Feed</p>
                                         </NavLink>
-                                        <NavLink to={`/channel/` + profile.name + `/videos`}
+                                        <NavLink to={`/channel/` + profile?.name + `/videos`}
                                                  className={() =>
-                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile.name}/videos`) ? 'active' : ''}`
+                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile?.name}/videos`) ? 'active' : ''}`
                                                  }>
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -710,9 +709,9 @@ const SideBarRight = ({
                                             </svg>
                                             <p className="sidebar-right-profilemenu-list-item-text">Videos</p>
                                         </NavLink>
-                                        <NavLink to={`/channel/` + profile.name + `/playlists`}
+                                        <NavLink to={`/channel/` + profile?.name + `/playlists`}
                                                  className={() =>
-                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile.name}/playlists`) ? 'active' : ''}`
+                                                     `sidebar-right-profilemenu-list-item ${isActiveLink(`/channel/${profile?.name}/playlists`) ? 'active' : ''}`
                                                  }>
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

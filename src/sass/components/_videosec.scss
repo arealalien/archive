@@ -795,8 +795,8 @@
     height: 90px;
     text-shadow: 1px 1px hslac($black, 1), 0 2px 5px hslac($black, .7) !important;
     border-radius: .5em !important;
-    box-shadow: 0 5px 25px -5px hslac($black, .4);
-    border: 1px solid hslac($black, 1) !important;
+    box-shadow: 0 5px 25px -5px hslac($black, .2);
+    border: 1px solid hslac($white, 1) !important;
     transition: none !important;
   }
   .vjs-mouse-display .vjs-volume-tooltip {

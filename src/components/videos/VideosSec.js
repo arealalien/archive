@@ -115,12 +115,23 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
             }
 
             video.currentTime = video.duration * positions[currentIndex];
-            currentIndex = (currentIndex + 1) % positions.length;
-            const percent = (video.currentTime / video.duration) * 100;
-            progressBar.style.width = `${percent}%`;
 
-            // Update every 3 seconds
-            video.loopTimeout = setTimeout(updateTime, 2000);
+            const onSeeked = () => {
+                // Once the video is fully loaded to the seeked position, update the progress bar and wait 2 seconds
+                const percent = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = `${percent}%`;
+
+                currentIndex = (currentIndex + 1) % positions.length;
+
+                // Remove the listener to avoid memory leaks
+                video.removeEventListener('seeked', onSeeked);
+
+                // After 2 seconds, go to the next position
+                video.loopTimeout = setTimeout(updateTime, 2000);
+            };
+
+            // Wait until the video has fully loaded the seeked position
+            video.addEventListener('seeked', onSeeked);
         };
 
         const onMetadataLoaded = () => {
