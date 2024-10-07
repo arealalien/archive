@@ -114,7 +114,7 @@
           position: absolute;
           object-fit: cover;
           pointer-events: none;
-          transition: opacity .5s .2s cubic-bezier($transition-main, 1);
+          transition: opacity .3s .1s cubic-bezier($transition-main, 1);
           z-index: 2;
         }
       }

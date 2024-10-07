@@ -1862,7 +1862,7 @@ a {
   position: absolute;
   object-fit: cover;
   pointer-events: none;
-  transition: opacity 0.5s 0.2s cubic-bezier(0.175, 0.685, 0.32, 1);
+  transition: opacity 0.3s 0.1s cubic-bezier(0.175, 0.685, 0.32, 1);
   z-index: 2;
 }
 .videos-inner-item-info {

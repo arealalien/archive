@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import VideosSkeletonSec from "./VideosSkeletonSec";
@@ -6,6 +6,7 @@ import VideosSkeletonSec from "./VideosSkeletonSec";
 const VideosSec = ({ videoCreator, search, discovery }) => {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const observer = useRef(null);
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -80,7 +81,17 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
         return Math.floor(views / 1000000000) + ' bill.';
     }
 
-    const handleMouseEnter = (e) => {
+    let hoverTimeout = null;
+    const debounceHover = (callback, delay) => {
+        return (...args) => {
+            clearTimeout(hoverTimeout);
+            hoverTimeout = setTimeout(() => {
+                callback(...args);
+            }, delay);
+        };
+    };
+
+    const handleMouseEnter = debounceHover((e) => {
         const videoContainer = e.target.closest('.videos-inner-item');
         if (!videoContainer) return;
 
@@ -89,15 +100,13 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
         const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
         if (!video || !thumbnail || !progressBar) return;
 
+        video.src = video.getAttribute('data-src');
         video.preload = "metadata"; // Preload the video metadata
 
         const positions = [0.15, 0.30, 0.45, 0.60, 0.75, 0.90];
         let currentIndex = 0;
 
-        if (video.loopTimeout) {
-            clearTimeout(video.loopTimeout);
-            video.loopTimeout = null;
-        }
+        if (video.loopTimeout) clearTimeout(video.loopTimeout);
 
         const updateTime = () => {
             video.currentTime = video.duration * positions[currentIndex];
@@ -111,43 +120,53 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
 
         const onMetadataLoaded = () => {
             thumbnail.style.opacity = "0";
-            video.play().then(() => {
-                updateTime();
-            }).catch(err => {
-                console.error('Video failed to play:', err);
-            });
+            video.play().then(() => updateTime()).catch(err => console.error('Video failed to play:', err));
         };
 
-        if (video.readyState >= 1) {
-            onMetadataLoaded();
-        } else {
-            const metadataLoadedHandler = () => {
-                onMetadataLoaded();
-                video.removeEventListener('loadedmetadata', metadataLoadedHandler);
-            };
-            video.addEventListener('loadedmetadata', metadataLoadedHandler);
-        }
-    };
+        if (video.readyState >= 1) onMetadataLoaded();
+        else video.addEventListener('loadedmetadata', onMetadataLoaded, { once: true });
+    }, 200);
 
     const handleMouseLeave = (e) => {
         const videoContainer = e.target.closest('.videos-inner-item');
-        if (!videoContainer) return;
-
         const video = videoContainer.querySelector('.videos-inner-item-video-video');
         const thumbnail = videoContainer.querySelector('.videos-inner-item-video-background');
         const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
         if (!video || !thumbnail || !progressBar) return;
 
-        if (video.loopTimeout) {
-            clearTimeout(video.loopTimeout);
-            video.loopTimeout = null;
-        }
+        if (video.loopTimeout) clearTimeout(video.loopTimeout);
 
         video.pause();
         video.currentTime = 0;
         progressBar.style.width = "0%";
         thumbnail.style.opacity = "1";
+
+        video.src = '';
+        video.preload = "none";
     };
+
+    useEffect(() => {
+        if (!observer.current) {
+            observer.current = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const video = entry.target;
+                        video.src = video.getAttribute('data-src');
+                        observer.current.unobserve(video);
+                    }
+                });
+            }, { threshold: 0.25 });
+        }
+
+        const videos = document.querySelectorAll('.videos-inner-item-video-video');
+        videos.forEach(video => observer.current.observe(video));
+
+        return () => {
+            if (observer.current) {
+                observer.current.disconnect();
+            }
+        };
+    }, [videos]);
 
     return (
         <>
@@ -157,7 +176,7 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
                 videos.length > 0 ? (
                     videos.map((video, index) => (
                         <div className="videos-inner-item" key={index} onMouseEnter={handleMouseEnter}
-                             onMouseLeave={handleMouseLeave}>
+                             onMouseLeave={handleMouseLeave} onMouseOut={handleMouseLeave}>
                             <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-video">
                                 <div className="videos-inner-item-video-info">
                                     <div className="videos-inner-item-video-info-time">
@@ -174,19 +193,19 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
                                      className="videos-inner-item-video-overlay"></div>
                                 <video
                                     className="videos-inner-item-video-video"
-                                    src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl.split('.')[0] + "-144p." + video.videoUrl.split('.')[1]}
+                                    data-src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl.split('.')[0] + "-144p." + video.videoUrl.split('.')[1]}
                                     muted
                                     loop
                                     preload="none"
                                 />
                                 <img className="videos-inner-item-video-background"
                                      src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"}
-                                     alt={video.title}/>
+                                     alt={video.title} loading="lazy" />
                             </NavLink>
                             <div className="videos-inner-item-info">
                                 <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-bottom-info-left">
                                     <img className="videos-inner-item-info-left-image"
-                                         src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""/>
+                                         src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt="" loading="lazy" />
                                 </NavLink>
                                 <div className="videos-inner-item-info-right">
                                     <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
