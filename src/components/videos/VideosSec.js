@@ -109,6 +109,11 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
         if (video.loopTimeout) clearTimeout(video.loopTimeout);
 
         const updateTime = () => {
+            if (!videoContainer.matches(':hover')) {
+                handleMouseLeave(e); // Trigger the handleMouseLeave logic if no longer hovering
+                return;
+            }
+
             video.currentTime = video.duration * positions[currentIndex];
             currentIndex = (currentIndex + 1) % positions.length;
             const percent = (video.currentTime / video.duration) * 100;
@@ -146,25 +151,27 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
     };
 
     useEffect(() => {
-        if (!observer.current) {
-            observer.current = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const video = entry.target;
                     if (entry.isIntersecting) {
-                        const video = entry.target;
                         video.src = video.getAttribute('data-src');
-                        observer.current.unobserve(video);
+                    } else {
+                        video.pause();
+                        video.currentTime = 0;
+                        video.src = '';
                     }
                 });
-            }, { threshold: 0.25 });
-        }
+            },
+            { threshold: 0.1 }
+        );
 
         const videos = document.querySelectorAll('.videos-inner-item-video-video');
-        videos.forEach(video => observer.current.observe(video));
+        videos.forEach((video) => observer.observe(video));
 
         return () => {
-            if (observer.current) {
-                observer.current.disconnect();
-            }
+            videos.forEach((video) => observer.unobserve(video));
         };
     }, [videos]);
 
