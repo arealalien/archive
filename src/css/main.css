@@ -893,7 +893,7 @@ a {
   justify-content: flex-start;
   align-items: center;
 }
-.sidebar-right-menu-inner-top-left-inner-text-title svg {
+.sidebar-right-menu-inner-top-left-inner-text-title svg, .sidebar-right-menu-inner-top-left-inner-text-title img {
   width: clamp(1.4rem, 1.278rem + 1.21vw, 1.55rem);
 }
 .sidebar-right-menu-inner-top-left-inner-text-subtitle {
@@ -1982,7 +1982,7 @@ a {
     color: hsla(0, 0%, 0%, 0.7);
   }
 }
-.videos-inner-item-info-right-name svg {
+.videos-inner-item-info-right-name svg, .videos-inner-item-info-right-name img {
   height: clamp(1.4rem, 1.278rem + 1.21vw, 1.55rem);
 }
 .videos-inner-item-info-right-info {
@@ -2265,7 +2265,7 @@ a {
   font-size: clamp(1.69rem, 1.578rem + 1.51vw, 1.75rem);
   font-weight: 700;
 }
-.video-inner-right-box-top-user-text-username svg {
+.video-inner-right-box-top-user-text-username svg, .video-inner-right-box-top-user-text-username img {
   width: clamp(1.69rem, 1.578rem + 1.51vw, 1.75rem);
 }
 .video-inner-right-box-top-user-text-date {
@@ -3123,7 +3123,7 @@ a {
   font-size: clamp(1rem, 0.978rem + 0.11vw, 1.11rem);
   font-weight: 300;
 }
-.playlists-grid-inner-item-bottom-subtitle svg {
+.playlists-grid-inner-item-bottom-subtitle svg, .playlists-grid-inner-item-bottom-subtitle img {
   width: clamp(1.2rem, 1.178rem + 1.11vw, 1.35rem);
 }
 
@@ -3866,7 +3866,7 @@ a {
     color: hsl(0, 0%, 0%);
   }
 }
-.profile-menu-container-details-username svg {
+.profile-menu-container-details-username svg, .profile-menu-container-details-username img {
   width: clamp(1.8rem, 1.68rem + 0.59vw, 2.4rem);
 }
 .profile-menu-container-details-subscribers {
@@ -4190,7 +4190,7 @@ a {
   justify-content: flex-start;
   align-items: center;
 }
-.creators-inner-creator-inner-name svg {
+.creators-inner-creator-inner-name svg, .creators-inner-creator-inner-name img {
   width: clamp(1.4rem, 1.278rem + 1.21vw, 1.55rem);
 }
 .creators-inner-creator-inner-username {
@@ -4715,7 +4715,7 @@ a {
   justify-content: center;
   align-items: center;
 }
-.settings-inner-right-center-block-left-title svg {
+.settings-inner-right-center-block-left-title svg, .settings-inner-right-center-block-left-title img {
   width: 1.25em;
 }
 .settings-inner-right-center-block-left-subtitle {

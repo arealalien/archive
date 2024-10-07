@@ -33,7 +33,7 @@
           z-index: 5;
           @include flex-left();
 
-          svg {
+          svg, img {
             width: $paragraph-large;
           }
         }

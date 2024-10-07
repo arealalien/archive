@@ -381,7 +381,7 @@
                 gap: .25em;
                 @include flex-left();
 
-                svg {
+                svg, img {
                   width: $paragraph-large;
                 }
               }
