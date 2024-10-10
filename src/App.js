@@ -12,6 +12,7 @@ import Upload from "./Upload"
 import Playlist from "./Playlist";
 import Video from "./Video";
 import Settings from "./Settings";
+import NotFound from "./NotFound";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/video" element={<Video/>}/>
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/settings/:page" element={<Settings/>} />
+          <Route path="*" element={<NotFound/>} />
       </Routes>
   );
 }

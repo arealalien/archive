@@ -143,7 +143,6 @@ body {
   width: 100%; height: calc(100vh - calc($navbar-height + 2em)) !important;
   display: grid;
   grid-template-columns: auto 1fr auto;
-  border-radius: 2em;
   overflow: hidden;
   @media (max-width: $layout-breakpoint-small) {
     grid-template-columns: 1fr;
@@ -174,6 +173,25 @@ body {
     }
     > div:nth-child(3) {
       padding: 3em 0;
+    }
+  }
+}
+.notfound {
+  padding: 3em 0;
+  width: 100%;
+  background-color: hslac($background-lightgray, 1);
+  @include flex-col();
+  @include lightMode {
+    background-color: hslac($lm-background-lightgray, 1);
+  }
+
+  &-inner {
+    height: calc(100vh - calc($navbar-height + 8em)) !important;
+    @include flex-center();
+
+    &-image {
+      width: 100%;
+      max-width: 50%;
     }
   }
 }

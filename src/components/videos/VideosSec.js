@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import VideosSkeletonSec from "./VideosSkeletonSec";
@@ -6,7 +6,6 @@ import VideosSkeletonSec from "./VideosSkeletonSec";
 const VideosSec = ({ videoCreator, search, discovery }) => {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const observer = useRef(null);
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -21,7 +20,6 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
                 if (discovery) {
                     url = `http://localhost:5000/discoveryvideos`;
                 }
-
 
                 if (videoCreator) {
                     url = `http://localhost:5000/videos?creator=${encodeURIComponent(videoCreator)}`;
@@ -97,6 +95,8 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
 
         const video = videoContainer.querySelector('.videos-inner-item-video-video');
         const thumbnail = videoContainer.querySelector('.videos-inner-item-video-background');
+        const time = videoContainer.querySelector('.videos-inner-item-video-info-time');
+        const overlay = videoContainer.querySelector('.videos-inner-item-video-overlay');
         const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
         if (!video || !thumbnail || !progressBar) return;
 
@@ -136,6 +136,8 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
 
         const onMetadataLoaded = () => {
             thumbnail.style.opacity = "0";
+            time.style.opacity = "0";
+            overlay.style.opacity = "0";
             video.play().then(() => updateTime()).catch(err => console.error('Video failed to play:', err));
         };
 
@@ -143,11 +145,39 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
         else video.addEventListener('loadedmetadata', onMetadataLoaded, { once: true });
     }, 200);
 
+    const handleMouseDown = (e) => {
+        const videoContainer = e.target.closest('.videos-inner-item');
+        if (!videoContainer) return;
+
+        videoContainer.style.backgroundColor = "#000";
+        videoContainer.style.border = "1px solid rgba(255, 255, 255, .15)";
+    };
+
+    const handleMouseUp = (e) => {
+        const videoContainer = e.target.closest('.videos-inner-item');
+        if (!videoContainer) return;
+
+        videoContainer.style.backgroundColor = "transparent";
+        videoContainer.style.border = "1px solid rgba(255, 255, 255, 0)";
+    };
+
     const handleMouseLeave = (e) => {
         const videoContainer = e.target.closest('.videos-inner-item');
+
+        // Ensure videoContainer exists and relatedTarget is a valid Node before using it
+        if (!videoContainer || !(e.relatedTarget instanceof Node) || videoContainer.contains(e.relatedTarget)) {
+            return;
+        }
+
+        videoContainer.style.backgroundColor = "transparent";
+        videoContainer.style.border = "1px solid rgba(255, 255, 255, 0)";
+
         const video = videoContainer.querySelector('.videos-inner-item-video-video');
         const thumbnail = videoContainer.querySelector('.videos-inner-item-video-background');
+        const time = videoContainer.querySelector('.videos-inner-item-video-info-time');
+        const overlay = videoContainer.querySelector('.videos-inner-item-video-overlay');
         const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
+
         if (!video || !thumbnail || !progressBar) return;
 
         if (video.loopTimeout) clearTimeout(video.loopTimeout);
@@ -156,6 +186,8 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
         video.currentTime = 0;
         progressBar.style.width = "0%";
         thumbnail.style.opacity = "1";
+        time.style.opacity = "1";
+        overlay.style.opacity = "1";
 
         video.src = '';
         video.preload = "none";
@@ -193,8 +225,11 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
             ) : (
                 videos.length > 0 ? (
                     videos.map((video, index) => (
-                        <div className="videos-inner-item" key={index} onMouseEnter={handleMouseEnter}
+                        <div className="videos-inner-item" key={index} onMouseEnter={handleMouseEnter} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
                              onMouseLeave={handleMouseLeave} onMouseOut={handleMouseLeave}>
+                            <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-link">
+
+                            </NavLink>
                             <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-video">
                                 <div className="videos-inner-item-video-info">
                                     <div className="videos-inner-item-video-info-time">
@@ -221,7 +256,7 @@ const VideosSec = ({ videoCreator, search, discovery }) => {
                                      alt={video.title} loading="lazy" />
                             </NavLink>
                             <div className="videos-inner-item-info">
-                                <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-bottom-info-left">
+                                <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
                                     <img className="videos-inner-item-info-left-image"
                                          src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt="" loading="lazy" />
                                 </NavLink>

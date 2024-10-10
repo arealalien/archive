@@ -16,7 +16,7 @@
   }
   &-inner-4 {
     row-gap: 3em;
-    column-gap: 1.5em;
+    column-gap: .5em;
     grid-template-columns: repeat(auto-fill, minmax(26em, 1fr));
     @media (max-width: $layout-breakpoint-msmall) {
       gap: 1em;
@@ -29,18 +29,18 @@
     display: grid;
 
     &-item {
+      padding: .75em;
       width: 100%;
       position: relative;
+      background-color: transparent;
+      border: 1px solid hslac($white, 0);
+      border-radius: 1.5em;
       gap: 1.6em;
+      cursor: pointer;
+      transition: background-color .1s cubic-bezier($transition-main, 1), border .15s cubic-bezier($transition-main, 1);
       @include flex-col-start-center();
 
       &:hover {
-        .videos-inner-item-video-overlay {
-          opacity: 0;
-        }
-        .videos-inner-item-video-info-time {
-          opacity: 0;
-        }
         .videos-inner-item-info-line {
           opacity: 1;
         }
@@ -51,6 +51,11 @@
         .videos-inner-item-video {
           border-radius: .5em;
         }
+      }
+      &-link {
+        width: 100%; height: 100%;
+        position: absolute;
+        z-index: 1;
       }
       &-video {
         width: 100%;
@@ -68,6 +73,7 @@
           padding: 1em;
           width: 100%;
           position: absolute;
+          pointer-events: none;
           z-index: 100;
           @include flex-right();
 
