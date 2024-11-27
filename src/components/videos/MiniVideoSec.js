@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
-import VideoJS from './VideoJS';
+import MiniVideoJS from './MiniVideoJS';
 import 'video.js/dist/video-js.css';
 
 const useFetchVideoData = (video, location, setError, setVideoDetails) => {
@@ -30,7 +30,7 @@ const useFetchVideoData = (video, location, setError, setVideoDetails) => {
     }, [video, location.search, setError, setVideoDetails]);
 };
 
-const VideoSec  = ({ video }) => {
+const MiniVideoSec = forwardRef(({ video }, ref) => {
     const location = useLocation();
     const [videoDetails, setVideoDetails] = useState(null);
     const [error, setError] = useState('');
@@ -40,15 +40,14 @@ const VideoSec  = ({ video }) => {
     const playerRef = React.useRef(null);
 
     const videoJsOptions = videoDetails ? {
-        autoplay: true,
+        autoplay: false,
         controls: true,
         responsive: true,
         fluid: true,
-        playbackRates: [0.25, 0.5, 1, 1.5, 2],
         enableSmoothSeeking: true,
         poster: process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg",
         sources: [{
-            src: process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl,
+            src: process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl.split('.')[0] + "-144p." + video.videoUrl.split('.')[1],
             type: 'video/mp4'
         }],
         userActions: {
@@ -57,16 +56,6 @@ const VideoSec  = ({ video }) => {
         controlBar: {
             children: [
                 "progressControl",
-                "playToggle",
-                "seekButton",
-                "volumePanel",
-                "currentTimeDisplay",
-                "timeDivider",
-                "durationDisplay",
-                "playbackRateMenuButton",
-                "httpSourceSelector",
-                "pictureInPictureToggle",
-                "fullscreenToggle"
             ],
         },
         inactivityTimeout: 3000,
@@ -76,6 +65,10 @@ const VideoSec  = ({ video }) => {
     const handlePlayerReady = (player) => {
         playerRef.current = player;
     };
+
+    useImperativeHandle(ref, () => ({
+        getPlayer: () => playerRef.current,
+    }));
 
     if (error) {
         return <div>{error}</div>;
@@ -87,8 +80,8 @@ const VideoSec  = ({ video }) => {
 
     return (
         <>
-            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} spriteLink={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/sprites/"}/>
+            <MiniVideoJS ref={ref} options={videoJsOptions} onReady={handlePlayerReady} spriteLink={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/sprites/"}/>
         </>
     )
-}
-export default VideoSec;
+});
+export default MiniVideoSec;

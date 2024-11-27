@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React, {useState, useEffect, useRef} from "react";
+import {NavLink, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import { format } from "date-fns";
 import { NumericFormat } from "react-number-format";
@@ -11,6 +11,7 @@ import PlaylistsSec from "../playlists/PlaylistsSec";
 import CreatorsSec from "../creator/CreatorsSec";
 import VideoSec from "../videos/VideoSec";
 import VideosSkeletonSec from "../videos/VideosSkeletonSec";
+import MiniVideoSec from "../videos/MiniVideoSec";
 
 const ProfileSec  = ({ profile, profileName, page }) => {
     const [videoDetails, setVideoDetails] = useState(null);
@@ -19,6 +20,8 @@ const ProfileSec  = ({ profile, profileName, page }) => {
     const [isFeaturedVideoLoading, setIsFeaturedVideoLoading] = useState(true);
     const [isVideosLoading, setIsVideosLoading] = useState(true);
     const [isPlaylistsLoading, setIsPlaylistsLoading] = useState(true);
+    const videoPlayerRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchFeaturedVideo = async () => {
@@ -126,71 +129,73 @@ const ProfileSec  = ({ profile, profileName, page }) => {
         return Math.floor(views / 1000000000) + ' bill.';
     }
 
-    let hoverTimeout = null;
-    const debounceHover = (callback, delay) => {
-        return (...args) => {
-            clearTimeout(hoverTimeout);
-            hoverTimeout = setTimeout(() => {
-                callback(...args);
-            }, delay);
-        };
+    let domReady = false;
+
+    const ensureDomReady = () => {
+        return new Promise((resolve) => {
+            if (domReady) {
+                resolve();
+            } else {
+                const observer = new MutationObserver(() => {
+                    if (document.readyState === 'complete') {
+                        domReady = true;
+                        observer.disconnect();
+                        resolve();
+                    }
+                });
+                observer.observe(document, { childList: true, subtree: true });
+            }
+        });
     };
 
-    const handleMouseEnter = debounceHover((e) => {
-        const videoContainer = e.target.closest('.videos-inner-item');
-        if (!videoContainer) return;
+    const handleMouseEnter = async (e) => {
+        await ensureDomReady();
 
-        const video = videoContainer.querySelector('.videos-inner-item-video-video');
-        const thumbnail = videoContainer.querySelector('.videos-inner-item-video-background');
+        const player = videoPlayerRef.current?.getPlayer();
+        const videoContainer = e.target.closest('.videos-inner-item');
+
+        if (!player || !videoContainer || !(e.relatedTarget instanceof Node) || videoContainer.contains(e.relatedTarget)) {
+            return;
+        }
+
+        if (player.readyState() < 4) {
+            console.log("Video not fully ready yet, waiting...");
+            return;
+        }
+
         const time = videoContainer.querySelector('.videos-inner-item-video-info-time');
         const overlay = videoContainer.querySelector('.videos-inner-item-video-overlay');
-        const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
-        if (!video || !thumbnail || !progressBar) return;
+        const poster = videoContainer.querySelector('.vjs-poster');
+        const posterInner = poster.querySelector('.vjs-poster');
 
-        video.src = video.getAttribute('data-src');
-        video.preload = "metadata"; // Preload the video metadata
+        time.style.opacity = "0";
+        overlay.style.opacity = "0";
+        poster.style.display = "inline-block";
+        posterInner.style.display = "inline-block";
+        poster.style.opacity = "0";
+        posterInner.style.opacity = "0";
+    };
 
-        const positions = [0.15, 0.30, 0.45, 0.60, 0.75, 0.90];
-        let currentIndex = 0;
+    const handleMouseLeave = async (e) => {
+        const player = videoPlayerRef.current?.getPlayer();
+        const videoContainer = e.target.closest('.videos-inner-item');
 
-        if (video.loopTimeout) clearTimeout(video.loopTimeout);
+        if (!player || !videoContainer || !(e.relatedTarget instanceof Node) || videoContainer.contains(e.relatedTarget)) {
+            return;
+        }
 
-        const updateTime = () => {
-            if (!videoContainer.matches(':hover')) {
-                handleMouseLeave(e); // Trigger the handleMouseLeave logic if no longer hovering
-                return;
-            }
+        const time = videoContainer.querySelector('.videos-inner-item-video-info-time');
+        const overlay = videoContainer.querySelector('.videos-inner-item-video-overlay');
+        const poster = videoContainer.querySelector('.vjs-poster');
+        const posterInner = poster.querySelector('.vjs-poster');
 
-            video.currentTime = video.duration * positions[currentIndex];
-
-            const onSeeked = () => {
-                // Once the video is fully loaded to the seeked position, update the progress bar and wait 2 seconds
-                const percent = (video.currentTime / video.duration) * 100;
-                progressBar.style.width = `${percent}%`;
-
-                currentIndex = (currentIndex + 1) % positions.length;
-
-                // Remove the listener to avoid memory leaks
-                video.removeEventListener('seeked', onSeeked);
-
-                // After 2 seconds, go to the next position
-                video.loopTimeout = setTimeout(updateTime, 2000);
-            };
-
-            // Wait until the video has fully loaded the seeked position
-            video.addEventListener('seeked', onSeeked);
-        };
-
-        const onMetadataLoaded = () => {
-            thumbnail.style.opacity = "0";
-            time.style.opacity = "0";
-            overlay.style.opacity = "0";
-            video.play().then(() => updateTime()).catch(err => console.error('Video failed to play:', err));
-        };
-
-        if (video.readyState >= 1) onMetadataLoaded();
-        else video.addEventListener('loadedmetadata', onMetadataLoaded, { once: true });
-    }, 200);
+        time.style.opacity = "1";
+        overlay.style.opacity = "1";
+        poster.style.display = "inline-block";
+        posterInner.style.display = "inline-block";
+        poster.style.opacity = "1";
+        posterInner.style.opacity = "1";
+    };
 
     const handleMouseDown = (e) => {
         const videoContainer = e.target.closest('.videos-inner-item');
@@ -208,62 +213,10 @@ const ProfileSec  = ({ profile, profileName, page }) => {
         videoContainer.style.border = "1px solid rgba(255, 255, 255, 0)";
     };
 
-    const handleMouseLeave = (e) => {
-        const videoContainer = e.target.closest('.videos-inner-item');
-
-        // Ensure videoContainer exists and relatedTarget is a valid Node before using it
-        if (!videoContainer || !(e.relatedTarget instanceof Node) || videoContainer.contains(e.relatedTarget)) {
-            return;
-        }
-
-        videoContainer.style.backgroundColor = "transparent";
-        videoContainer.style.border = "1px solid rgba(255, 255, 255, 0)";
-
-        const video = videoContainer.querySelector('.videos-inner-item-video-video');
-        const thumbnail = videoContainer.querySelector('.videos-inner-item-video-background');
-        const time = videoContainer.querySelector('.videos-inner-item-video-info-time');
-        const overlay = videoContainer.querySelector('.videos-inner-item-video-overlay');
-        const progressBar = videoContainer.querySelector('.videos-inner-item-info-line-progress');
-
-        if (!video || !thumbnail || !progressBar) return;
-
-        if (video.loopTimeout) clearTimeout(video.loopTimeout);
-
-        video.pause();
-        video.currentTime = 0;
-        progressBar.style.width = "0%";
-        thumbnail.style.opacity = "1";
-        time.style.opacity = "1";
-        overlay.style.opacity = "1";
-
-        video.src = '';
-        video.preload = "none";
+    const handleMouseClick = (videoUrl) => {
+        const videoId = videoUrl.split('.')[0];
+        navigate(`/video?view=${videoId}`);
     };
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    const video = entry.target;
-                    if (entry.isIntersecting) {
-                        video.src = video.getAttribute('data-src');
-                    } else {
-                        video.pause();
-                        video.currentTime = 0;
-                        video.src = '';
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        const videos = document.querySelectorAll('.videos-inner-item-video-video');
-        videos.forEach((video) => observer.observe(video));
-
-        return () => {
-            videos.forEach((video) => observer.unobserve(video));
-        };
-    }, [videos]);
 
     const renderSettingsContent = () => {
         switch(page) {
@@ -363,31 +316,20 @@ const ProfileSec  = ({ profile, profileName, page }) => {
                                                             <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-link">
 
                                                             </NavLink>
-                                                            <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-video">
+                                                            <div className="videos-inner-item-video" onClick={() => handleMouseClick(video.videoUrl)}>
+                                                                <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-video-link">
+
+                                                                </NavLink>
                                                                 <div className="videos-inner-item-video-info">
                                                                     <div className="videos-inner-item-video-info-time">
                                                                         <p>{video.duration}</p>
                                                                         <div className="videos-inner-item-video-info-time-shadow"></div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="videos-inner-item-info-line">
-                                                                    <div className="videos-inner-item-info-line-progress">
-                                                                        <div className="videos-inner-item-info-line-progress-glow"></div>
-                                                                    </div>
-                                                                </div>
                                                                 <div to={`/video?view=` + video.videoUrl.split('.')[0]}
                                                                      className="videos-inner-item-video-overlay"></div>
-                                                                <video
-                                                                    className="videos-inner-item-video-video"
-                                                                    data-src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl.split('.')[0] + "-144p." + video.videoUrl.split('.')[1]}
-                                                                    muted
-                                                                    loop
-                                                                    preload="none"
-                                                                />
-                                                                <img className="videos-inner-item-video-background"
-                                                                     src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"}
-                                                                     alt={video.title} loading="lazy" />
-                                                            </NavLink>
+                                                                <MiniVideoSec video={video} ref={videoPlayerRef}/>
+                                                            </div>
                                                             <div className="videos-inner-item-info">
                                                                 <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
                                                                     <img className="videos-inner-item-info-left-image"
@@ -539,31 +481,20 @@ const ProfileSec  = ({ profile, profileName, page }) => {
                                                             <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-link">
 
                                                             </NavLink>
-                                                            <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-video">
+                                                            <div className="videos-inner-item-video" onClick={() => handleMouseClick(video.videoUrl)}>
+                                                                <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-video-link">
+
+                                                                </NavLink>
                                                                 <div className="videos-inner-item-video-info">
                                                                     <div className="videos-inner-item-video-info-time">
                                                                         <p>{video.duration}</p>
                                                                         <div className="videos-inner-item-video-info-time-shadow"></div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="videos-inner-item-info-line">
-                                                                    <div className="videos-inner-item-info-line-progress">
-                                                                        <div className="videos-inner-item-info-line-progress-glow"></div>
-                                                                    </div>
-                                                                </div>
                                                                 <div to={`/video?view=` + video.videoUrl.split('.')[0]}
                                                                      className="videos-inner-item-video-overlay"></div>
-                                                                <video
-                                                                    className="videos-inner-item-video-video"
-                                                                    data-src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/" + video.videoUrl.split('.')[0] + "-144p." + video.videoUrl.split('.')[1]}
-                                                                    muted
-                                                                    loop
-                                                                    preload="none"
-                                                                />
-                                                                <img className="videos-inner-item-video-background"
-                                                                     src={process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg"}
-                                                                     alt={video.title} loading="lazy" />
-                                                            </NavLink>
+                                                                <MiniVideoSec video={video} ref={videoPlayerRef}/>
+                                                            </div>
                                                             <div className="videos-inner-item-info">
                                                                 <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
                                                                     <img className="videos-inner-item-info-left-image"

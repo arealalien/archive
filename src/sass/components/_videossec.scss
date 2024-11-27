@@ -55,6 +55,7 @@
       &-link {
         width: 100%; height: 100%;
         position: absolute;
+        pointer-events: none;
         z-index: 1;
       }
       &-video {
@@ -68,20 +69,26 @@
         transition: all .3s cubic-bezier($transition-main, 1);
         @include flex-center();
 
+        &-link {
+          width: 100%; height: 100%;
+          position: absolute;
+          pointer-events: none;
+          z-index: 1000;
+        }
         &-info {
           left: 0; bottom: 0;
           padding: 1em;
           width: 100%;
           position: absolute;
           pointer-events: none;
-          z-index: 100;
+          z-index: 1005;
           @include flex-right();
 
           &-time {
             padding: .9em 1.3em;
             position: relative;
             background-color: hslac($black, 0);
-            backdrop-filter: blur(1.5rem) brightness(70%);
+            backdrop-filter: blur(1rem) brightness(70%);
             border-radius: 5em;
             opacity: 1;
             transition: all .25s cubic-bezier($transition-smooth, 1);
@@ -108,7 +115,7 @@
           background: linear-gradient(7deg, hslac($black, .54) 0, hslac($black, 0) 100%);
           transition: all .25s cubic-bezier($transition-smooth, 1);
           pointer-events: none;
-          z-index: 3;
+          z-index: 1003;
         }
         &-video {
           width: 100%;
@@ -120,8 +127,9 @@
           position: absolute;
           object-fit: cover;
           pointer-events: none;
+          opacity: 0;
           transition: opacity .3s .1s cubic-bezier($transition-main, 1);
-          z-index: 2;
+          z-index: 1001;
         }
       }
       &-info {
@@ -228,7 +236,7 @@
               }
             }
             svg, img {
-              height: $paragraph-large;
+              height: calc($paragraph-large - .4rem);
             }
           }
           &-info {
@@ -259,7 +267,7 @@
   &-inner {
     width: 100%;
     display: grid !important;
-    grid-template-columns: 55% 35% 1fr;
+    grid-template-columns: 45% 35% 1fr;
     gap: 1.5em;
     &-left {
 

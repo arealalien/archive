@@ -161,9 +161,9 @@ const SideBarLeft  = () => {
     };
 
     const getIslandStyle = () => {
-        if (sidebarWidth <= 8) return { margin: '0 1em 0 1em' };
-        if (sidebarWidth > 15) return { margin: '0 1.5em 0 1.5em' };
-        return { margin: '0 1em 0 1em' };
+        if (sidebarWidth <= 8) return { margin: '0 1em 0 1em', padding: '0' };
+        if (sidebarWidth > 15) return { margin: '0 1.5em 0 1.5em', padding: '1.5em 0 0 0' };
+        return { margin: '0 1em 0 1em', padding: '0' };
     };
 
     const getPlaylistStyle = () => {
