@@ -60,39 +60,18 @@ const MiniVideoJS = forwardRef((props, ref) => {
     }, [options, videoRef]);
 
     useImperativeHandle(ref, () => ({
-        getPlayer: () => playerRef.current,
+        play: () => {
+            if (playerRef.current) {
+                playerRef.current.play();
+            }
+        },
+        reset: () => {
+            if (playerRef.current) {
+                playerRef.current.pause();
+                playerRef.current.currentTime(0);
+            }
+        },
     }));
-
-    useEffect(() => {
-        const player = playerRef.current;
-
-        const handleMouseEnter = () => {
-            if (player) {
-                player.play();
-            }
-        };
-
-        const handleMouseLeave = () => {
-            if (player) {
-                player.pause();
-            }
-        };
-
-        const videoContainer = videoRef.current;
-
-        if (videoContainer) {
-            videoContainer.addEventListener('mouseenter', handleMouseEnter);
-            videoContainer.addEventListener('mouseleave', handleMouseLeave);
-        }
-
-        // Clean up the event listeners
-        return () => {
-            if (videoContainer) {
-                videoContainer.removeEventListener('mouseenter', handleMouseEnter);
-                videoContainer.removeEventListener('mouseleave', handleMouseLeave);
-            }
-        };
-    }, []);
 
     useEffect(() => {
         const player = playerRef.current;

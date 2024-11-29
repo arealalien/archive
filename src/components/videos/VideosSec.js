@@ -8,7 +8,7 @@ import MiniVideoSec from "./MiniVideoSec";
 const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const videoPlayerRef = useRef(null);
+    const videoRefs = useRef({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         };
 
         fetchVideos();
-    }, [videoCreator, search, discovery]);
+    }, [videoCreator, search, discovery, profileVideoCreator]);
 
     let domReady = false;
 
@@ -106,17 +106,17 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         return Math.floor(views / 1000000000) + ' bill.';
     }
 
-    const handleMouseEnter = async (e) => {
+    const handleMouseEnter = async (e, index) => {
         await ensureDomReady();
 
-        const player = videoPlayerRef.current?.getPlayer();
+        const player = videoRefs.current[index]?.current;
         const videoContainer = e.target.closest('.videos-inner-item');
 
         if (!player || !videoContainer || !(e.relatedTarget instanceof Node) || videoContainer.contains(e.relatedTarget)) {
             return;
         }
 
-        if (player.readyState() < 4) {
+        if (player.readyState && player.readyState() < 4) { // Check readyState using forwarded method
             console.log("Video not fully ready yet, waiting...");
             return;
         }
@@ -132,10 +132,12 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         posterInner.style.display = "inline-block";
         poster.style.opacity = "0";
         posterInner.style.opacity = "0";
+
+        await player.play();
     };
 
-    const handleMouseLeave = async (e) => {
-        const player = videoPlayerRef.current?.getPlayer();
+    const handleMouseLeave = async (e, index) => {
+        const player = videoRefs.current[index]?.current;
         const videoContainer = e.target.closest('.videos-inner-item');
 
         if (!player || !videoContainer || !(e.relatedTarget instanceof Node) || videoContainer.contains(e.relatedTarget)) {
@@ -153,6 +155,8 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         posterInner.style.display = "inline-block";
         poster.style.opacity = "1";
         posterInner.style.opacity = "1";
+
+        player.reset();
     };
 
     const handleMouseDown = (e) => {
@@ -181,10 +185,15 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
             {isLoading ? (
                 <VideosSkeletonSec count={profileVideoCreator ? 4 : 16} />
             ) : (
-                videos.length > 0 ? (
-                    videos.map((video, index) => (
-                        <div className="videos-inner-item" key={index} onMouseEnter={handleMouseEnter} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
-                             onMouseLeave={handleMouseLeave} onMouseOut={handleMouseLeave}>
+                videos.length > 0 &&
+                videos.map((video, index) => {
+                        if (!videoRefs.current[index]) {
+                            videoRefs.current[index] = React.createRef(); // Create a ref for each video
+                        }
+
+                        return (
+                        <div className="videos-inner-item" key={index} onMouseEnter={(e) => handleMouseEnter(e, index)} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
+                             onMouseLeave={(e) => handleMouseLeave(e, index)}>
                             <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-link">
 
                             </NavLink>
@@ -200,7 +209,7 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
                                 </div>
                                 <div to={`/video?view=` + video.videoUrl.split('.')[0]}
                                      className="videos-inner-item-video-overlay"></div>
-                                <MiniVideoSec video={video} ref={videoPlayerRef}/>
+                                <MiniVideoSec video={video} ref={videoRefs.current[index]} />
                             </div>
                             <div className="videos-inner-item-info">
                                 <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
@@ -222,10 +231,8 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
                                 </div>
                             </div>
                         </div>
-                    ))
-                ) : (
-                    <p>No videos found</p>
-                )
+                        );
+                })
             )}
         </>
     );

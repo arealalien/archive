@@ -67,6 +67,14 @@ const MiniVideoSec = forwardRef(({ video }, ref) => {
     };
 
     useImperativeHandle(ref, () => ({
+        play: () => playerRef.current?.play(),
+        reset: () => {
+            if (playerRef.current) {
+                playerRef.current.pause();
+                playerRef.current.currentTime(0);
+            }
+        },
+        readyState: () => playerRef.current?.readyState(),
         getPlayer: () => playerRef.current,
     }));
 
