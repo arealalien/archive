@@ -22,6 +22,8 @@ const MiniVideoJS = forwardRef((props, ref) => {
                 videojs.log('player is ready');
                 onReady && onReady(player);
 
+                player.muted(true);
+
                 player.ready(() => {
                     player.muted(true);
                     Promise.all([

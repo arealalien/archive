@@ -44,6 +44,7 @@ const MiniVideoSec = forwardRef(({ video }, ref) => {
         controls: true,
         responsive: true,
         fluid: true,
+        muted: true,
         enableSmoothSeeking: true,
         poster: process.env.PUBLIC_URL + "/users/" + video.creator.id + "/videos/" + video.videoUrl.split('.')[0] + "/thumbnail.jpg",
         sources: [{
@@ -67,7 +68,11 @@ const MiniVideoSec = forwardRef(({ video }, ref) => {
     };
 
     useImperativeHandle(ref, () => ({
-        play: () => playerRef.current?.play(),
+        play: () => {
+            if (playerRef.current) {
+                playerRef.current.play();
+            }
+        },
         reset: () => {
             if (playerRef.current) {
                 playerRef.current.pause();

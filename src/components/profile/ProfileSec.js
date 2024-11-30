@@ -129,28 +129,7 @@ const ProfileSec  = ({ profile, profileName, page }) => {
         return Math.floor(views / 1000000000) + ' bill.';
     }
 
-    let domReady = false;
-
-    const ensureDomReady = () => {
-        return new Promise((resolve) => {
-            if (domReady) {
-                resolve();
-            } else {
-                const observer = new MutationObserver(() => {
-                    if (document.readyState === 'complete') {
-                        domReady = true;
-                        observer.disconnect();
-                        resolve();
-                    }
-                });
-                observer.observe(document, { childList: true, subtree: true });
-            }
-        });
-    };
-
     const handleMouseEnter = async (e, index) => {
-        await ensureDomReady();
-
         const player = videoRefs.current[index]?.current;
         const videoContainer = e.target.closest('.videos-inner-item');
 
@@ -158,7 +137,7 @@ const ProfileSec  = ({ profile, profileName, page }) => {
             return;
         }
 
-        if (player.readyState && player.readyState() < 4) { // Check readyState using forwarded method
+        if (player.readyState && player.readyState() < 4) {
             console.log("Video not fully ready yet, waiting...");
             return;
         }
@@ -175,7 +154,11 @@ const ProfileSec  = ({ profile, profileName, page }) => {
         poster.style.opacity = "0";
         posterInner.style.opacity = "0";
 
-        await player.play();
+        try {
+            await player.play();
+        } catch (err) {
+            console.error("Error trying to play the video:", err);
+        }
     };
 
     const handleMouseLeave = async (e, index) => {

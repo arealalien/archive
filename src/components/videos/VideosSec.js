@@ -8,6 +8,7 @@ import MiniVideoSec from "./MiniVideoSec";
 const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [disableRightClick, setDisableRightClick] = useState(false);
     const videoRefs = useRef({});
     const navigate = useNavigate();
 
@@ -56,25 +57,6 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         fetchVideos();
     }, [videoCreator, search, discovery, profileVideoCreator]);
 
-    let domReady = false;
-
-    const ensureDomReady = () => {
-        return new Promise((resolve) => {
-            if (domReady) {
-                resolve();
-            } else {
-                const observer = new MutationObserver(() => {
-                    if (document.readyState === 'complete') {
-                        domReady = true;
-                        observer.disconnect();
-                        resolve();
-                    }
-                });
-                observer.observe(document, { childList: true, subtree: true });
-            }
-        });
-    };
-
     const formatDuration = (durationInSeconds) => {
         const hours = Math.floor(durationInSeconds / 3600);
         const minutes = Math.floor((durationInSeconds % 3600) / 60);
@@ -107,8 +89,6 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
     }
 
     const handleMouseEnter = async (e, index) => {
-        await ensureDomReady();
-
         const player = videoRefs.current[index]?.current;
         const videoContainer = e.target.closest('.videos-inner-item');
 
@@ -116,7 +96,7 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
             return;
         }
 
-        if (player.readyState && player.readyState() < 4) { // Check readyState using forwarded method
+        if (player.readyState && player.readyState() < 4) {
             console.log("Video not fully ready yet, waiting...");
             return;
         }
@@ -133,7 +113,11 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         poster.style.opacity = "0";
         posterInner.style.opacity = "0";
 
-        await player.play();
+        try {
+            await player.play();
+        } catch (err) {
+            console.error("Error trying to play the video:", err);
+        }
     };
 
     const handleMouseLeave = async (e, index) => {
@@ -149,14 +133,17 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         const poster = videoContainer.querySelector('.vjs-poster');
         const posterInner = poster.querySelector('.vjs-poster');
 
-        time.style.opacity = "1";
-        overlay.style.opacity = "1";
-        poster.style.display = "inline-block";
-        posterInner.style.display = "inline-block";
-        poster.style.opacity = "1";
-        posterInner.style.opacity = "1";
+        if (time) time.style.opacity = "1";
+        if (overlay) overlay.style.opacity = "1";
+        if (poster) poster.style.display = "inline-block";
+        if (posterInner) posterInner.style.display = "inline-block";
 
-        player.reset();
+        if (poster) poster.style.opacity = "1";
+        if (posterInner) posterInner.style.opacity = "1";
+
+        setTimeout(() => {
+            player.reset();
+        }, "100");
     };
 
     const handleMouseDown = (e) => {
@@ -192,8 +179,11 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
                         }
 
                         return (
-                        <div className="videos-inner-item" key={index} onMouseEnter={(e) => handleMouseEnter(e, index)} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
-                             onMouseLeave={(e) => handleMouseLeave(e, index)}>
+                        <div className="videos-inner-item" key={index}
+                             onMouseEnter={isLoading ? null : (e) => handleMouseEnter(e, index)}
+                             onMouseLeave={isLoading ? null : (e) => handleMouseLeave(e, index)}
+                             onMouseDown={handleMouseDown}
+                             onMouseUp={handleMouseUp}>
                             <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-link">
 
                             </NavLink>
