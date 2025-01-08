@@ -28,6 +28,9 @@
   &-inner {
     display: grid;
 
+    .vjs-control-bar {
+      position: relative;
+    }
     &-item {
       padding: .75em;
       width: 100%;
@@ -55,7 +58,6 @@
       &-link {
         width: 100%; height: 100%;
         position: absolute;
-        pointer-events: none;
         z-index: 1;
       }
       &-video {
@@ -171,13 +173,40 @@
             }
           }
         }
+        .creator-gradient {
+          background: linear-gradient(-45deg, hslac($red, 1) 0, hslac($orange, 1) 100%);
+          box-shadow: 0 3px 25px -3px hslac($primary, .35);
+        }
         &-left {
+          padding: .2em;
+          position: relative;
+          background: linear-gradient(-45deg, hslac($grooble, .1) 0, hslac($grooble, .05) 100%);
+          border-radius: 50%;
+          @include flex-center();
+
+          &-live {
+            bottom: -4px;
+            position: absolute;
+            background: linear-gradient(-45deg, hslac($red, 1) 0, hslac($orange, 1) 100%);
+            border-radius: 2em;
+            z-index: 6;
+            @include flex-center();
+
+            p {
+              padding: .5em .75em;
+              color: hslac($white, 1);
+              font-size: $paragraph-small;
+              font-weight: 500;
+            }
+          }
           &-image {
-            width: 4em; height: 4em;
-            background-color: hslac($background-lightgray, 1);
+            padding: .2em;
+            width: 4.25em; height: 4.25em;
+            display: block;
+            background-color: hslac($background-gray, 1);
             border-radius: 50%;
             @include lightMode {
-              background-color: hslac($lm-background-lightgray, 1);
+              background-color: hslac($lm-background-gray, 1);
             }
           }
         }

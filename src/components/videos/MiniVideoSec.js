@@ -59,7 +59,7 @@ const MiniVideoSec = forwardRef(({ video }, ref) => {
                 "progressControl",
             ],
         },
-        inactivityTimeout: 3000,
+        inactivityTimeout: 0,
         aspectRatio: '16:9',
     } : null;
 

@@ -11,6 +11,7 @@ import PageShadow from "./components/PageShadow";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
 import PlaylistsSkeletonSec from "./components/playlists/PlaylistsSkeletonSec";
+import Footer from "./components/Footer";
 
 function Discovery() {
     const [isSidebarMenuVisible, setSidebarMenuVisible] = useState(false);
@@ -89,6 +90,7 @@ function Discovery() {
                             </div>
                         </section>
                     </div>
+                    <Footer/>
                 </ScrollBar>
                 <SideBarRight isMenuVisible={isSidebarMenuVisible}/>
             </div>

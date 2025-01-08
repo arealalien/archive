@@ -8,7 +8,6 @@ import MiniVideoSec from "./MiniVideoSec";
 const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [disableRightClick, setDisableRightClick] = useState(false);
     const videoRefs = useRef({});
     const navigate = useNavigate();
 
@@ -141,10 +140,46 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         if (poster) poster.style.opacity = "1";
         if (posterInner) posterInner.style.opacity = "1";
 
-        setTimeout(() => {
-            player.reset();
-        }, "100");
+        player.reset();
     };
+
+    document.addEventListener('mouseleave', function (e) {
+        // Ensure the event is triggered only when the mouse leaves the document (browser window)
+        if (e.relatedTarget instanceof Node) {
+            return;
+        }
+
+        // Convert videoRefs.current (object) to an array of values
+        const players = Object.values(videoRefs.current) || [];
+
+        // Get all video containers
+        const videoContainers = document.querySelectorAll('.videos-inner-item');
+
+        players.forEach((playerRef, index) => {
+            const player = playerRef?.current;
+            const videoContainer = videoContainers[index];
+
+            if (!player || !videoContainer) {
+                return;
+            }
+
+            const time = videoContainer.querySelector('.videos-inner-item-video-info-time');
+            const overlay = videoContainer.querySelector('.videos-inner-item-video-overlay');
+            const poster = videoContainer.querySelector('.vjs-poster');
+            const posterInner = poster?.querySelector('.vjs-poster');
+
+            // Reset styles for overlay, poster, and time elements
+            if (time) time.style.opacity = '1';
+            if (overlay) overlay.style.opacity = '1';
+            if (poster) poster.style.display = 'inline-block';
+            if (posterInner) posterInner.style.display = 'inline-block';
+            if (poster) poster.style.opacity = '1';
+            if (posterInner) posterInner.style.opacity = '1';
+
+            // Reset the player
+            player.reset();
+        });
+    });
 
     const handleMouseDown = (e) => {
         const videoContainer = e.target.closest('.videos-inner-item');
@@ -202,10 +237,20 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
                                 <MiniVideoSec video={video} ref={videoRefs.current[index]} />
                             </div>
                             <div className="videos-inner-item-info">
-                                <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
+                                {video.creator?.verified === 1 ? (
+                                    <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left creator-gradient">
+                                        <div className="videos-inner-item-info-left-live">
+                                            <p>New</p>
+                                        </div>
+                                        <img className="videos-inner-item-info-left-image"
+                                             src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""
+                                             loading="lazy"/>
+                                    </NavLink>
+                                ) : <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
                                     <img className="videos-inner-item-info-left-image"
-                                         src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt="" loading="lazy" />
-                                </NavLink>
+                                         src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""
+                                         loading="lazy"/>
+                                </NavLink>}
                                 <div className="videos-inner-item-info-right">
                                     <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
                                              className="videos-inner-item-info-right-title">{video.title}</NavLink>

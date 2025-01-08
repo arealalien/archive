@@ -168,7 +168,7 @@ const SideBarLeft  = () => {
 
     const getPlaylistStyle = () => {
         if (sidebarWidth <= 8) return { gridTemplateColumns: '1fr', padding: '.6em', borderRadius: '1.75em' };
-        if (sidebarWidth > 15) return { gridTemplateColumns: '5.5em 1fr', padding: '.8em', borderRadius: '2em' };
+        if (sidebarWidth > 15) return { gridTemplateColumns: '6em 1fr', padding: '.8em', borderRadius: '2.25em' };
         return { gridTemplateColumns: '1fr', padding: '.6em', borderRadius: '1.75em' };
     };
 
