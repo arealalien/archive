@@ -15,9 +15,8 @@ const SideBarRight = ({
                           subscriberCount,
                           dateSubscribed,
                           isSubscribed,
-                          handleSubscribe,
-                          handleLike
-                      }) => {
+                          handleSubscribe
+}) => {
     const [sidebarRightWidth, setSidebarRightWidth] = useState(() => {
         const savedRightWidth = localStorage.getItem('sidebarRightWidth');
         return savedRightWidth ? parseFloat(savedRightWidth) : 35;

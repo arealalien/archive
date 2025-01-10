@@ -5,7 +5,7 @@ import SpriteThumbnails from "videojs-sprite-thumbnails";
 import "videojs-contrib-quality-levels";
 import "videojs-http-source-selector";
 
-const VideoJS  = (props) => {
+const VideoJS = (props) => {
     const videoRef = React.useRef(null);
     const playerRef = React.useRef(null);
     const {options, onReady, spriteLink} = props;
