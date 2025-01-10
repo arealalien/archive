@@ -1,3 +1,163 @@
+.video-details {
+  width: 100%;
+  @include flex-center();
+
+  &-inner {
+    width: 100%;
+    &-title {
+      &-text {
+        margin: 0 0 .4em 0;
+        max-width: 100%;
+        max-height: calc(calc($heading-small * 2) + 1rem);
+        line-height: calc($heading-small + .5rem);
+        color: hslac($white, 1);
+        text-decoration: none;
+        font-size: $heading-small;
+        font-weight: 800;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        @include lightMode {
+          color: hslac($black, 1);
+        }
+      }
+    }
+    &-top {
+      @include flex-space-bet();
+
+      &-left {
+        gap: 1em;
+        @include flex-left();
+
+        &-inner {
+          text-decoration: none;
+          gap: 1em;
+          @include flex-left();
+        }
+        .creator-gradient {
+          background: linear-gradient(-45deg, hslac($red, 1) 0, hslac($orange, 1) 100%);
+          box-shadow: 0 3px 25px -3px hslac($primary, .35);
+        }
+        &-user {
+          padding: 0.2em;
+          position: relative;
+          background: linear-gradient(-45deg, hslac($grooble, .1) 0, hslac($grooble, .05) 100%);
+          border-radius: 50%;
+          @include flex-center();
+
+          &-live {
+            bottom: -6px;
+            position: absolute;
+            background: linear-gradient(-45deg, hslac($red, 1) 0, hslac($orange, 1) 100%);
+            border-radius: 2em;
+            z-index: 6;
+            @include flex-center();
+
+            p {
+              padding: 0.5em .75em;
+              color: hslac($white, 1);
+              font-size: $paragraph-small;
+              font-weight: 500;
+            }
+          }
+          &-image {
+            padding: 0.2em;
+            width: 5em;
+            height: 5em;
+            display: block;
+            background-color: hslac($background, 1);
+            border-radius: 50%;
+          }
+        }
+        &-userinfo {
+          gap: .25em;
+          @include flex-col-left-ns();
+
+          &-username {
+            color: hslac($white, 1);
+            font-size: $paragraph-large;
+            font-weight: 700;
+            text-decoration: none;
+            gap: .25em;
+            @include flex-left();
+
+            span {
+              font-size: $paragraph-large;
+            }
+            svg, img {
+              width: $paragraph-large;
+            }
+          }
+          &-subscribers {
+            color: hslac($white, .7);
+            font-size: $paragraph;
+            font-weight: 400;
+            text-decoration: none;
+          }
+        }
+        &-subscribe {
+          margin: 0 0 0 1.5em;
+          .mainbutton {
+            font-size: $paragraph;
+          }
+        }
+      }
+      &-right {
+        &-button {
+          gap: .75em;
+          @include flex-center();
+
+          svg {
+            path {
+              stroke: hslac($white, 1);
+            }
+          }
+        }
+      }
+    }
+    &-bottom {
+      padding: 2em 2.25em; margin: 4em 0 0 0;
+      background-color: hslac($black, 1);
+      border-radius: 2em;
+
+      &-views {
+        font-weight: 600;
+      }
+      &-description {
+        margin: 1em 0 0 0;
+        font-weight: 300;
+      }
+    }
+  }
+}
+.video-comments {
+  width: 100%;
+  @include flex-center();
+
+  &-inner {
+    margin: 4em 0 0 0;
+    width: 100%;
+    @include flex-col();
+
+    &-top {
+      width: 100%;
+      &-title {
+        color: hslac($white, 1);
+        font-size: $heading-small;
+        font-weight: 900;
+      }
+    }
+    &-center {
+      width: 100%;
+    }
+    &-bottom {
+      width: 100%;
+    }
+  }
+}
 .video {
   padding: 3em 0 0 0;
   width: 100%;
@@ -15,7 +175,7 @@
     &-left {
       width: 100%;
       position: relative;
-      gap: 4em;
+      gap: 2em;
       @include flex-col();
 
       &-box {
@@ -39,203 +199,6 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 4em;
-      &-box {
-        width: 100%;
-        background-color: hslac($black, 1);
-        border-radius: 2rem;
-        @include flex-col();
-        @include lightMode {
-          background-color: hslac($white, 1);
-        }
-
-        &-top {
-          width: 100%;
-          gap: 1em;
-          @include flex-col();
-
-          &-user {
-            padding: 2.5em;
-            width: 100%;
-            position: relative;
-            gap: 1em;
-            border-radius: 2rem 2em 0 0;
-            overflow: hidden;
-            z-index: 5;
-            @include flex-col();
-
-            &-inner {
-              width: 100%;
-              display: grid;
-              position: relative;
-              grid-template-columns: auto 1fr;
-              place-items: center;
-              text-decoration: none;
-
-              &:hover {
-                .video-inner-right-box-top-user-container {
-                  filter: brightness(70%);
-                }
-                .video-inner-right-box-top-user-text {
-                  filter: brightness(70%);
-                }
-              }
-            }
-            &-overlay {
-              width: 100%; height: 100%;
-              position: absolute;
-              mask-image: linear-gradient(hslac($black, 1), transparent);
-              background: linear-gradient(2deg, hslac($black, 1) 0, hslac($black, .25) 100%);
-              z-index: 3;
-              @include lightMode {
-                mask-image: linear-gradient(hslac($white, 1), transparent);
-              }
-            }
-            &-background {
-              min-width: 100%; min-height: 100%;
-              max-height: 100%;
-              filter: brightness(70%);
-              mask-image: linear-gradient(hslac($black, 1), transparent);
-              position: absolute;
-              object-fit: cover;
-              @include lightMode {
-                mask-image: linear-gradient(hslac($white, 1), transparent);
-              }
-            }
-            &-container {
-              width: 5em; height: 5em;
-              position: relative;
-              border-radius: 50%;
-              overflow: hidden;
-              z-index: 5;
-              transition: all .3s cubic-bezier($transition-main, 1);
-              @include flex-center();
-
-              &-image {
-                width: 100%; height: 100%;
-                position: absolute;
-                object-fit: cover;
-              }
-            }
-            &-text {
-              padding: 0 0 0 1em;
-              width: 100%;
-              position: relative;
-              gap: .25em;
-              z-index: 5;
-              transition: all .3s cubic-bezier($transition-main, 1);
-              @include flex-col-left();
-
-              &-username {
-                color: hslac($white, 1);
-                font-size: $paragraph-xlarge;
-                font-weight: 700;
-                gap: .25em;
-                @include flex-center();
-
-                span {
-                  font-size: $paragraph-xlarge;
-                  font-weight: 700;
-                }
-                svg, img {
-                  width: $paragraph-xlarge;
-                }
-              }
-              &-date {
-                color: hslac($white, .5);
-                font-size: $paragraph;
-              }
-            }
-          }
-          &-container {
-            width: 100%;
-            position: relative;
-            z-index: 5;
-            .whitebutton, .blackbutton {
-              width: 100%;
-              font-size: $paragraph-medium !important;
-            }
-          }
-        }
-        &-center {
-          padding: 1em 2.5em 0 2.5em;
-          width: 100%;
-          gap: 1em;
-          @include flex-col-left();
-
-          &-title {
-            max-width: 100%;
-            font-size: $paragraph-xlarge;
-            font-weight: 600;
-            @include lightMode {
-              color: hslac($black, 1);
-            }
-          }
-          &-subtitle {
-            max-width: 100%;
-            color: hslac($white, .7);
-            font-size: $paragraph;
-            font-weight: 300;
-            @include lightMode {
-              color: hslac($black, .7);
-            }
-          }
-          &-description {
-            padding: 1em 0 0 0;
-            max-width: 100%;
-            color: hslac($white, .7);
-            font-size: $paragraph;
-            font-weight: 300;
-            @include lightMode {
-              color: hslac($black, .7);
-            }
-          }
-        }
-        &-bottom {
-          padding: 2.5em;
-          width: 100%;
-          @include flex-space-bet();
-
-          &-item {
-            gap: .5em;
-            opacity: .5;
-            @include flex-center();
-            svg {
-              width: 2.5em; height: 2.5em;
-              g {
-                g {
-                  stroke: hslac($white, 1);
-                  @include lightMode {
-                    stroke: hslac($black, 1);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      &-box-comments {
-        width: 100%;
-        padding: 2.5em;
-        position: relative;
-        background-color: hslac($black, 1);
-        border-radius: 2rem;
-        gap: 3em;
-        @include flex-col();
-        @include lightMode {
-          background-color: hslac($white, 1);
-        }
-
-        &-top {
-          width: 100%;
-          &-title {
-            font-size: $paragraph-xlarge;
-            font-weight: 600;
-            @include lightMode {
-              color: hslac($black, 1);
-            }
-          }
-        }
-      }
     }
   }
 }
@@ -775,9 +738,40 @@
 }
 .videoplayer {
   width: 100%; height: 100%;
+  position: relative;
   border-radius: 2em;
   overflow: hidden;
 
+  &-buttons {
+    top: 50%; left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    &-button {
+      top: 50%; left: 50%;
+      width: 6em; height: 6em;
+      position: absolute;
+      background-color: hslac($black, 0);
+      border: 1px solid hslac($white, .1);
+      backdrop-filter: blur(1.5rem) brightness(70%);
+      border-radius: 50%;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: opacity .3s cubic-bezier($transition-main, 1);
+      @include flex-center();
+
+      &-text {
+        @include flex-center();
+
+        svg {
+          path {
+            stroke: hslac($white, .7);
+          }
+        }
+      }
+    }
+  }
   .vjs-pip-container {
     @include flex-center();
   }

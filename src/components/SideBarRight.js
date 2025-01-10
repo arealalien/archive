@@ -1,10 +1,9 @@
 import React, { useContext, useState , useRef, useCallback, useEffect } from "react";
 import { AuthContext } from '../contexts/AuthContext';
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { format } from "date-fns";
-import { NumericFormat } from "react-number-format";
 import { formatDistanceToNow } from "date-fns";
 import ScrollBar from './ScrollBar';
+import VideosSec from "./videos/VideosSec";
 
 const SideBarRight = ({
                           isMenuVisible,
@@ -159,7 +158,7 @@ const SideBarRight = ({
     }
 
     return (
-        <div className="sidebar sidebarright" style={{ display: isMenuVisible || isVideoVisible || isProfileVisible || isSettingsVisible ? 'block' : 'none'}}>
+        <div className="sidebar sidebarright" style={{ display: isMenuVisible || isVideoVisible || isProfileVisible || isSettingsVisible ? 'block' : 'none' }}>
             <div id="sidebarright-resize" className="sidebarright-resize" onMouseDown={handleMouseDownRight}>
                 <div className="sidebarright-resize-button" style={getResizeButtonStyle()}>
                     <svg id="Xnix_Line_Magnet" data-name="Xnix/Line/Magnet"
@@ -254,6 +253,69 @@ const SideBarRight = ({
                                             <span>Your Studio</span>
                                         </NavLink>
                                         <NavLink to="/settings/account" className="darkbutton">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                 viewBox="0 0 24 24" version="1.1">
+                                                <title>profile</title>
+                                                <g id="profile" stroke="none" stroke-width="1" fill="none"
+                                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                                    <g id="profile-inner" transform="translate(5.000000, 2.400000)"
+                                                       stroke="#000000" stroke-width="1.5">
+                                                        <path
+                                                            d="M6.84454545,19.261909 C3.15272727,19.261909 -8.52651283e-14,18.6874153 -8.52651283e-14,16.3866334 C-8.52651283e-14,14.0858516 3.13272727,11.961909 6.84454545,11.961909 C10.5363636,11.961909 13.6890909,14.0652671 13.6890909,16.366049 C13.6890909,18.6658952 10.5563636,19.261909 6.84454545,19.261909 Z"
+                                                            id="Stroke-1"/>
+                                                        <path
+                                                            d="M6.83729838,8.77363636 C9.26002565,8.77363636 11.223662,6.81 11.223662,4.38727273 C11.223662,1.96454545 9.26002565,-1.0658141e-14 6.83729838,-1.0658141e-14 C4.41457111,-1.0658141e-14 2.45,1.96454545 2.45,4.38727273 C2.44184383,6.80181818 4.39184383,8.76545455 6.80638929,8.77363636 C6.81729838,8.77363636 6.82729838,8.77363636 6.83729838,8.77363636 Z"
+                                                            id="Stroke-3"/>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            <span>Account Settings</span>
+                                        </NavLink>
+                                        <div className="sidebar-right-menu-inner-center-grid-divider"></div>
+                                        <NavLink to="/settings/account" className="darkbutton">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                 viewBox="0 0 24 24" version="1.1">
+                                                <title>Edit</title>
+                                                <g id="edit" stroke="none" stroke-width="1" fill="none"
+                                                   fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                                    <g id="edit-inner" transform="translate(3.500000, 3.500000)"
+                                                       stroke="#000000" stroke-width="1.5">
+                                                        <line x1="9.8352" y1="16.0078" x2="16.2122" y2="16.0078"
+                                                              id="Stroke-1"/>
+                                                        <path
+                                                            d="M12.5578,1.3589 L12.5578,1.3589 C11.2138,0.3509 9.3078,0.6229 8.2998,1.9659 C8.2998,1.9659 3.2868,8.6439 1.5478,10.9609 C-0.1912,13.2789 1.4538,16.1509 1.4538,16.1509 C1.4538,16.1509 4.6978,16.8969 6.4118,14.6119 C8.1268,12.3279 13.1638,5.6169 13.1638,5.6169 C14.1718,4.2739 13.9008,2.3669 12.5578,1.3589 Z"
+                                                            id="Stroke-3"/>
+                                                        <line x1="7.0041" y1="3.7114" x2="11.8681" y2="7.3624"
+                                                              id="Stroke-5"/>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            <span>Dark</span>
+                                        </NavLink>
+                                        <NavLink to="/settings/account" className="darkbutton">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                 viewBox="0 0 24 24" version="1.1">
+                                                <title>info square</title>
+                                                <g id="info-square" stroke="none" stroke-width="1"
+                                                   fill="none" fill-rule="evenodd" stroke-linecap="round"
+                                                   stroke-linejoin="round">
+                                                    <g id="info-square-inner" transform="translate(2.750200, 2.749900)"
+                                                       stroke="#000000" stroke-width="1.5">
+                                                        <path
+                                                            d="M0,9.25 C0,2.313 2.313,0 9.25,0 C16.187,0 18.5,2.313 18.5,9.25 C18.5,16.187 16.187,18.5 9.25,18.5 C2.313,18.5 0,16.187 0,9.25 Z"
+                                                            id="Stroke-1"
+                                                            transform="translate(9.250000, 9.250000) rotate(-180.000000) translate(-9.250000, -9.250000) "/>
+                                                        <line x1="9.25" y1="9.2501" x2="9.25" y2="13.1451" id="Stroke-3"
+                                                              transform="translate(9.250000, 11.197600) rotate(-180.000000) translate(-9.250000, -11.197600) "/>
+                                                        <line x1="9.2453" y1="5.7501" x2="9.2543" y2="5.7501"
+                                                              id="Stroke-15"
+                                                              transform="translate(9.249800, 5.750100) rotate(-180.000000) translate(-9.249800, -5.750100) "/>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            <span>Info</span>
+                                        </NavLink>
+                                        <NavLink to="/settings/account" className="darkbutton">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px"
                                                  viewBox="0 0 24 24" version="1.1">
@@ -273,6 +335,7 @@ const SideBarRight = ({
                                             </svg>
                                             <span>Settings</span>
                                         </NavLink>
+                                        <div className="sidebar-right-menu-inner-center-grid-divider"></div>
                                         <div className="mainbutton" onClick={handleSignOut}>
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="24px" height="24px"
@@ -305,165 +368,18 @@ const SideBarRight = ({
                         </div>
                     )}
                     {isVideoVisible && videoDetails && videoDetails.creator ? (
-                        <div className="video-inner-right" style={{ display: isVideoVisible && !isMenuVisible ? 'grid' : 'none' }}>
-                            <div className="video-inner-right-box">
-                                <div className="video-inner-right-box-top">
-                                    <div className="video-inner-right-box-top-user">
-                                        <NavLink to={`/channel/${videoDetails.creator.name}`}
-                                                 className="video-inner-right-box-top-user-inner">
-                                            <div className="video-inner-right-box-top-user-container">
-                                                <img className="video-inner-right-box-top-user-container-image"
-                                                     src={`http://localhost:5000/${videoDetails.creator.profilePicture}`}
-                                                     alt=""/>
-                                            </div>
-                                            <div className="video-inner-right-box-top-user-text">
-                                                <h3 className="video-inner-right-box-top-user-text-username">
-                                                    <span>{videoDetails.creator.displayName}</span>
-                                                    {videoDetails.creator?.verified === 1 ? (
-                                                        <img src={process.env.PUBLIC_URL + `/images/verified.svg`}
-                                                             alt=""/>
-                                                    ) : null}
-                                                </h3>
-                                                <p className="video-inner-right-box-top-user-text-date">{subscriberCount} Subscribers</p>
-                                            </div>
-                                        </NavLink>
-                                        <div className="video-inner-right-box-top-container">
-                                            {isSubscribed ? (
-                                                <button className="blackbutton" onClick={handleSubscribe}
-                                                        disabled={isSubscribed}>
-                                                    Subscribed
-                                                    <div className="blackbutton-shadow"></div>
-                                                </button>
-                                            ) : (
-                                                <button className="whitebutton" onClick={handleSubscribe}
-                                                        disabled={isSubscribed}>
-                                                    Subscribe
-                                                    <div className="whitebutton-shadow"></div>
-                                                </button>
-                                            )}
-                                        </div>
-                                        <div className="video-inner-right-box-top-user-overlay"></div>
-                                        <img className="video-inner-right-box-top-user-background"
-                                             src={`http://localhost:5000/${videoDetails.creator.banner}`}
-                                             alt=""/>
-                                    </div>
-                                </div>
-                                <div className="video-inner-right-box-center">
-                                    <h3 className="video-inner-right-box-center-title">{videoDetails.title}</h3>
-                                    <p className="video-inner-right-box-center-subtitle">
-                                        <NumericFormat
-                                            value={videoDetails.views}
-                                            thousandSeparator=" "
-                                            displayType="text"
-                                            renderText={(value) => <b>{value}</b>}
-                                        /> Views &middot; {format(new Date(videoDetails.datePosted), 'MMM d, yyyy')}
-                                    </p>
-                                    <p className="video-inner-right-box-center-description">{videoDetails.description}</p>
-                                </div>
-                                <div className="video-inner-right-box-bottom">
-                                    <div className="video-inner-right-box-bottom-item" onClick={handleLike}>
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             width="24px" height="24px"
-                                             viewBox="0 0 24 24" version="1.1">
-                                            <title>Heart</title>
-                                            <g id="heart" stroke="none" stroke-width="1" fill="none"
-                                               fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                                <g id="heart-inner" transform="translate(2.550170, 3.550158)"
-                                                   stroke="#000000"
-                                                   stroke-width="1.5">
-                                                    <path
-                                                        d="M0.371729633,8.89614246 C-0.701270367,5.54614246 0.553729633,1.38114246 4.07072963,0.249142462 C5.92072963,-0.347857538 8.20372963,0.150142462 9.50072963,1.93914246 C10.7237296,0.0841424625 13.0727296,-0.343857538 14.9207296,0.249142462 C18.4367296,1.38114246 19.6987296,5.54614246 18.6267296,8.89614246 C16.9567296,14.2061425 11.1297296,16.9721425 9.50072963,16.9721425 C7.87272963,16.9721425 2.09772963,14.2681425 0.371729633,8.89614246 Z"
-                                                        id="Stroke-1"/>
-                                                    <path
-                                                        d="M13.23843,4.013842 C14.44543,4.137842 15.20043,5.094842 15.15543,6.435842"
-                                                        id="Stroke-3"/>
-                                                </g>
-                                            </g>
-                                        </svg>
-                                        <p className="homebar-inner-text">{videoDetails.likes}</p>
-                                    </div>
-                                    <div className="video-inner-right-box-bottom-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             width="24px" height="24px"
-                                             viewBox="0 0 24 24" version="1.1">
-                                            <title>Chat</title>
-                                            <g id="chat" stroke="none" stroke-width="1" fill="none"
-                                               fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                                <g id="chat-inner" transform="translate(2.000000, 2.000000)"
-                                                   stroke="#000000">
-                                                    <line x1="13.9394" y1="10.413" x2="13.9484" y2="10.413"
-                                                          id="Stroke-11" stroke-width="2"/>
-                                                    <line x1="9.9304" y1="10.413" x2="9.9394" y2="10.413"
-                                                          id="Stroke-13"
-                                                          stroke-width="2"/>
-                                                    <line x1="5.9214" y1="10.413" x2="5.9304" y2="10.413"
-                                                          id="Stroke-15"
-                                                          stroke-width="2"/>
-                                                    <path
-                                                        d="M17.0710351,17.0698449 C14.0159481,20.1263505 9.48959549,20.7867004 5.78630747,19.074012 C5.23960769,18.8538953 1.70113357,19.8338667 0.933341969,19.0669763 C0.165550368,18.2990808 1.14639409,14.7601278 0.926307229,14.213354 C-0.787154393,10.5105699 -0.125888852,5.98259958 2.93020311,2.9270991 C6.83146881,-0.9756997 13.1697694,-0.9756997 17.0710351,2.9270991 C20.9803405,6.8359285 20.9723008,13.1680512 17.0710351,17.0698449 Z"
-                                                        id="Stroke-4" stroke-width="1.5"/>
-                                                </g>
-                                            </g>
-                                        </svg>
-                                        <p className="homebar-inner-text">0</p>
-                                    </div>
-                                    <div className="video-inner-right-box-bottom-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <title>Folder</title>
-                                            <g id="folder" stroke="none" stroke-width="1" fill="none"
-                                               fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                                <g id="folder-inner" transform="translate(2.500000, 2.500000)"
-                                                   stroke="#000000"
-                                                   stroke-width="1.5">
-                                                    <line x1="4.8057" y1="12.0742685" x2="14.3987" y2="12.0742685"
-                                                          id="Stroke-1"/>
-                                                    <path
-                                                        d="M-1.13686838e-13,5.29836453 C-1.13686838e-13,2.85645977 1.25,0.75931691 3.622,0.272650243 C5.993,-0.214968804 7.795,-0.0463973758 9.292,0.761221672 C10.79,1.56884072 10.361,2.76122167 11.9,3.63645977 C13.44,4.51265024 15.917,3.19645977 17.535,4.94217405 C19.229,6.7697931 19.2200005,9.57550739 19.2200005,11.3640788 C19.2200005,18.1602693 15.413,18.6993169 9.61,18.6993169 C3.807,18.6993169 -1.13686838e-13,18.2288407 -1.13686838e-13,11.3640788 L-1.13686838e-13,5.29836453 Z"
-                                                        id="Stroke-2"/>
-                                                </g>
-                                            </g>
-                                        </svg>
-                                    </div>
-                                    <div className="video-inner-right-box-bottom-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <title>Download</title>
-                                            <g id="download" stroke="none" stroke-width="1" fill="none"
-                                               fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                                <g id="download-inner" transform="translate(2.000000, 2.000000)"
-                                                   stroke="#000000"
-                                                   stroke-width="1.5">
-                                                    <line x1="9.8791" y1="12.791" x2="9.8791" y2="0.75"
-                                                          id="Stroke-1"/>
-                                                    <polyline id="Stroke-3"
-                                                              points="12.7951 9.8642 9.8791 12.7922 6.9631 9.8642"/>
-                                                    <path
-                                                        d="M14.3703,5.2587 C17.9493,5.5887 19.2503,6.9287 19.2503,12.2587 C19.2503,19.3587 16.9393,19.3587 10.0003,19.3587 C3.0593,19.3587 0.7503,19.3587 0.7503,12.2587 C0.7503,6.9287 2.0503,5.5887 5.6303,5.2587"
-                                                        id="Stroke-4"/>
-                                                </g>
-                                            </g>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="video-inner-right-box-comments">
-                                <div className="video-inner-right-box-comments-top">
-                                    <h3 className="video-inner-right-box-comments-top-title">Comments</h3>
-                                </div>
-                                <div className="video-inner-right-box-comments-center">
-
-                                </div>
-                                <div className="video-inner-right-box-comments-bottom">
-
-                                </div>
+                        <div className="video-inner-right"
+                             style={{display: isVideoVisible && !isMenuVisible ? 'grid' : 'none'}}>
+                            <div className="sidebar-videos videos-inner videos-inner-4">
+                                <VideosSec/>
                             </div>
                         </div>
                     ) : null}
                     {isSettingsVisible ? (
                         <>
-                            <div className="settings-menu-container" style={{ display: isSettingsVisible && !isMenuVisible ? 'flex' : 'none' }}>
-                                <div className="settings-menu-container-inner">
+                            <div className="settings-menu-container"
+                                 style={{display: isSettingsVisible && !isMenuVisible ? 'flex' : 'none'}}>
+                            <div className="settings-menu-container-inner">
                                     <ul className="settings-menu-container-inner-list">
                                         <NavLink to="/settings/profile" className="settings-menu-container-inner-list-item">
                                             <svg xmlns="http://www.w3.org/2000/svg"

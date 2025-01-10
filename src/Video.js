@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { AuthContext } from "./contexts/AuthContext";
+import { NavLink, useLocation } from 'react-router-dom';
+import { format } from "date-fns";
+import { NumericFormat } from "react-number-format";
 import axios from 'axios';
 import ScrollBar from './components/ScrollBar';
 import './css/main.css';
@@ -8,12 +11,10 @@ import './css/main.css';
 import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
 import VideoSec from "./components/videos/VideoSec";
-import VideosSec from "./components/videos/VideosSec";
 import PageShadow from "./components/PageShadow";
 import Footer from "./components/Footer";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
-import {AuthContext} from "./contexts/AuthContext";
 
 function Video() {
     const location = useLocation();
@@ -121,11 +122,6 @@ function Video() {
         }
     };
 
-    const profilePictureUrl = `http://localhost:5000/${videoDetails.creator.profilePicture}`;
-    const bannerUrl = `http://localhost:5000/${videoDetails.creator.banner}`;
-
-    const videoMenuDetails = [];
-
     return (
         <>
             <DocumentTitle title={`Archive - ` + videoDetails.title} />
@@ -137,9 +133,96 @@ function Video() {
                         <div className="video-inner view-width">
                             <div className="video-inner-left">
                                 <VideoSec video={videoDetails}/>
-                                <section className="videos">
-                                    <div className="videos-inner videos-inner-4">
-                                        <VideosSec/>
+                                <section className="video-details">
+                                    <div className="video-details-inner">
+                                        <div className="video-details-inner-title">
+                                            <h1 className="video-details-inner-title-text">{videoDetails.title}</h1>
+                                        </div>
+                                        <div className="video-details-inner-top">
+                                            <div className="video-details-inner-top-left">
+                                                <NavLink to={`/channel/${videoDetails.creator.name}`} className="video-details-inner-top-left-inner">
+                                                    <div className="video-details-inner-top-left-user creator-gradient">
+                                                        <div className="video-details-inner-top-left-user-live">
+                                                            <p>New</p>
+                                                        </div>
+                                                        <img className="video-details-inner-top-left-user-image"
+                                                             src={videoDetails.creator.profilePicture} alt=""/>
+                                                    </div>
+                                                    <div className="video-details-inner-top-left-userinfo">
+                                                        <h3 className="video-details-inner-top-left-userinfo-username">
+                                                            <span>{videoDetails.creator.displayName}</span>
+                                                            {videoDetails.creator?.verified === 1 ? (
+                                                                <img
+                                                                    src={process.env.PUBLIC_URL + `/images/verified.svg`}
+                                                                    alt=""/>
+                                                            ) : null}
+                                                        </h3>
+                                                        <p className="video-details-inner-top-left-userinfo-subscribers">{subscriberCount} subscribers</p>
+                                                    </div>
+                                                </NavLink>
+                                                <div className="video-details-inner-top-left-subscribe">
+                                                    {isSubscribed ? (
+                                                        <button className="blackbutton" onClick={handleSubscribe}
+                                                                disabled={isSubscribed}>
+                                                            Subscribed
+                                                            <div className="blackbutton-shadow"></div>
+                                                        </button>
+                                                    ) : (
+                                                        <button className="mainbutton" onClick={handleSubscribe}
+                                                                disabled={isSubscribed}>
+                                                            Subscribe
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="video-details-inner-top-right">
+                                                <button className="video-details-inner-top-right-button blackbutton">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                         width="24px" height="24px"
+                                                         viewBox="0 0 24 24" version="1.1">
+                                                        <title>Heart</title>
+                                                        <g id="heart" stroke="none" stroke-width="1" fill="none"
+                                                           fill-rule="evenodd" stroke-linecap="round"
+                                                           stroke-linejoin="round">
+                                                            <g id="heart-inner"
+                                                               transform="translate(2.550170, 3.550158)"
+                                                               stroke="#000000"
+                                                               stroke-width="1.5">
+                                                                <path
+                                                                    d="M0.371729633,8.89614246 C-0.701270367,5.54614246 0.553729633,1.38114246 4.07072963,0.249142462 C5.92072963,-0.347857538 8.20372963,0.150142462 9.50072963,1.93914246 C10.7237296,0.0841424625 13.0727296,-0.343857538 14.9207296,0.249142462 C18.4367296,1.38114246 19.6987296,5.54614246 18.6267296,8.89614246 C16.9567296,14.2061425 11.1297296,16.9721425 9.50072963,16.9721425 C7.87272963,16.9721425 2.09772963,14.2681425 0.371729633,8.89614246 Z"
+                                                                    id="Stroke-1"/>
+                                                                <path
+                                                                    d="M13.23843,4.013842 C14.44543,4.137842 15.20043,5.094842 15.15543,6.435842"
+                                                                    id="Stroke-3"/>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                    <p className="homebar-inner-text">{videoDetails.likes}</p>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="video-details-inner-bottom">
+                                            <p className="video-details-inner-bottom-views">
+                                                <NumericFormat
+                                                    value={videoDetails.views}
+                                                    thousandSeparator=" "
+                                                    displayType="text"
+                                                    renderText={(value) => <b>{value}</b>}
+                                                /> Views &middot; {format(new Date(videoDetails.datePosted), 'MMM d, yyyy')}
+                                            </p>
+                                            <p className="video-details-inner-bottom-description">{videoDetails.description}</p>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section className="video-comments">
+                                    <div className="video-comments-inner">
+                                        <div className="video-comments-inner-top">
+                                            <h3 className="video-comments-inner-top-title">Comments</h3>
+                                        </div>
+                                        <div className="video-comments-inner-center">
+
+                                        </div>
+                                        <div className="video-comments-inner-bottom"></div>
                                     </div>
                                 </section>
                             </div>
