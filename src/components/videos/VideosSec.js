@@ -209,11 +209,11 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
             ) : (
                 videos.length > 0 &&
                 videos.map((video, index) => {
-                        if (!videoRefs.current[index]) {
-                            videoRefs.current[index] = React.createRef(); // Create a ref for each video
-                        }
+                    if (!videoRefs.current[index]) {
+                        videoRefs.current[index] = React.createRef(); // Create a ref for each video
+                    }
 
-                        return (
+                    return (
                         <div className="videos-inner-item" key={index}
                              onMouseEnter={isLoading ? null : (e) => handleMouseEnter(e, index)}
                              onMouseLeave={isLoading ? null : (e) => handleMouseLeave(e, index)}
@@ -266,7 +266,7 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
                                 </div>
                             </div>
                         </div>
-                        );
+                    );
                 })
             )}
         </>
