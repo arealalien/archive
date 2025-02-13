@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import SpriteThumbnails from "videojs-sprite-thumbnails";
@@ -9,14 +9,11 @@ const VideoJS = (props) => {
     const videoRef = React.useRef(null);
     const playerRef = React.useRef(null);
     const {options, onReady, spriteLink} = props;
+    const eventListeners = useRef([]);
 
     useEffect(() => {
-
-        // Make sure Video.js player is only initialized once
         if (!playerRef.current) {
-            // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode.
             const videoElement = document.createElement("video-js");
-
             videoElement.classList.add('vjs-big-play-centered');
             videoRef.current.appendChild(videoElement);
 
@@ -34,7 +31,8 @@ const VideoJS = (props) => {
                         }
                     }
 
-                    player.on('volumechange', () => {
+                    const handleVolumeChange = () => {
+                        if (!player || player.isDisposed()) return;
                         if (player && player.tech_ && typeof player.volume === "function") {
                             const currentVolume = player.volume();
                             localStorage.setItem('videoVolume', currentVolume.toString());
@@ -71,9 +69,10 @@ const VideoJS = (props) => {
                             </svg>`;
                             }
                         }
-                    });
+                    }
 
-                    document.addEventListener('keydown', (event) => {
+                    const handleKeyDown = (event) => {
+                        if (!player || player.isDisposed()) return;
                         let currentVolume = player.volume();
 
                         if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
@@ -113,7 +112,16 @@ const VideoJS = (props) => {
                             const newTime = Math.max(player.currentTime() - 5, 0);
                             player.currentTime(newTime);
                         }
-                    });
+                    }
+
+                    eventListeners.current = [
+                        { type: "volumechange", handler: handleVolumeChange },
+                        { type: "keydown", handler: handleKeyDown }
+                    ];
+
+                    // Attach event listeners
+                    player.on("volumechange", handleVolumeChange);
+                    document.addEventListener("keydown", handleKeyDown);
 
                     player.qualityLevels();
                     if (typeof player.httpSourceSelector === "function" && player) {
@@ -163,6 +171,11 @@ const VideoJS = (props) => {
                 player.dispose();
                 playerRef.current = null;
             }
+
+            eventListeners.current.forEach(({ type, handler }) => {
+                document.removeEventListener(type, handler);
+            });
+            eventListeners.current = [];
         };
     }, [playerRef]);
 

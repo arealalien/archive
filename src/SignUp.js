@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import ScrollBar from './components/ScrollBar';
+import { motion } from 'framer-motion';
 import { NavLink } from "react-router-dom";
 import './css/main.css';
 import { AuthContext } from './contexts/AuthContext';
@@ -38,6 +39,12 @@ function SignUp() {
 
     return (
         <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
             <DocumentTitle title="Archive - Sign up"/>
             <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
@@ -235,6 +242,7 @@ function SignUp() {
                 </ScrollBar>
                 <SideBarRight isMenuVisible={isSidebarMenuVisible}/>
             </div>
+            </motion.div>
         </>
     );
 }

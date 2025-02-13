@@ -2,6 +2,7 @@ import React, {useContext, useRef, useState, useEffect} from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { NavLink, useParams } from 'react-router-dom';
 import ScrollBar from './components/ScrollBar';
+import { motion } from 'framer-motion';
 import ColorThief from 'colorthief';
 import './css/main.css';
 
@@ -373,6 +374,12 @@ function Settings() {
 
     return (
         <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
             <DocumentTitle title={`Archive - ` + capitalizeFirstLetter(page) + ` Settings`}/>
             <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu}/>
             <div className="page">
@@ -392,6 +399,7 @@ function Settings() {
                 <SideBarRight isMenuVisible={isSidebarMenuVisible} isSettingsVisible={isSettingsMenuVisible} />
             </div>
             <PageShadow/>
+            </motion.div>
         </>
     );
 }

@@ -5,7 +5,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 router.get('/search', async (req, res) => {
-    const { query } = req.query;
+    const { query, skip, take } = req.query;
     try {
         if (!query) {
             return res.status(400).json({ error: 'Query parameter is required' });
@@ -22,6 +22,8 @@ router.get('/search', async (req, res) => {
             orderBy: {
                 datePosted: 'desc',
             },
+            skip: parseInt(skip, 10),
+            take: parseInt(take, 10),
             select: {
                 id: true,
                 title: true,
@@ -44,7 +46,8 @@ router.get('/search', async (req, res) => {
             }
         });
 
-        res.json(videos);
+        const totalVideos = await prisma.video.count({ where });
+        res.json({ videos, totalVideos });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });

@@ -4,6 +4,7 @@ import { AuthContext } from './contexts/AuthContext';
 import axios from 'axios';
 import ColorThief from 'colorthief';
 import ScrollBar from './components/ScrollBar';
+import { motion } from 'framer-motion';
 import './css/main.css';
 
 // Components
@@ -150,6 +151,12 @@ function Profile() {
 
     return (
         <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
             <DocumentTitle title={user2.displayName + ` - Archive`}/>
             <Navbar searchbar="yes" profile="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
@@ -181,6 +188,7 @@ function Profile() {
                               handleSubscribe={handleSubscribe} />
             </div>
             <PageShadow/>
+            </motion.div>
         </>
     );
 }

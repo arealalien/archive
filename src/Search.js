@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ScrollBar from './components/ScrollBar';
+import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
 import './css/main.css';
@@ -9,7 +10,6 @@ import DocumentTitle from "./components/DocumentTitle";
 import Navbar from "./components/Navbar";
 import VideosSec from "./components/videos/VideosSec";
 import PageShadow from "./components/PageShadow";
-import Footer from "./components/Footer";
 import SideBarLeft from "./components/SideBarLeft";
 import SideBarRight from "./components/SideBarRight";
 
@@ -27,6 +27,12 @@ function Search() {
 
     return (
         <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
             <DocumentTitle title="Archive"/>
             <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
@@ -41,6 +47,7 @@ function Search() {
                 <SideBarRight isMenuVisible={isSidebarMenuVisible} />
             </div>
             <PageShadow/>
+            </motion.div>
         </>
     );
 }

@@ -5,6 +5,7 @@ import { AuthContext } from './contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 import { NavLink } from "react-router-dom";
 import ScrollBar from './components/ScrollBar';
+import { motion } from 'framer-motion';
 import './css/main.css';
 
 // Components
@@ -191,6 +192,12 @@ function Playlist() {
 
     return (
         <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
             <DocumentTitle title={playlistDetails.name + ` - Archive`}/>
             <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
@@ -325,11 +332,7 @@ function Playlist() {
                             <div className="playlist-content-bar">
 
                             </div>
-                            <section className="videos">
-                                <div className="videos-inner videos-inner-4 view-width">
-                                    <VideosSec/>
-                                </div>
-                            </section>
+                            <VideosSec/>
                         </div>
                     </section>
                     <Footer/>
@@ -337,6 +340,7 @@ function Playlist() {
                 <SideBarRight isMenuVisible={isSidebarMenuVisible}/>
             </div>
             <PageShadow/>
+            </motion.div>
         </>
     );
 }

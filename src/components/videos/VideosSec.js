@@ -1,60 +1,81 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { NavLink } from "react-router-dom";
+import { VariableSizeGrid as Grid } from "react-window";
+import InfiniteLoader from "react-window-infinite-loader";
+import AutoSizer from "react-virtualized-auto-sizer";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
-import VideosSkeletonSec from "./VideosSkeletonSec";
 import MiniVideoSec from "./MiniVideoSec";
 
 const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => {
     const [videos, setVideos] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [totalVideos, setTotalVideos] = useState(0);
     const videoRefs = useRef({});
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchVideos = async () => {
-            try {
-                const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
-                let url = 'http://localhost:5000/videos';
+    const calculateColumns = (width) => {
+        return Math.max(1, Math.floor(width / 300)); // 300px per column (adjustable)
+    };
 
-                if (search) {
-                    url = `http://localhost:5000/search?query=${encodeURIComponent(search)}`;
-                }
+    const getRowHeight = () => 300;
 
-                if (discovery) {
-                    url = `http://localhost:5000/discoveryvideos`;
-                }
+    const fetchVideos = useCallback(async (startIndex, stopIndex) => {
+        try {
+            setIsLoading(true);
 
-                if (videoCreator) {
-                    url = `http://localhost:5000/videos?creator=${encodeURIComponent(videoCreator)}`;
-                }
+            let url = `http://localhost:5000/videos?skip=${startIndex}&take=${stopIndex - startIndex + 1}`;
 
-                if (profileVideoCreator) {
-                    url = `http://localhost:5000/featuredvideos?creator=${encodeURIComponent(videoCreator)}`;
-                }
-
-                const response = await fetch(url, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch videos');
-                }
-                const data = await response.json();
-                setVideos(data.map(video => ({
-                    ...video,
-                    duration: formatDuration(video.duration),
-                })));
-                setIsLoading(false);
-            } catch (error) {
-                console.error('Error fetching video data:', error);
-                setIsLoading(false);
+            if (search) {
+                url = `http://localhost:5000/search?query=${encodeURIComponent(search)}&skip=${startIndex}&take=${stopIndex - startIndex + 1}`;
             }
-        };
 
-        fetchVideos();
-    }, [videoCreator, search, discovery, profileVideoCreator]);
+            if (discovery) {
+                url = `http://localhost:5000/discoveryvideos?skip=${startIndex}&take=${stopIndex - startIndex + 1}`;
+            }
+
+            if (videoCreator) {
+                url = `http://localhost:5000/videos?creator=${encodeURIComponent(videoCreator)}&skip=${startIndex}&take=${stopIndex - startIndex + 1}`;
+            }
+
+            if (profileVideoCreator) {
+                url = `http://localhost:5000/featuredvideos?creator=${encodeURIComponent(videoCreator)}&skip=${startIndex}&take=${stopIndex - startIndex + 1}`;
+            }
+
+            const response = await fetch(url, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            });
+
+            const { videos: newVideos, totalVideos } = await response.json();
+
+            // Update only the indices that aren't loaded yet
+            setVideos((prev) => {
+                const updatedVideos = [...prev];
+                newVideos.forEach((video, index) => {
+                    updatedVideos[startIndex + index] = {
+                        ...video,
+                        duration: formatDuration(video.duration),
+                    };
+                });
+
+                return updatedVideos.filter((v) => v !== undefined);
+            });
+
+            setTotalVideos(totalVideos);
+            setHasMore(newVideos.length === stopIndex - startIndex + 1);
+            setIsLoading(false);
+        } catch (error) {
+            console.error("Error fetching videos:", error);
+            setIsLoading(false);
+        }
+    }, []);
+
+    // Trigger an initial load of videos on page load
+    useEffect(() => {
+        const initialLoadCount = Math.ceil(window.innerHeight / 250) * Math.floor(window.innerWidth / 300);
+        fetchVideos(0, initialLoadCount);
+    }, [fetchVideos]);
 
     const formatDuration = (durationInSeconds) => {
         const hours = Math.floor(durationInSeconds / 3600);
@@ -202,74 +223,135 @@ const VideosSec = ({ videoCreator, search, discovery, profileVideoCreator }) => 
         navigate(`/video?view=${videoId}`);
     };
 
-    return (
-        <>
-            {isLoading ? (
-                <VideosSkeletonSec count={profileVideoCreator ? 4 : 16} />
-            ) : (
-                videos.length > 0 &&
-                videos.map((video, index) => {
-                    if (!videoRefs.current[index]) {
-                        videoRefs.current[index] = React.createRef(); // Create a ref for each video
-                    }
+    // Function to determine if a cell is loaded
+    const isCellLoaded = ({ rowIndex, columnIndex }) => {
+        const index = rowIndex * 5 + columnIndex; // 5 columns per row (adjustable)
+        return !!videos[index];
+    };
 
-                    return (
-                        <div className="videos-inner-item" key={index}
-                             onMouseEnter={isLoading ? null : (e) => handleMouseEnter(e, index)}
-                             onMouseLeave={isLoading ? null : (e) => handleMouseLeave(e, index)}
-                             onMouseDown={handleMouseDown}
-                             onMouseUp={handleMouseUp}>
-                            <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-link">
+    // Function to load more rows when scrolling
+    const loadMoreRows = async ({ startIndex, stopIndex }) => {
+        if (!hasMore || isLoading) {
+            return Promise.resolve();
+        }
+        await fetchVideos(startIndex, stopIndex);
+    };
 
-                            </NavLink>
-                            <div className="videos-inner-item-video" onClick={() => handleMouseClick(video.videoUrl)}>
-                                <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-video-link">
+    const cellRenderer = ({ columnIndex, rowIndex, style, data }) => {
+        const { videos, columnCount } = data;
+        const index = rowIndex * columnCount + columnIndex;
+        const video = videos[index];
 
-                                </NavLink>
-                                <div className="videos-inner-item-video-info">
-                                    <div className="videos-inner-item-video-info-time">
-                                        <p>{video.duration}</p>
-                                        <div className="videos-inner-item-video-info-time-shadow"></div>
-                                    </div>
-                                </div>
-                                <div to={`/video?view=` + video.videoUrl.split('.')[0]}
-                                     className="videos-inner-item-video-overlay"></div>
-                                <MiniVideoSec video={video} ref={videoRefs.current[index]} />
-                            </div>
-                            <div className="videos-inner-item-info">
-                                {video.creator?.verified === 1 ? (
-                                    <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left creator-gradient">
-                                        <div className="videos-inner-item-info-left-live">
-                                            <p>New</p>
-                                        </div>
-                                        <img className="videos-inner-item-info-left-image"
-                                             src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""
-                                             loading="lazy"/>
-                                    </NavLink>
-                                ) : <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
-                                    <img className="videos-inner-item-info-left-image"
-                                         src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""
-                                         loading="lazy"/>
-                                </NavLink>}
-                                <div className="videos-inner-item-info-right">
-                                    <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
-                                             className="videos-inner-item-info-right-title">{video.title}</NavLink>
-                                    <NavLink to={`/channel/${video.creator.name}`}
-                                             className="videos-inner-item-info-right-name">
-                                        <span>{video.creator.displayName}</span>
-                                        {video.creator?.verified === 1 ? (
-                                            <img src={process.env.PUBLIC_URL + `/images/verified.svg`} alt=""/>
-                                        ) : null}
-                                    </NavLink>
-                                    <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
-                                             className="videos-inner-item-info-right-info">Seen {formatViews(video.views)} times &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</NavLink>
-                                </div>
-                            </div>
+        if (!videoRefs.current[index]) {
+            videoRefs.current[index] = React.createRef();
+        }
+
+        if (!video) {
+            return (
+                <div style={style} className="skeleton-inner-item">
+                    <div className="skeleton-inner-item-video"></div>
+                    <div className="skeleton-inner-item-info">
+                        <div className="skeleton-inner-item-bottom-info-left">
+                            <div className="skeleton-inner-item-info-left-image"></div>
                         </div>
-                    );
-                })
+                        <div className="skeleton-inner-item-info-right">
+                            <div className="skeleton-inner-item-info-right-title"></div>
+                            <div className="skeleton-inner-item-info-right-name"><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="videos-inner-item" style={style} key={index}
+                 onMouseEnter={isLoading ? null : (e) => handleMouseEnter(e, index)}
+                 onMouseLeave={isLoading ? null : (e) => handleMouseLeave(e, index)}
+                 onMouseDown={handleMouseDown}
+                 onMouseUp={handleMouseUp}>
+                <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]} className="videos-inner-item-link">
+
+                </NavLink>
+                <div className="videos-inner-item-video" onClick={() => handleMouseClick(video.videoUrl)}>
+                    <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
+                             className="videos-inner-item-video-link">
+
+                    </NavLink>
+                    <div className="videos-inner-item-video-info">
+                        <div className="videos-inner-item-video-info-time">
+                            <p>{video.duration}</p>
+                            <div className="videos-inner-item-video-info-time-shadow"></div>
+                        </div>
+                    </div>
+                    <div to={`/video?view=` + video.videoUrl.split('.')[0]}
+                         className="videos-inner-item-video-overlay"></div>
+                    <MiniVideoSec video={video} ref={videoRefs.current[index]}/>
+                </div>
+                <div className="videos-inner-item-info">
+                    {video.creator?.verified === 1 ? (
+                        <NavLink to={`/channel/${video.creator.name}`}
+                                 className="videos-inner-item-info-left creator-gradient">
+                            <div className="videos-inner-item-info-left-live">
+                                <p>New</p>
+                            </div>
+                            <img className="videos-inner-item-info-left-image"
+                                 src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""
+                                 loading="lazy"/>
+                        </NavLink>
+                    ) : <NavLink to={`/channel/${video.creator.name}`} className="videos-inner-item-info-left">
+                        <img className="videos-inner-item-info-left-image"
+                             src={process.env.PUBLIC_URL + "/" + video.creator.profilePicture} alt=""
+                             loading="lazy"/>
+                    </NavLink>}
+                    <div className="videos-inner-item-info-right">
+                        <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
+                                 className="videos-inner-item-info-right-title">{video.title}</NavLink>
+                        <NavLink to={`/channel/${video.creator.name}`}
+                                 className="videos-inner-item-info-right-name">
+                            <span>{video.creator.displayName}</span>
+                            {video.creator?.verified === 1 ? (
+                                <img src={process.env.PUBLIC_URL + `/images/verified.svg`} alt=""/>
+                            ) : null}
+                        </NavLink>
+                        <NavLink to={`/video?view=` + video.videoUrl.split('.')[0]}
+                                 className="videos-inner-item-info-right-info">Seen {formatViews(video.views)} times &middot; {formatDistanceToNow(new Date(video.datePosted))} ago</NavLink>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    return (
+        <InfiniteLoader
+            isItemLoaded={({ index }) => isCellLoaded(index, calculateColumns(window.innerWidth))}
+            loadMoreItems={loadMoreRows}
+            itemCount={totalVideos}
+        >
+            {({ onItemsRendered, ref }) => (
+                <AutoSizer>
+                    {({ width, height }) => {
+                        const columnCount = calculateColumns(width);
+                        const rowCount = Math.ceil(totalVideos / columnCount);
+
+                        return (
+                            <Grid
+                                ref={ref}
+                                columnCount={columnCount}
+                                columnWidth={() => Math.floor(width / columnCount)}
+                                height={height}
+                                rowCount={rowCount}
+                                rowHeight={getRowHeight}
+                                width={width}
+                                itemData={{ videos, columnCount }}
+                                onItemsRendered={onItemsRendered}
+                            >
+                                {cellRenderer}
+                            </Grid>
+                        );
+                    }}
+                </AutoSizer>
             )}
-        </>
+        </InfiniteLoader>
     );
 };
 

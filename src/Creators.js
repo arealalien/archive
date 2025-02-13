@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ScrollBar from './components/ScrollBar';
+import { motion } from 'framer-motion';
 import './css/main.css';
 
 // Components
@@ -20,6 +21,12 @@ function Creators() {
 
     return (
         <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
             <DocumentTitle title="Archive"/>
             <Navbar searchbar="yes" toggleSidebarMenu={toggleSidebarMenu} />
             <div className="page">
@@ -35,6 +42,7 @@ function Creators() {
             </div>
             <PageShadow/>
             <Footer/>
+            </motion.div>
         </>
     );
 }

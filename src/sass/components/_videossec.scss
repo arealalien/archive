@@ -2,6 +2,9 @@
   row-gap: 1em !important;
   grid-template-columns: repeat(auto-fill, minmax(22em, 1fr)) !important;
 }
+.page-center > div > div {
+  overflow-x: hidden !important;
+}
 .videos {
   margin: 3em 0 0 0;
   width: 100%;

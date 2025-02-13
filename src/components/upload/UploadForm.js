@@ -16,6 +16,7 @@ const UploadForm = () => {
     const [selectedThumbnail, setSelectedThumbnail] = useState(null);
     const [showDetailsForm, setShowDetailsForm] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [videoLink, setVideoLink] = useState(null);
     const videoUploadRef = useRef(null);
     const imageUploadRef = useRef(null);
 
@@ -140,6 +141,7 @@ const UploadForm = () => {
             }
 
             // Send the combined request
+            setUploadProgress(0);
             const response = await axios.post('http://localhost:5000/upload/video', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -147,18 +149,16 @@ const UploadForm = () => {
                 },
                 onUploadProgress: (progressEvent) => {
                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    setUploadProgress(percentCompleted); // Update progress
+                    setUploadProgress(percentCompleted);
                 }
             });
 
-            if (uploadProgress === 100) {
-                setUploadProgress(0);
-                setTitle('');
-                setDescription('');
+            if (response.status === 200) {
+                setUploadProgress(100);
                 setVideoFile(null);
                 setImageFile(null);
                 setShowDetailsForm(false);
-                navigate('/');
+                setVideoLink(`http://localhost:5000/video/${response.data.videoId}`);
             }
         } catch (error) {
             console.error('Error saving video and thumbnail:', error.response ? error.response.data : error.message);
@@ -176,7 +176,6 @@ const UploadForm = () => {
             setVideoFile(null);
             setImageFile(null);
             setShowDetailsForm(false);
-            navigate('/');
         }
     }, [uploadProgress]);
 
@@ -329,6 +328,12 @@ const UploadForm = () => {
                                     <div className="upload-inner-second-bottom-progress-inner-shadow"></div>
                                 </div>
                             </div>
+                            {videoLink && (
+                                <div className="upload-success">
+                                    <p>✅ Upload Complete!</p>
+                                    <p>View your video: <a href={videoLink} target="_blank" rel="noopener noreferrer">{videoLink}</a></p>
+                                </div>
+                            )}
                         </div>
                     </form>
                 )}
