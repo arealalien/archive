@@ -14,93 +14,94 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
-  email          String    @unique
+  id             Int            @id @default(autoincrement())
+  email          String         @unique
   password       String
-  name           String    @unique
+  name           String         @unique
   displayName    String?
-  profilePicture String    @default("users/0/profilePicture.jpg")
-  banner         String    @default("users/0/banner.jpg")
-  verified       Int       @default(0)
-  dateCreated    DateTime  @default(now())
+  profilePicture String         @default("users/0/profilePicture.jpg")
+  banner         String         @default("users/0/banner.jpg")
+  verified       Int            @default(0)
+  dateCreated    DateTime       @default(now())
   videos         Video[]
   posts          Post[]
   playlists      Playlist[]
-  likedVideos    Video[]   @relation("LikedVideos")
+  likedVideos    Video[]        @relation("LikedVideos")
   comments       Comment[]
-  subscribers    Subscription[]  @relation("SubscribedTo")
-  subscriptions  Subscription[]  @relation("Subscribers")
+  subscribers    Subscription[] @relation("SubscribedTo")
+  subscriptions  Subscription[] @relation("Subscribers")
 }
 
 model Video {
-  id             Int       @id @default(autoincrement())
-  creator        User      @relation(fields: [creatorId], references: [id])
+  id             Int             @id @default(autoincrement())
+  creator        User            @relation(fields: [creatorId], references: [id])
   creatorId      Int
   title          String
   description    String
-  videoUrl       String    @unique
-  duration       Int       @default(0)
-  datePosted     DateTime  @default(now())
-  views          Int       @default(0)
-  likes          Int       @default(0)
+  videoUrl       String          @unique
+  duration       Int             @default(0)
+  datePosted     DateTime        @default(now())
+  views          Int             @default(0)
+  likes          Int             @default(0)
   comments       Comment[]
   playlistVideos PlaylistVideo[]
-  likedBy        User[]    @relation("LikedVideos")
+  likedBy        User[]          @relation("LikedVideos")
+  nsfw           Int             @default(0)
 }
 
 model Post {
-  id             Int       @id @default(autoincrement())
-  creator        User      @relation(fields: [creatorId], references: [id])
-  creatorId      Int
-  title          String
-  content        String
-  datePosted     DateTime  @default(now())
-  likes          Int       @default(0)
-  comments       Comment[]
+  id         Int       @id @default(autoincrement())
+  creator    User      @relation(fields: [creatorId], references: [id])
+  creatorId  Int
+  title      String
+  content    String
+  datePosted DateTime  @default(now())
+  likes      Int       @default(0)
+  comments   Comment[]
 }
 
 model Playlist {
-  id             Int       @id @default(autoincrement())
-  name           String
-  creator        User      @relation(fields: [creatorId], references: [id])
-  creatorId      Int
-  playlistUrl    String    @unique
-  playlistImg    String    @default("images/cover.jpg")
-  dateCreated    DateTime  @default(now())
-  visibility     Int       @default(1)
-  videos         PlaylistVideo[]
+  id          Int             @id @default(autoincrement())
+  name        String
+  creator     User            @relation(fields: [creatorId], references: [id])
+  creatorId   Int
+  playlistUrl String          @unique
+  playlistImg String          @default("images/cover.jpg")
+  dateCreated DateTime        @default(now())
+  visibility  Int             @default(1)
+  videos      PlaylistVideo[]
 }
 
 model PlaylistVideo {
-  id             Int       @id @default(autoincrement())
-  playlist       Playlist  @relation(fields: [playlistId], references: [id])
-  playlistId     Int
-  video          Video     @relation(fields: [videoId], references: [id])
-  videoId        Int
-  dateAdded      DateTime  @default(now())
+  id         Int      @id @default(autoincrement())
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  playlistId Int
+  video      Video    @relation(fields: [videoId], references: [id])
+  videoId    Int
+  dateAdded  DateTime @default(now())
 
   @@unique([playlistId, videoId])
 }
 
 model Comment {
-  id             Int       @id @default(autoincrement())
-  content        String
-  user           User      @relation(fields: [userId], references: [id])
-  userId         Int
-  video          Video?    @relation(fields: [videoId], references: [id])
-  videoId        Int?
-  post           Post?     @relation(fields: [postId], references: [id])
-  postId         Int?
-  dateCommented DateTime   @default(now())
+  id            Int      @id @default(autoincrement())
+  content       String
+  user          User     @relation(fields: [userId], references: [id])
+  userId        Int
+  video         Video?   @relation(fields: [videoId], references: [id])
+  videoId       Int?
+  post          Post?    @relation(fields: [postId], references: [id])
+  postId        Int?
+  dateCommented DateTime @default(now())
 }
 
 model Subscription {
-  id             Int             @id @default(autoincrement())
-  subscriber     User            @relation("Subscribers", fields: [subscriberId], references: [id])
+  id             Int      @id @default(autoincrement())
+  subscriber     User     @relation("Subscribers", fields: [subscriberId], references: [id])
   subscriberId   Int
-  subscribedTo   User            @relation("SubscribedTo", fields: [subscribedToId], references: [id])
+  subscribedTo   User     @relation("SubscribedTo", fields: [subscribedToId], references: [id])
   subscribedToId Int
-  dateSubscribed DateTime        @default(now())
+  dateSubscribed DateTime @default(now())
 
   @@unique([subscriberId, subscribedToId])
 }

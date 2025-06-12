@@ -1,13 +1,11 @@
 .sidebar-videos {
+  width: 100% !important;
   row-gap: 1em !important;
   grid-template-columns: repeat(auto-fill, minmax(22em, 1fr)) !important;
 }
-.page-center > div > div {
-  overflow-x: hidden !important;
-}
 .videos {
-  margin: 3em 0 0 0;
-  width: 100%;
+  margin: 1.5em 0 0 0;
+  width: 100%; height: calc(100% - 1.5em) !important;
   @include flex-col();
 
   &-top {
@@ -22,6 +20,7 @@
     }
   }
   &-inner-4 {
+    padding: 0 0 1.5em 1.5em;
     row-gap: 3em;
     column-gap: .5em;
     grid-template-columns: repeat(auto-fill, minmax(26em, 1fr));
@@ -33,6 +32,7 @@
     }
   }
   &-inner {
+    width: calc(100% - 1.5em);
     display: grid;
 
     .vjs-control-bar {
@@ -97,7 +97,7 @@
             padding: .9em 1.3em;
             position: relative;
             background-color: hslac($black, 0);
-            backdrop-filter: blur(1rem) brightness(70%);
+            backdrop-filter: blur(1rem) brightness(50%);
             border-radius: 5em;
             opacity: 1;
             transition: all .25s cubic-bezier($transition-smooth, 1);

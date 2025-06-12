@@ -63,16 +63,21 @@ router.get('/videos/:videoUrl', async (req, res) => {
 
 // Endpoint to get videos, optionally filtered by creator
 router.get('/videos', async (req, res) => {
-    const { creator, skip, take} = req.query;
+    const { creator } = req.query;
 
     try {
-        const where = creator ? { creator: { name: creator } } : {};
+        const where = {
+            nsfw: 0,
+            ...(creator && {
+                creator: {
+                    name: creator,
+                },
+            }),
+        };
 
         const videos = await prisma.video.findMany({
             where,
             orderBy: { datePosted: 'desc' },
-            skip: parseInt(skip, 10),
-            take: parseInt(take, 10),
             select: {
                 id: true,
                 title: true,
@@ -95,9 +100,7 @@ router.get('/videos', async (req, res) => {
             }
         });
 
-        const totalVideos = await prisma.video.count({ where });
-
-        res.json({ videos, totalVideos });
+        res.json(videos);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -105,7 +108,7 @@ router.get('/videos', async (req, res) => {
 });
 
 router.get('/discoveryvideos', async (req, res) => {
-    const { creator, skip, take } = req.query;
+    const { creator } = req.query;
     try {
         const where = creator ? {
             creator: {
@@ -118,8 +121,6 @@ router.get('/discoveryvideos', async (req, res) => {
             orderBy: {
                 views: 'desc',
             },
-            skip: parseInt(skip, 10),
-            take: parseInt(take, 10),
             select: {
                 id: true,
                 title: true,
@@ -142,8 +143,7 @@ router.get('/discoveryvideos', async (req, res) => {
             }
         });
 
-        const totalVideos = await prisma.video.count({ where });
-        res.json({ videos, totalVideos });
+        res.json(videos);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -151,7 +151,7 @@ router.get('/discoveryvideos', async (req, res) => {
 });
 
 router.get('/featuredvideos', async (req, res) => {
-    const { creator, skip, take } = req.query;
+    const { creator } = req.query;
     try {
         const where = creator ? {
             creator: {
@@ -164,8 +164,6 @@ router.get('/featuredvideos', async (req, res) => {
             orderBy: {
                 views: 'desc',
             },
-            skip: parseInt(skip, 10) || 0,
-            take: parseInt(take, 10) || 4,
             select: {
                 id: true,
                 title: true,
@@ -185,7 +183,8 @@ router.get('/featuredvideos', async (req, res) => {
                         verified: true,
                     }
                 }
-            }
+            },
+            take: 4
         });
 
         res.json(videos);

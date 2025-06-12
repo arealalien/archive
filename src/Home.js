@@ -32,8 +32,11 @@ function Home() {
             <div className="page">
                 <SideBarLeft/>
                 <main className="page-center">
-                    <VideosSec/>
-                    <Footer/>
+                    <ScrollBar className="videos">
+                        <div className="videos-inner videos-inner-4">
+                            <VideosSec/>
+                        </div>
+                    </ScrollBar>
                 </main>
                 <SideBarRight isMenuVisible={isSidebarMenuVisible} />
             </div>

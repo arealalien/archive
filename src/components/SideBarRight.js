@@ -369,7 +369,7 @@ const SideBarRight = ({
                     {isVideoVisible && videoDetails && videoDetails.creator ? (
                         <div className="video-inner-right"
                              style={{display: isVideoVisible && !isMenuVisible ? 'grid' : 'none'}}>
-                            <div className="sidebar-videos videos-inner videos-inner-4">
+                            <div className="sidebar-videos videos-inner">
                                 <VideosSec/>
                             </div>
                         </div>

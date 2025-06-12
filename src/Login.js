@@ -52,7 +52,7 @@ function Login() {
                                     </div>
                                     <div className="signup-inner-left-container-overlay"></div>
                                     <img className="signup-inner-left-container-background"
-                                         src={process.env.PUBLIC_URL + `/images/gallery/0476d014bcfd4716611c1c59f8f7611b.jpg`}
+                                         src={process.env.PUBLIC_URL + `/images/DSCF6699-3.jpg`}
                                          alt=""/>
                                 </div>
                             </div>
